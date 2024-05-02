@@ -8,8 +8,8 @@ body {
   margin: 0;
 }
 header {
-padding-top: 40px;
-padding-bottom: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .container {
@@ -19,34 +19,24 @@ padding-bottom: 40px;
   margin: auto;
 }
 
+/* logo */
 .logo {
   width: 104px;
 }
 
-/* * navigational menu
-.logo{
-  text-decoration: underline;
-  text-decoration-color: blue;
-  text-decoration-thickness: 1px;
+/* navigor menu */
+.navigational-menu {
+  font-weight: 500;
 }
 
 .navigational-list {
-  list-style: none;
   display: flex;
-  font-size: 14px;
+  list-style: none;
   text-transform: uppercase;
-  padding: 0;
-  margin: 0;
-}
-
-a:hover {
-  font-size: 23px;
-  margin-top: 20px;
-  border: 1px solid #000;
-  width: 104px;
-   ;
-  color: #fff;
-
+  justify-content: flex-end;
+  margin-top: 0;
+  padding-left: 0;
+  margin-bottom: 0;
 }
 
 .navigational-list a {
@@ -54,48 +44,30 @@ a:hover {
   text-decoration: none;
 }
 
-.navigational-list a:hover {
-  text-decoration: underline;
-  text-decoration-color: blue;
-  text-decoration-thickness: 1px;
-}
-
 .navigational-list-search {
-  margin-left: 700px;
-  padding-top: 48px;
   font-size: 14px;
   border: 1px solid #000;
-  width: 56px;
+  width: 54px;
   height: 16px;
+  margin-right: 35px;
 }
 
 .navigational-list-add {
-  margin-left: 36px;
-  padding-top: 48px;
   border: 1px solid #000;
-  width: 156px;
+  width: 177px;
   height: 16px;
+  margin-right: 35px;
 }
 
 .navigational-list-faq {
-  margin-left: 36px;
-  padding-top: 48px;
   border: 1px solid #000;
-  width: 28px;
+  width: 26px;
   height: 16px;
+  margin-right: 35px;
 }
 
 .navigational-list-go {
-  margin-left: 36px;
-  margin-right: 132px;
-  padding-top: 48px;
   border: 1px solid #000;
-  width: 42px;
+  width: 50px;
   height: 16px;
 }
-
-.container:hover {
-  text-decoration: underline;
-  text-decoration-color: blue;
-  text-decoration-thickness: 1px;
-} */
