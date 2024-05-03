@@ -22,21 +22,13 @@ header {
 /* logo */
 .logo {
   width: 104px;
+  float: left;
 }
 
 /* navigor menu */
 .navigational-menu {
   font-weight: 500;
-}
-
-.navigational-list {
-  display: flex;
-  list-style: none;
-  text-transform: uppercase;
-  justify-content: flex-end;
-  margin-top: 0;
-  padding-left: 0;
-  margin-bottom: 0;
+  float: right;
 }
 
 .navigational-list a {
@@ -44,30 +36,31 @@ header {
   text-decoration: none;
 }
 
-.navigational-list-search {
+.navigational-list li:not(:last-child) {
+  display: inline;
+  list-style: none;
+  text-transform: uppercase;
+  margin-top: 0;
+  padding-left: 0;
+  margin-bottom: 0;
+  border: 1px solid #000;
   font-size: 14px;
-  border: 1px solid #000;
-  width: 54px;
-  height: 16px;
-  margin-right: 35px;
-}
-
-.navigational-list-add {
-  border: 1px solid #000;
-  width: 177px;
-  height: 16px;
-  margin-right: 35px;
-}
-
-.navigational-list-faq {
-  border: 1px solid #000;
-  width: 26px;
-  height: 16px;
   margin-right: 35px;
 }
 
 .navigational-list-go {
+  display: inline;
+  list-style: none;
+  text-transform: uppercase;
+  margin-top: 0;
+  padding-left: 0;
+  margin-bottom: 0;
   border: 1px solid #000;
-  width: 50px;
-  height: 16px;
+  font-size: 14px;
+  margin-right: 0;
+}
+
+a:hover{
+  background-color: aqua;
+  transition: 3s;
 }
