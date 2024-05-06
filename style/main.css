@@ -9,6 +9,7 @@ body {
   color: #fff;
   font-size: 16px;
 }
+
 header {
   padding-top: 40px;
   padding-bottom: 40px;
@@ -19,10 +20,15 @@ header {
   padding-left: 10px;
   padding-right: 10px;
   margin: auto;
+  --main-color: #00A3FF;
 }
 
-img {
+.logo {
   float: left;
+  height: 24px;
+}
+
+.logo img {
   width: 104px;
 }
 
@@ -34,6 +40,7 @@ img {
 
 .navigational-list {
   margin: 0;
+  padding: 0;
 }
 
 .navigational-list a {
@@ -46,15 +53,14 @@ img {
   list-style: none;
   text-transform: uppercase;
   font-size: 14px;
-  padding-left: 35px;
+  margin-left: 35px;
 }
 
-li a:hover {
-  color: #00A3FF;
-  transition: 1s;
+.navigational-list li a:hover {
+  color: var(--main-color);
 }
 
-.container::after {
+.clearfix::after {
   content: "";
   clear: both;
   display: block;
