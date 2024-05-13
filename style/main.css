@@ -43,6 +43,7 @@ header {
 .navigational-list {
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 .navigational-list a {
@@ -69,3 +70,22 @@ header {
   display: block;
 }
 
+.navigational-list li:hover .submenu {
+  display: block;
+} 
+
+.submenu {
+  display: none;
+  font-size: 14px;
+  position: absolute;
+  padding: 0;
+  left: 87%;
+  }
+
+.submenu li {
+  height: 30px;
+  width: 70px;
+  margin: 0;
+  padding: 5px 25px 5px 25px;
+  border: 1px solid #515151;
+}
