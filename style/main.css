@@ -43,7 +43,6 @@ header {
 .navigational-list {
   margin: 0;
   padding: 0;
-  position: relative;
 }
 
 .navigational-list a {
@@ -70,22 +69,39 @@ header {
   display: block;
 }
 
+.go-to {
+  position: relative;
+}
+
 .navigational-list li:hover .submenu {
   display: block;
 } 
 
 .submenu {
   display: none;
-  font-size: 14px;
   position: absolute;
   padding: 0;
-  left: 87%;
+  left: 50%;
+  transform: translateX(-50%)
   }
 
-.submenu li {
-  height: 30px;
-  width: 70px;
-  margin: 0;
-  padding: 5px 25px 5px 25px;
-  border: 1px solid #515151;
+  .submenu li {
+    margin: 0;
+    display: flex;
+    border: 1px solid #515151;
+    border-bottom: 0;
+  }
+
+  .submenu li:last-child {
+    border: 1px solid #515151;
+  }
+  
+.submenu a {
+  padding: 5px 25px;
 }
+
+.submenu a:hover {
+  border-color: #00A3FF;
+  border: 2px solid;
+}
+
