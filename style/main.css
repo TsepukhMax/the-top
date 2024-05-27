@@ -123,12 +123,6 @@ header {
   color: var(--main-color);
 }
 
-.main-title:hover {
-  text-decoration: underline;
-  text-decoration-color: var(--main-color);
-  text-decoration-thickness: 5px;
-}
-
 .extra-title {
   width: 477px;
   height: 48px;
@@ -142,12 +136,6 @@ header {
   line-height: 150%;
 }
 
-.extra-title:hover {
-  text-decoration: underline;
-  text-decoration-color: var(--main-color);
-  text-decoration-thickness: 2px;
-}
-
 .vector {
   margin-top: 74px;
 }
@@ -155,4 +143,8 @@ header {
 .vector img {
   width: 51px;
   stroke-width: 2px;
+}
+
+.vector img:hover {
+transform: scale(1.5);
 }
