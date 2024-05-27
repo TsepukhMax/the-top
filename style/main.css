@@ -13,6 +13,7 @@ body {
   font-size: 16px;
   color: var(--main-text-color);
   background-color: rgb(0, 0, 0);
+  background: url("../img/headphones.png") no-repeat top;
 }
 
 header {
@@ -100,4 +101,58 @@ header {
   position: relative;
   z-index: 1;
   border-color: var(--main-color);
+}
+
+
+/* main content */
+
+.main-title {
+  width: 980px;
+  height: 246px;
+  margin-top: 130px;
+  margin-bottom: 0;
+}
+
+.main-1 {
+  font-size: 70px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.main-2 {
+  color: var(--main-color);
+}
+
+.main-title:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--main-color);
+  text-decoration-thickness: 5px;
+}
+
+.extra-title {
+  width: 477px;
+  height: 48px;
+  margin-top: 51px;
+  margin-bottom: 0;
+}
+
+.extra-1 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.extra-title:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--main-color);
+  text-decoration-thickness: 2px;
+}
+
+.vector {
+  margin-top: 74px;
+}
+
+.vector img {
+  width: 51px;
+  stroke-width: 2px;
 }
