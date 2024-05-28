@@ -13,12 +13,10 @@ body {
   font-size: 16px;
   color: var(--main-text-color);
   background-color: rgb(0, 0, 0);
-  background: url("../img/headphones.png") no-repeat top;
 }
 
 header {
   padding-top: 40px;
-  padding-bottom: 40px;
 }
 
 .container {
@@ -106,45 +104,50 @@ header {
 
 /* main content */
 
-.main-title {
-  width: 980px;
-  height: 246px;
+.section-title {
   margin-top: 130px;
   margin-bottom: 0;
+  background-image: url("../img/headphones.png");
+  background-position: center;
 }
 
-.main-1 {
+h1 {
+  width: 980px;
+  margin: 0;
   font-size: 70px;
   font-weight: 700;
   text-transform: uppercase;
 }
 
-.main-2 {
+h1 span {
   color: var(--main-color);
+  display: block;
 }
 
-.extra-title {
+.section-title p {
   width: 477px;
-  height: 48px;
   margin-top: 51px;
   margin-bottom: 0;
 }
 
-.extra-1 {
+p {
+  margin: 0;
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
 }
 
-.vector {
+.pointer {
+  position: absolute;
   margin-top: 74px;
 }
 
-.vector img {
+.pointer img {
   width: 51px;
   stroke-width: 2px;
 }
 
-.vector img:hover {
-transform: scale(1.5);
+.pointer img:hover {
+  transition: 0.3s;
+  transform: scale(1.5);
 }
