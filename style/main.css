@@ -17,6 +17,7 @@ body {
 
 header {
   padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .container {
@@ -104,11 +105,18 @@ header {
 
 /* main content */
 
-.section-title {
-  margin-top: 130px;
+main {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.main-title {
+  position: relative;
+  margin-top: 50px;
   margin-bottom: 0;
   background-image: url("../img/headphones.png");
   background-position: center;
+  background-repeat: no-repeat;
 }
 
 h1 {
@@ -124,30 +132,26 @@ h1 span {
   display: block;
 }
 
-.section-title p {
+.main-title p {
   width: 477px;
   margin-top: 51px;
   margin-bottom: 0;
 }
 
 p {
-  margin: 0;
-  font-weight: 400;
-  font-size: 16px;
   line-height: 150%;
 }
 
-.pointer {
+.arrow {
   position: absolute;
   margin-top: 74px;
 }
 
 .pointer img {
   width: 51px;
-  stroke-width: 2px;
 }
 
-.pointer img:hover {
+.arrow img:hover {
   transition: 0.3s;
   transform: scale(1.5);
 }
