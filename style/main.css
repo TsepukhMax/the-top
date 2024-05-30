@@ -35,6 +35,7 @@ header {
   width: 104px;
 }
 
+
 /* navigor menu */
 .navigational-menu {
   font-weight: 500;
@@ -49,6 +50,7 @@ header {
 .navigational-list a {
   text-decoration: none;
   color: var(--main-text-color);
+  transition: 0.3s linear;
 }
 
 .navigational-list li {
@@ -61,7 +63,6 @@ header {
 }
 
 .navigational-list li a:hover {
-  transition: 0.3s;
   color: var(--main-color);
 }
 
@@ -105,25 +106,20 @@ header {
 
 /* main content */
 
-main {
-  padding-top: 40px;
-  padding-bottom: 40px;
-}
-
 .main-title {
   position: relative;
-  margin-top: 50px;
-  margin-bottom: 0;
+  padding-top: 90px;
+  padding-bottom: 210px;
   background-image: url("../img/headphones.png");
   background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1 {
   width: 980px;
   margin: 0;
   font-size: 70px;
-  font-weight: 700;
   text-transform: uppercase;
 }
 
@@ -133,8 +129,8 @@ h1 span {
 }
 
 .main-title p {
-  width: 477px;
-  margin-top: 51px;
+  width: 480px;
+  margin-top: 50px;
   margin-bottom: 0;
 }
 
@@ -144,14 +140,13 @@ p {
 
 .arrow {
   position: absolute;
-  margin-top: 74px;
+  top: 510px;
 }
 
-.pointer img {
-  width: 51px;
+.arrow img {
+  transition: 0.3s linear ;
 }
 
 .arrow img:hover {
-  transition: 0.3s;
   transform: scale(1.5);
 }
