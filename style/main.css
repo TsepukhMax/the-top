@@ -15,16 +15,23 @@ body {
   background-color: rgb(0, 0, 0);
 }
 
-header {
-  padding-top: 40px;
-  padding-bottom: 40px;
-}
-
 .container {
   max-width: 1200px;
   padding-left: 10px;
   padding-right: 10px;
   margin: auto;
+}
+
+p {
+  line-height: 150%;
+}
+
+header {
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .logo {
@@ -108,10 +115,10 @@ header {
 
 .main-title {
   position: relative;
-  padding-top: 90px;
+  padding-top: 190px;
   padding-bottom: 210px;
   background-image: url("../img/headphones.png");
-  background-position: center;
+  background-position: center 0;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -134,13 +141,9 @@ h1 span {
   margin-bottom: 0;
 }
 
-p {
-  line-height: 150%;
-}
-
 .arrow {
   position: absolute;
-  top: 510px;
+  bottom: 78px;
 }
 
 .arrow img {
