@@ -17,8 +17,8 @@ body {
 
 .container {
   max-width: 1200px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   margin: auto;
 }
 
@@ -89,6 +89,7 @@ header {
   padding: 0;
   display: none;
   transform: translateX(-50%);
+  background-color: rgb(0, 0, 0);
 }
 
 .submenu li {
@@ -124,7 +125,7 @@ header {
 }
 
 h1 {
-  width: 980px;
+  max-width: 980px;
   margin: 0;
   font-size: 70px;
   text-transform: uppercase;
@@ -136,7 +137,7 @@ h1 span {
 }
 
 .main-title p {
-  width: 480px;
+  max-width: 480px;
   margin-top: 50px;
   margin-bottom: 0;
 }
@@ -152,4 +153,17 @@ h1 span {
 
 .arrow img:hover {
   transform: scale(1.5);
+}
+
+/* ---------------------------- */
+@media (max-width: 1200px) {
+  h1 {
+    font-size: 60px;
+  }
+}
+
+@media (max-width: 1024px) {
+  h1 {
+    max-width: 780px;
+  }
 }
