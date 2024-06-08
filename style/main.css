@@ -44,18 +44,14 @@ header {
 
 
 /* navigor menu */
-#menu__toggle {
-  opacity: 0;
-}
-
-.menu__btn {
-  position: relative;
-  display: none;
-}
 
 .navigational-menu {
   font-weight: 500;
   float: right;
+}
+
+.burger {
+  display: none;
 }
 
 .navigational-list {
@@ -164,7 +160,7 @@ h1 span {
   transform: scale(1.5);
 }
 
-/* ---------------------------- */
+/* ------------------------------------------------ */
 @media (max-width: 1200px) {
   h1 {
     font-size: 60px;
@@ -178,59 +174,50 @@ h1 span {
 }
 
 @media (max-width: 768px) {
-  /* --------burger----------------- */
-  .menu__btn {
+
+  .navigational-list {
+    display: none;
+  }
+
+  .burger {
     display: block;
     width: 26px;
     height: 26px;
-    top: 8px;
     float: right;
     cursor: pointer;
-    z-index: 1;
   }
 
-  .menu__btn > span,
-  .menu__btn > span::before,
-  .menu__btn > span::after {
+  .burger span,
+  .burger span::before,
+  .burger span::after {
     position: absolute;
-    display: block;
-    width: 100%;
     height: 2px;
-    background-color: #616161;
-    transition-duration: .25s;
-  }
-  .menu__btn > span::before {
+    width: 26px;
+    top: 48px;
+    display: block;
     content: '';
-    top: -8px;
+    background-color: var(--main-text-color);
+    transition: 0.3s linear;
   }
-  .menu__btn > span::after {
-    content: '';
+
+  .burger span::before {
     top: 8px;
   }
-  #menu__toggle:checked ~ .menu__btn > span {
-    transform: rotate(45deg);
-  }
-  #menu__toggle:checked ~ .menu__btn > span::before {
-    top: 0;
-    transform: rotate(0);
-  }
-  #menu__toggle:checked ~ .menu__btn > span::after {
-    top: 0;
-    transform: rotate(90deg);
-  }
-  #menu__toggle:checked ~ .menu__box {
-    visibility: visible;
-    left: 0;
+  
+  .burger span::after {
+    top: -8px;
   }
 
-  .navigational-menu {
-    display: none;
-  }
-/* ------the end of burger----------- */
+
+ .burger:hover span,
+ .burger:hover span::before,
+ .burger:hover span::after {
+  background-color: var(--main-color);
+ }
 
   h1 {
-    max-width: 500px;
-    font-size: 36px;
+    max-width: 640px;
+    font-size: 48px;
   }
 
   .main-title p {
