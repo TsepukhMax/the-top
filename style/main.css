@@ -181,6 +181,8 @@ h1 span {
 
   .burger {
     position: relative;
+    width: 26px;
+    height: 20px;
     padding-right: 20px;
     display: block;
     cursor: pointer;
