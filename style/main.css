@@ -183,7 +183,6 @@ h1 span {
     position: relative;
     width: 26px;
     height: 20px;
-    padding-right: 20px;
     display: block;
     cursor: pointer;
   }
@@ -214,7 +213,24 @@ h1 span {
  .burger:hover span::before,
  .burger:hover span::after {
   background-color: var(--main-color);
- }
+  }
+
+
+  .navigational-menu:hover .navigational-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px 20px;
+  display: flex;
+  background-color: black;
+  flex-direction: column;
+  line-height: 30px;
+  }
+
+  .navigational-menu:hover .navigational-list li .submenu {
+  padding: 10px;
+  }
 
   h1 {
     max-width: 640px;
