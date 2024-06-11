@@ -185,6 +185,7 @@ h1 span {
     height: 20px;
     display: block;
     cursor: pointer;
+    z-index: 1;
   }
 
   .burger span,
@@ -218,18 +219,25 @@ h1 span {
 
   .navigational-menu:hover .navigational-list {
   position: absolute;
+  display: flex;
   top: 0;
   left: 0;
   width: 100%;
   padding: 40px 20px;
-  display: flex;
   background-color: black;
   flex-direction: column;
   line-height: 30px;
   }
 
   .navigational-menu:hover .navigational-list li .submenu {
-  padding: 10px;
+    position: absolute;
+    left: 0;
+    flex-direction: column;
+    transform: translateX(-20%);
+  }
+
+  .submenu li {
+    display: flex;
   }
 
   h1 {
