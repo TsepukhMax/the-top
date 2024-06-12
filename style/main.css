@@ -185,7 +185,6 @@ h1 span {
     height: 20px;
     display: block;
     cursor: pointer;
-    z-index: 1;
   }
 
   .burger span,
@@ -216,28 +215,29 @@ h1 span {
   background-color: var(--main-color);
   }
 
-
   .navigational-menu:hover .navigational-list {
   position: absolute;
   display: flex;
-  top: 0;
+  top: 60px;
   left: 0;
   width: 100%;
-  padding: 40px 20px;
+  padding: 20px 20px;
   background-color: black;
   flex-direction: column;
   line-height: 30px;
   }
 
-  .navigational-menu:hover .navigational-list li .submenu {
-    position: absolute;
-    left: 0;
-    flex-direction: column;
-    transform: translateX(-20%);
+  .navigational-list li {
+    margin: 0;
+  }
+
+  .submenu {
+    position: relative;
   }
 
   .submenu li {
-    display: flex;
+    display: block;
+    left:-10px;
   }
 
   h1 {
