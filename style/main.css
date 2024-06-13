@@ -208,11 +208,10 @@ h1 span {
     top: -8px;
   }
 
-
- .burger:hover span,
- .burger:hover span::before,
- .burger:hover span::after {
-  background-color: var(--main-color);
+  .burger:hover span,
+  .burger:hover span::before,
+  .burger:hover span::after {
+    background-color: var(--main-color);
   }
 
   .navigational-menu:hover .navigational-list {
@@ -242,6 +241,7 @@ h1 span {
   .submenu a {
     width: 100%;
   }
+
   .submenu li {
     display: block;
     padding: 0;
