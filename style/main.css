@@ -153,11 +153,7 @@ h1 span {
 }
 
 .arrow img {
-<<<<<<< HEAD
   transition: 0.3s linear;
-=======
-  transition: 0.3s linear ; /* TODO: remove space */
->>>>>>> cb52435aeb6807f450677354724af16261ae442c
 }
 
 .arrow img:hover {
@@ -219,11 +215,7 @@ h1 span {
   }
 
   .navigational-menu:hover .navigational-list {
-<<<<<<< HEAD
     display: flex;
-=======
-  display: flex; /* TODO: add indent */
->>>>>>> cb52435aeb6807f450677354724af16261ae442c
   }
 
   .navigational-list {
@@ -234,11 +226,7 @@ h1 span {
     padding: 20px 20px;
     background-color: black;
     flex-direction: column;
-<<<<<<< HEAD
   }
-=======
-    } /* TODO: remove indent */
->>>>>>> cb52435aeb6807f450677354724af16261ae442c
 
   .navigational-list li {
     padding: 10px 0;
