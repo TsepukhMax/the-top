@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  color: var(--main-text-color);
+  background-color: rgb(0, 0, 0);
+}
+
+.container {
+  max-width: 1200px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: auto;
+}
+
+p {
+  line-height: 150%;
+}
+
+/* ------------------------------------------------ */
+
+@media (max-width: 425px) {
+
+  .container {
+    padding: 0 10px;
+  }
+}
