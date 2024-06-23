@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "styles": "sass style/main.scss style/main.css --watch",
-    "styles:build": "sass style/main.scss style/main.css"
+    "styles": "sass style/index.scss style/index.css --watch",
+    "styles:build": "sass style/index.scss style/index.css"
   },
   "author": "",
   "license": "ISC",
