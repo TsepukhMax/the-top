@@ -8,9 +8,10 @@ header {
 
 .logo {
   float: left;
-    img {
-      width: 104px;
-    }
+
+  img {
+    width: 104px;
+  }
 }
 
 /* navigor menu */
@@ -27,31 +28,29 @@ header {
 .navigational-list {
   margin: 0;
   padding: 0;
-    a {
-      text-decoration: none;
-      color: var(--main-text-color);
-      transition: 0.3s linear;
-    }
-    li {
-      position: relative;
-      margin-left: 35px;
-      font-size: 14px;
-      display: inline-block;
-      list-style: none;
-      text-transform: uppercase;
-        &:hover .submenu {
-          display: block;
-        }
-        a:hover {
-          color: var(--main-color);
-        }
-    }
-}
 
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: block;
+  a {
+    text-decoration: none;
+    color: $main-text-color;
+    transition: 0.3s linear;
+  }
+
+  li {
+    position: relative;
+    margin-left: 35px;
+    font-size: 14px;
+    display: inline-block;
+    list-style: none;
+    text-transform: uppercase;
+
+    &:hover .submenu {
+      display: block;
+    }
+
+    a:hover {
+      color: $main-color;
+    }
+  }
 }
 
 .submenu {
@@ -61,22 +60,25 @@ header {
   display: none;
   transform: translateX(-50%);
   background-color: rgb(0, 0, 0);
-    li {
-      margin: 0;
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    padding: 5px;
+    width: 70px;
+    margin-top: -1px;
+    border: 1px solid #515151;
+    display: inline-block;
+    text-align: center;
+
+    &:hover {
+      position: relative;
+      z-index: 1;
+      border-color: $main-color;
     }
-    a {
-      padding: 5px;
-      width: 70px;
-      margin-top: -1px;
-      border: 1px solid #515151;
-      display: inline-block;
-      text-align: center;
-        &:hover {
-          position: relative;
-          z-index: 1;
-          border-color: var(--main-color);
-        }
-    }  
+  }  
 }
 
 /* ------------------------------------------------ */
@@ -91,10 +93,11 @@ header {
     padding: 20px 20px;
     background-color: black;
     flex-direction: column;
-      li {
-        padding: 10px 0;
-        margin: 0;
-      }
+
+    li {
+      padding: 10px 0;
+      margin: 0;
+    }
   }
 
   .burger {
@@ -103,35 +106,41 @@ header {
     height: 20px;
     display: block;
     cursor: pointer;
-      &:hover {
-        span,
-        span::before,
-        span::after {
-          background-color: var(--main-color);
-        }
-      }
+
+    &:hover {
       span,
       span::before,
       span::after {
-        position: absolute;
-        top: 8px;
-        height: 2px;
-        width: 100%;
-        display: block;
-        content: '';
-        background-color: var(--main-text-color);
-        transition: 0.3s linear;
+        background-color: $main-color;
       }
-      span::before {
-        top: 8px;
-      }
-      span::after {
-        top: -8px;
-      }
+    }
+
+    span,
+    span::before,
+    span::after {
+      position: absolute;
+      top: 8px;
+      height: 2px;
+      width: 100%;
+      display: block;
+      content: '';
+      background-color: $main-text-color;
+      transition: 0.3s linear;
+    }
+
+    span::before {
+      top: 8px;
+    }
+
+    span::after {
+      top: -8px;
+    }
   }
 
   .navigational-menu {
+    
     &:hover {
+      
       .navigational-list {
         display: flex;
       }
@@ -141,16 +150,19 @@ header {
   .submenu {
     position: static;
     transform: none;
-      a {
-        width: 100%;
-      }
-      li {
-        display: block;
-        padding: 0;
-      }
+    
+    a {
+      width: 100%;
+    }
+    
+    li {
+      display: block;
+      padding: 0;
+    }
   }
 
   .logo {
+    
     img {
       width: 90px;
     }
@@ -160,6 +172,7 @@ header {
 @media (max-width: 425px) {
 
   .navigational-list {
+    
     li {
       font-size: 12px;
     }
