@@ -130,29 +130,30 @@
 
 @media (max-width: 768px) {
   .movie-section {
-    padding: 0;
-    position: relative;
+    padding-top: 100px;
+    padding-bottom: 50px;
   }
 
   .wrapper {
     display: block;
-    position: absolute;
-    padding-top: 100px;
-    padding-bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
+
+    img {
+      margin: auto;
+      display: block;
+    }
   }
 
   .wrapper-description {
     margin-top: 70px;
+    margin-left: auto;
+    margin-right: auto;
 
     h2 {
-      font-size: 28px;
 
       span {
-        left: -28px;
-        top: -30px;
-        font-size: 60px;
+        left: -40px;
+        top: -38px;
+        font-size: 70px;
       }
     }
   }   
