@@ -1,4 +1,4 @@
-/* section for 10-nth movie */
+/*origion-section */
 .movie-section {
   padding-top: 240px;
   padding-bottom: 100px;
@@ -61,7 +61,7 @@
   }
 }
 
-/* section for 9-nth movie */
+/* reverce-section */
 .movie-section-reverce {
   padding-top: 140px;
   padding-bottom: 100px;
@@ -95,6 +95,14 @@
   
     img {
       width: 450px;
+    }
+  }
+
+/* reverce-section */
+  .movie-section-reverce {
+
+    .wrapper-description {
+      margin-left: 80px;
     }
   }
 }
@@ -140,6 +148,14 @@
       font-size: 14px;
     }
   }
+
+  /* reverce-section */
+  .movie-section-reverce {
+
+    .wrapper-description {
+      margin-left: 60px;
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -169,6 +185,14 @@
         top: -38px;
         font-size: 70px;
       }
+    }
+  }
+
+/* reverce-section */
+  .movie-section-reverce {
+
+    .wrapper-description {
+      margin-left: auto;
     }
   }   
 }
