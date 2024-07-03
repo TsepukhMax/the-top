@@ -1,6 +1,6 @@
 /* section for 10-nth movie */
 .movie-section {
-  padding-top: 140px;
+  padding-top: 240px;
   padding-bottom: 100px;
 }
 
@@ -62,14 +62,17 @@
 }
 
 /* section for 9-nth movie */
-.wrapper-reverse {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-}
+.movie-section-reverce {
+  padding-top: 140px;
+  padding-bottom: 100px;
 
-.wrapper-description-reverse {
-  transform: translateX(100px);
+  .wrapper {
+    flex-direction: row-reverse;
+  }
+
+  .wrapper-description {
+    margin-left: 100px;
+  }
 }
 
 /* ------------------------------------------------ */
@@ -98,7 +101,7 @@
 
 @media (max-width: 1024px) {
   .movie-section {
-    padding-top: 200px;
+    padding-top: 100px;
     padding-bottom: 80px;
   }
 
@@ -141,7 +144,7 @@
 
 @media (max-width: 768px) {
   .movie-section {
-    padding-top: 100px;
+    padding-top: 70px;
     padding-bottom: 50px;
   }
 
