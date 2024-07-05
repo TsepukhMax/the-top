@@ -75,6 +75,8 @@
 
 /* double-section */
 .double-section {
+  padding-top: 150px;
+  padding-bottom: 200px;
   background-position: left, right;
   background-repeat: no-repeat;
   background-size: contain;
@@ -84,10 +86,8 @@
   }
 }
 
- /* star-wars-section */
+/* star-wars-section */
 .star-wars-section {
-  padding-top: 160px;
-  padding-bottom: 300px;
   background-image: url("../img/starwars.png"), url("../img/starwars_skywalker.png");
 
   .wrapper-description {
@@ -118,11 +118,24 @@
     }
   }
 
-/* reverce-section */
+  /* reverce-section */
   .movie-section-reverce {
 
     .wrapper-description {
       margin-left: 80px;
+    }
+  }
+
+  /* double-section */
+  .double-section {
+    background-size: auto 80%;
+  }
+
+   /* star-wars-section */
+  .star-wars-section {
+
+    .wrapper-description {
+      max-width: 450px;
     }
   }
 }
@@ -176,6 +189,14 @@
       margin-left: 60px;
     }
   }
+
+  /* star-wars-section */
+  .star-wars-section {
+
+    .wrapper-description {
+      max-width: 300px;
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -215,4 +236,17 @@
       margin-left: auto;
     }
   }   
+
+  /* double-section */
+  .double-section {
+    background-size: auto 40%;
+  }
+  
+  /* star-wars-section */
+  .star-wars-section {
+
+    .wrapper-description {
+      margin-top: 0;
+    }
+  }
 }
