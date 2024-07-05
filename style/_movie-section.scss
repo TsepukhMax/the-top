@@ -56,7 +56,6 @@
 
   p {
     margin-bottom: 55px;
-    font-weight: 400;
     color: rgba(255, 255, 255, 0.65);
   }
 }
@@ -76,8 +75,6 @@
 
 /* double-section */
 .double-section {
-  padding-top: 160px;
-  background-image: url("../img/starwars.png"), url("../img/starwars_skywalker.png");
   background-position: left, right;
   background-repeat: no-repeat;
   background-size: contain;
@@ -85,6 +82,13 @@
   .wrapper {
     justify-content: center;
   }
+}
+
+ /* star-wars-section */
+.star-wars-section {
+  padding-top: 160px;
+  padding-bottom: 300px;
+  background-image: url("../img/starwars.png"), url("../img/starwars_skywalker.png");
 
   .wrapper-description {
     max-width: 490px;
