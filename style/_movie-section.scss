@@ -91,6 +91,65 @@
   background-image: url("../img/starwars.png"), url("../img/starwars_skywalker.png");
 }
 
+/* slider-section */
+.slider-section {
+  padding: 150px 0;
+  background-color: $main-text-color;
+  overflow: hidden;
+
+  .slider {
+    height: 540px;
+    width: 1030px;
+    position: relative;
+    margin: 0 auto;
+
+    .slider-wrapper {
+      display: flex;
+
+      div {
+        position: relative;
+        margin: 0 75px;
+
+        img {
+          width: 880px;
+          height: 540px;
+          object-fit: cover;
+        }
+  
+        .button-play {
+          position: absolute;
+          margin: -15px -15px 0 0;
+          padding: 30px;
+          border: 1px solid $main-color ;
+          border-radius: 50%;
+          cursor: pointer;
+          background-color: $main-color;
+          top: 50%;
+          right: 50%;
+        }
+      }
+    }
+
+    .arrow-left img, .arrow-right img {
+      position: absolute;
+      margin: -20px 0 0 0;
+      top: 50%;
+      width: 40px;
+      height: 58px;
+    }
+
+    .arrow-left img {
+      left: -30px;
+      transform: rotate(90deg);
+    }
+
+    .arrow-right img {
+      right: -30px;
+      transform: rotate(-90deg);
+    }
+  }
+}
+
 /* ------------------------------------------------ */
 @media (max-width: 1200px) {
   .wrapper-description {
