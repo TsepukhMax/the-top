@@ -43,6 +43,24 @@ p {
   }
 }
 
+.button-play {
+  width: 85px;
+  height: 83px;
+  padding: 0;
+  border: 0;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: $main-color;
+
+  #play {
+    width: 30px;
+    height: 27px;
+  }
+}
 /* ------------------------------------------------ */
 
 @media (max-width: 425px) {

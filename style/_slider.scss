@@ -1,0 +1,46 @@
+/* slider-section */
+.slider-section {
+  padding: 150px 0;
+  background-color: #FFFFFF;
+  overflow: hidden;
+
+  .slider {
+    width: $slide-width;
+    position: relative;
+    margin: 0 auto;
+
+    .slids-wrapper {
+      display: flex;
+
+      .slid {
+        position: relative;
+        margin: 0 75px;
+        width: $slide-width;
+        height: 540px;
+
+        img {
+          width: 880px;
+          height: 540px;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .arrow-left, .arrow-right {
+      position: absolute;
+      top: 50%;
+      width: 58px;
+      height: 40px;
+      margin-top: -20px;
+    }
+
+    .arrow-left {
+      left: -30px;
+    }
+
+    .arrow-right {
+      right: -30px;
+      transform: rotate(180deg);
+    }
+  }
+}

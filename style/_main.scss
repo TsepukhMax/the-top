@@ -29,10 +29,11 @@ h1 {
 .arrow {
   position: absolute;
   bottom: 78px;
+  transform: rotate(-90deg);
   
   img {
     transition: 0.3s linear;
-    
+  
     &:hover {
         transform: scale(1.5);
     }
