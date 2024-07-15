@@ -53,8 +53,6 @@ p {
   background-color: $main-color;
 
   &::before {
-    width: 30px;
-    height: 30px;
     right: 10px;
     position: absolute;
     box-sizing: border-box;
@@ -72,9 +70,8 @@ p {
     height: 70px;
   
     &::before {
-      width: 25px;
-      height: 25px;
-      right: 3px;
+      border-width: 12px 0 12px 25px;
+      right: 5px;
     }
   }
 }
@@ -84,9 +81,8 @@ p {
     height: 50px;
   
     &::before {
-      width: 10px;
-      height: 10px;
-      right: -8px;
+      border-width: 10px 0 10px 20px;
+      right: 1px;
     }
   }
 }
