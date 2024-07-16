@@ -1,0 +1,43 @@
+/* newsletter-section */
+.newsletter-section {
+  padding-top: 55px;
+  padding-bottom: 100px;
+
+  .newsletter-description {
+    display: flex;
+    justify-content: center;
+
+    .newsletter-coloms {
+      max-width: 550px;
+
+      h2 {
+        font-weight: 500;
+      }
+
+      form {
+        margin-top: 70px;
+
+        input {
+          width: 350px;
+          padding: 19px 15px;
+          margin-right: 22px;
+          font-weight: 300;
+          font-size: 16px;
+          color: $main-text-color;
+          background-color: transparent;
+          border: 1px solid $main-color;
+          outline: none;
+
+          &::placeholder{
+            color: #515151;
+            text-transform: uppercase;
+          }
+        }
+
+        .button {
+          padding: 18px 55px;
+        }
+      }
+    }
+  }
+}
