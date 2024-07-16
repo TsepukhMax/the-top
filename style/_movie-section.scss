@@ -101,6 +101,42 @@
   background-image: url("../img/the-godfather1.png"), url("../img/the-godfather2.png");
 }
 
+/* newsletter-section */
+.newsletter-section {
+  padding-top: 55px;
+
+  .wrapper {
+    justify-content: center;
+
+    .wrapper-description {
+      max-width: 550px;
+
+      h2 {
+        font-weight: 500;
+      }
+
+      form {
+        margin-top: 70px;
+
+        input {
+          width: 380px;
+          height: 57px;
+          margin-right: 22px;
+          color: #515151;
+          background-color: transparent;
+          border: 1px solid $main-color;
+          outline: none;
+          cursor: pointer;
+          transition: 0.3s linear;
+        
+          &:hover {
+            background-color: $main-color;
+          }
+        }
+      }
+    }
+  }
+}
 /* ------------------------------------------------ */
 @media (max-width: 1200px) {
   .wrapper-description {
