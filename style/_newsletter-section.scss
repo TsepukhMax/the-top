@@ -19,7 +19,7 @@
 
         input {
           width: 350px;
-          padding: 19px 15px;
+          padding: 18px 15px;
           margin-right: 22px;
           font-weight: 300;
           font-size: 16px;
@@ -36,6 +36,36 @@
 
         .button {
           padding: 18px 55px;
+        }
+      }
+    }
+  }
+}
+
+/* ------------------------------------------------ */
+@media (max-width: 768px) {
+  .newsletter-section {
+    padding-top: 50px;
+    padding-bottom: 70px;
+  
+    .newsletter-description {
+  
+      .newsletter-coloms {
+        max-width: 370px;
+  
+        h2 {
+          font-size: 26px;
+          text-align: center;
+        }
+  
+        form {
+          margin-top: 40px;
+          text-align: center;
+  
+          input {
+            margin: 0 0 20px 0;
+            font-size: 14px;
+          }
         }
       }
     }
