@@ -1,0 +1,70 @@
+footer {
+  width: 100%;
+  padding: 50px 0;
+  
+  .footer-navigational {
+    display: flex;
+    justify-content: space-between;
+
+    .footer-list {
+      padding: 0;
+      margin: 28px 0 6px 0;
+
+      li {
+        margin-right: 75px;
+        
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  
+    .social-media {
+      display: flex;
+
+      a {
+        width: 55px;
+        height: 55px;
+        margin-left: 45px;
+        position: relative;
+        border-radius: 50%;
+        cursor: pointer;
+        background-color: $main-color;
+
+        img {
+          top: 50%;
+          left: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+          transition: 0.3s linear;
+
+          &:hover {
+            transform: scale(0.8) translate(-50%, -50%);
+          }
+        }
+
+        .instagram-border{
+          &:hover {
+            display: none;
+          }
+        }
+
+        .instagram-circle{
+          &:hover {
+            display: none;
+          }
+        }
+
+        .instagram-dot {
+          top:18px;
+          left: 36px;
+
+          &:hover {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+

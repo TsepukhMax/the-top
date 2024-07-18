@@ -29,12 +29,6 @@ header {
   margin: 0;
   padding: 0;
 
-  a {
-    text-decoration: none;
-    color: $main-text-color;
-    transition: 0.3s linear;
-  }
-
   li {
     position: relative;
     margin-left: 35px;
@@ -45,10 +39,6 @@ header {
 
     &:hover .submenu {
       display: block;
-    }
-
-    a:hover {
-      color: $main-color;
     }
   }
 }

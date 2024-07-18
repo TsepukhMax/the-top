@@ -34,6 +34,22 @@ p {
   line-height: 150%;
 }
 
+li {
+  display: inline-block;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+a {
+  text-decoration: none;
+  color: $main-text-color;
+
+
+  &:hover {
+    color: $main-color;
+  }
+}
+
 .button {
   padding: 18px 40px;
   border: 1px solid $main-color;
