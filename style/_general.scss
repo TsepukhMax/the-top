@@ -43,6 +43,7 @@ li {
 a {
   text-decoration: none;
   color: $main-text-color;
+  transition: 0.3s linear;
 
 
   &:hover {
