@@ -24,24 +24,18 @@ footer {
       display: flex;
 
       li {
-        width: 55px;
-        height: 55px;
+        width: 100%;
+        height: 100%;
         margin-left: 45px;
-        position: relative;
         border-radius: 50%;
         background-color: $main-color;
 
-        a{
-          position: absolute;
+        a {
+          display: flex;
           width: 55px;
           height: 55px;
-        }
-
-        img {
-          top: 50%;
-          left: 50%;
-          position: absolute;
-          transform: translate(-50%, -50%);
+          align-items: center;
+          justify-content: center;
         }
       }
     }
