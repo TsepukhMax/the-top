@@ -15,21 +15,6 @@
 
 .wrapper-description {
   max-width: 450px;
-
-  h2 {
-    position: relative;
-
-    span {
-      position: absolute;
-      left: -100px;
-      top: -88px;
-      font-weight: 500;
-      font-size: 135px;
-      z-index: -1;
-      color: $main-color;
-      opacity: 0.5;
-    }
-  }
 }
 
 .wrapper-coloms {

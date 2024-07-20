@@ -24,10 +24,22 @@ body {
 }
 
 h2 {
+  position: relative;
   margin: 0;
   font-weight: 900;
   font-size: 40px;
   text-transform: uppercase;
+  
+  span {
+    position: absolute;
+    left: -100px;
+    top: -88px;
+    font-weight: 500;
+    font-size: 135px;
+    z-index: -1;
+    color: $main-color;
+    opacity: 0.5;
+  }
 }
 
 p {
@@ -44,7 +56,6 @@ a {
   text-decoration: none;
   color: $main-text-color;
   transition: 0.3s linear;
-
 
   &:hover {
     color: $main-color;
@@ -64,6 +75,10 @@ a {
 
   &:hover {
     background-color: $main-color;
+  }
+
+  a:hover {
+    color: $main-text-color;
   }
 }
 
