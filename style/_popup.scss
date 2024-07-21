@@ -4,71 +4,69 @@
   width: 100%;
   height: 100%;
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: rgb(153, 149, 149, 0.8);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.5s;
 
-  &:target{
+  &:target {
     opacity: 1;
     visibility: visible;
+    z-index: 2;
   }
 
-  .popup-body {
-    min-height: 100%;
+  .popup-content {
+    width: 800px;
+    height: 400px;
     padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
+    color: white;
+    background-color: black;
 
-    .popup-content {
-      max-width: 1200px;
-      padding: 10px;
-      position: relative;
+    .popup-close {
+      top: 10px;
+      right: 15px;
+      padding: 0;
+      position: absolute;
+      font-size: 40px;
       color: white;
-      background-color: black;
+      background-color: transparent;
+      border: none;
+      transition: 0.3s linear;
 
-      .popup-close {
-        top: 10px;
-        right: 15px;
+      &:hover {
+        color: $main-color;
+      }
+    }
+
+    .popup-title {
+      margin: 60px 0px 40px 60px;
+    
+      h2 {
+        z-index: 1;
+        font-size: 30px;
+
+        span {
+          left: -60px;
+          top: -58px;
+          font-size: 90px;
+        }
+      }
+    }
+
+    .popup-audio {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      .button-play {
         position: absolute;
-        font-size: 40px;
-        color: $main-text-color;
-
-        &:hover {
-          color: $main-color;
-        }
-      }
-
-      .popup-title {
-        margin: 70px 0px 40px 100px;
-        font-size: 40px;
-      
-        h2 {
-          z-index: 1;
-        }
-      }
-
-      .popup-video {
-        display: flex;
-        position: relative;
-        justify-content: center;
-        align-items: center;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .button-play {
-          top:50%;
-          left:50%;
-          position: absolute;
-          transform:translate(-50%, -50%);
-        }
+        left: 50%;
+        top: 50%;
+        transform:translate(-50%, -50%);
       }
     }
   }
 }
-
