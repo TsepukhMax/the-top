@@ -97,29 +97,6 @@ header {
     display: block;
     cursor: pointer;
 
-    &:active {
-
-      span {
-        visibility: hidden;
-        background-color: $main-color;
-        transition: 0.1s linear;
-      }
-
-      span::before{
-        top: -7px;
-        visibility: visible;
-        transform: rotate(45deg);
-        background-color: $main-color;
-      }
-
-      span::after {
-        bottom: -7px;
-        visibility: visible;
-        transform: rotate(-45deg);
-        background-color: $main-color;
-      }
-    }
-
     span,
     span::before,
     span::after {
@@ -141,14 +118,34 @@ header {
       top: -8px;
     }
   }
-
-  .navigational-menu {
     
-    &:hover {
+  .active {
+
+    span {
+      visibility: hidden;
+      background-color: $main-color;
+      transition: 0.1s linear;
+    }
+
+    span::before{
+      top: -7px;
+      visibility: visible;
+      transform: rotate(45deg);
+      background-color: $main-color;
+    }
+
+    span::after {
+      bottom: -7px;
+      visibility: visible;
+      transform: rotate(-45deg);
+      background-color: $main-color;
+    }
+  }
       
-      .navigational-list {
-        display: flex;
-      }
+  .active {
+
+    .navigational-list {
+      display: flex;
     }
   }
 
