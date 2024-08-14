@@ -1,7 +1,7 @@
 $(document).ready(function() {
   $('.burger').click (function() {
-    $('.burger span').toggleClass('active');
+    $('.burger span').toggleClass('burger-click');
   }).click(function() {
-    $('.navigational-list').toggleClass('active');
+    $('.navigational-list').toggleClass('visible-list');
   });
 }); 

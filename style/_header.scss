@@ -89,7 +89,8 @@ header {
       margin: 0;
     }
   }
-  .active {
+
+  .visible-list {
     display: flex;
   }
 
@@ -121,25 +122,25 @@ header {
       top: -8px;
     }
 
-    .active {
+    .burger-click {
       top: 16px;
       visibility: hidden;
       background-color: $main-color;
       transition: 0.1s linear;
-    }
 
-    .active::before{
-      top: -7px;
-      visibility: visible;
-      transform: rotate(45deg);
-      background-color: $main-color;
-    }
-
-    .active::after {
-      bottom: -7px;
-      visibility: visible;
-      transform: rotate(-45deg);
-      background-color: $main-color;
+      &:before {
+        top: -7px;
+        visibility: visible;
+        transform: rotate(45deg);
+        background-color: $main-color;
+      }
+    
+      &:after {
+        bottom: -7px;
+        visibility: visible;
+        transform: rotate(-45deg);
+        background-color: $main-color;
+      }
     }
   }
 
@@ -174,3 +175,7 @@ header {
     }
   } 
 }
+
+
+
+
