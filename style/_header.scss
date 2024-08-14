@@ -90,7 +90,7 @@ header {
     }
   }
 
-  .visible-list {
+  .navigational-list-visible {
     display: flex;
   }
 
@@ -122,7 +122,7 @@ header {
       top: -8px;
     }
 
-    .burger-click {
+    .burger-content-open {
       top: 16px;
       visibility: hidden;
       background-color: $main-color;

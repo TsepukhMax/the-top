@@ -1,7 +1,6 @@
 $(document).ready(function() {
   $('.burger').click (function() {
-    $('.burger span').toggleClass('burger-click');
-  }).click(function() {
-    $('.navigational-list').toggleClass('visible-list');
+    $('.js-burger-content').toggleClass('burger-content-open');
+    $('.navigational-list').toggleClass('navigational-list-visible');
   });
 }); 
