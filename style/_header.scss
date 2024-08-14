@@ -89,6 +89,9 @@ header {
       margin: 0;
     }
   }
+  .active {
+    display: flex;
+  }
 
   .burger {
     position: relative;
@@ -117,35 +120,26 @@ header {
     span::after {
       top: -8px;
     }
-  }
-    
-  .active {
 
-    span {
+    .active {
+      top: 16px;
       visibility: hidden;
       background-color: $main-color;
       transition: 0.1s linear;
     }
 
-    span::before{
+    .active::before{
       top: -7px;
       visibility: visible;
       transform: rotate(45deg);
       background-color: $main-color;
     }
 
-    span::after {
+    .active::after {
       bottom: -7px;
       visibility: visible;
       transform: rotate(-45deg);
       background-color: $main-color;
-    }
-  }
-      
-  .active {
-
-    .navigational-list {
-      display: flex;
     }
   }
 

@@ -1,5 +1,7 @@
 $(document).ready(function() {
-  $('.burger').click (function(event) {
-    $('.burger , .navigational-menu').toggleClass('active');
+  $('.burger').click (function() {
+    $('.burger span').toggleClass('active');
+  }).click(function() {
+    $('.navigational-list').toggleClass('active');
   });
 }); 
