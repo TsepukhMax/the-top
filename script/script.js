@@ -10,5 +10,19 @@ $(document).ready(function () {
       $('.js-burger-content').removeClass('burger-content-open');
       $('.navigational-list').removeClass('navigational-list-visible');
     }
+  }); 
+
+$('.submenu a').click(function () {
+
+  let href = $(this).attr('href');
+
+  $('html, body').animate({
+      scrollTop: $(href).offset().top
+  }, {
+      duration: 700, 
+      easing: "linear",
   });
-}); 
+
+  return false;
+});
+});
