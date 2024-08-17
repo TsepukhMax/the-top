@@ -12,18 +12,17 @@ $(document).ready(function () {
     }
   }); 
 
-$('.js-submenu-content').click(function () {
-  var href = $(this).attr('href');
+  $('.js-movie-link').click(function () {
+    var href = $(this).attr('href');
 
-  $('html').animate({
-    scrollTop: $(href).offset().top
-  },{
-    duration: 300, 
-    easing: 'linear',
+    $('html').animate({
+      scrollTop: $(href).offset().top
+    },{
+      duration: 300, 
+      easing: 'linear',
     });
-  $('.js-burger-content').removeClass('burger-content-open');
-  $('.navigational-list').removeClass('navigational-list-visible');
-
-  return false;
-});
+    $('.js-burger-content').removeClass('burger-content-open');
+    $('.navigational-list').removeClass('navigational-list-visible');
+    return false;
+  });
 });
