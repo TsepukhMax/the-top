@@ -49,8 +49,34 @@ $(document).ready(function () {
   $('.popup').click(function (e) { 
     var popUp = $('.popup');
     if (popUp.is(e.target)) {
-      $('.popup').removeClass('show');
+      popUp.removeClass('show');
       $('body').removeClass('body-wrapper');
     }
+  });
+
+  /*------Slider------*/
+  $('.slider-section').each(function () {
+    var slider = $(this);
+    var arrowRight = slider.find('.arrow-right');
+    var arrowLeft = slider.find('.arrow-left');
+    var slidsWrapper = slider.find('.slids-wrapper');
+    var totalSlides = slider.find('.slid').length;
+    var currentSlide = 0;
+
+    arrowRight.click(function (e) {
+      e.preventDefault();
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        slidsWrapper.css('margin-left', '-' + currentSlide * 100 + '%');
+      }
+    });
+
+    arrowLeft.click(function (e) {
+      e.preventDefault();
+      if (currentSlide > 0) {
+        currentSlide--;
+        slidsWrapper.css('margin-left', '-' + currentSlide * 100 + '%');
+      }
+    });
   });
 });
