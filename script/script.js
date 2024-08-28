@@ -27,20 +27,44 @@ $(document).ready(function () {
     return false;
   });
 
-/*-------Popup---------*/
+  /*-------Popup---------*/
+  // Open-popup
   $('.js-button').click(function () {
-    var section = $(this).closest('section');
+    var section = $(this).closest('section')
 
     var titleText = section.attr('data-title');
     var topText = section.attr('data-top');
+    var audioSource = section.attr('data-audio');
 
     $('.js-popup-title-text').text(titleText);
     $('.js-popup-top').text(topText);
+
+    var audioElement = $('.js-popup-audio')[0];
+    if (audioSource) {
+      if (audioElement.src !== audioSource) {
+        audioElement.src = audioSource;
+        audioElement.load();
+      }
+    }
 
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
   });
 
+  // audio-buttom
+  $('.js-popup-button').click(function () {
+    var audioElement = $('.js-popup-audio')[0];
+
+    if (audioElement.paused) {
+      audioElement.play();
+      $(this).addClass('button-stop');
+    } else {
+      audioElement.pause();
+      $(this).removeClass('button-stop');
+    }
+  });
+
+  // close-popup
   $('.popup-close').click(function () {
     $('.popup').removeClass('show');
     $('body').removeClass('body-wrapper');

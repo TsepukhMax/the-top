@@ -62,6 +62,10 @@
       position: relative;
       flex-grow: 1;
 
+      .js-popup-audio {
+        display: none;
+      }
+
       .button-play {
         position: absolute;
         left: 50%;
