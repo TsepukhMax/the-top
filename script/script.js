@@ -34,18 +34,11 @@ $(document).ready(function () {
 
     var titleText = section.attr('data-title');
     var topText = section.attr('data-top');
-    var audioSource = section.attr('data-audio');
+    var audioElement = section.attr('data-audio');
 
     $('.js-popup-title-text').text(titleText);
     $('.js-popup-top').text(topText);
-
-    var audioElement = $('.js-popup-audio')[0];
-    if (audioSource) {
-      if (audioElement.src !== audioSource) {
-        audioElement.src = audioSource;
-        audioElement.load();
-      }
-    }
+    $('.popup-audio-files').attr('src' , audioElement);
 
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
@@ -53,7 +46,7 @@ $(document).ready(function () {
 
   // audio-buttom
   $('.js-popup-button').click(function () {
-    var audioElement = $('.js-popup-audio')[0];
+    var audioElement = $('.popup-audio-files')[0];
 
     if (audioElement.paused) {
       audioElement.play();
