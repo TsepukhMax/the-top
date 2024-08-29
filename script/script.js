@@ -44,7 +44,7 @@ $(document).ready(function () {
     $('body').addClass('body-wrapper');
   });
 
-  // audio-buttom
+  // audio-button
   $('.js-popup-button').click(function () {
     var audioElement = $('.popup-audio-files')[0];
 
@@ -59,13 +59,25 @@ $(document).ready(function () {
 
   // close-popup
   $('.popup-close').click(function () {
+    var audioElement = $('.popup-audio-files')[0];
+
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    $('.js-popup-button').removeClass('button-stop');
+
     $('.popup').removeClass('show');
     $('body').removeClass('body-wrapper');
   });
 
-  $('.popup').click(function (e) { 
+  $('.popup').click(function (e) {
     var popUp = $('.popup');
+    var audioElement = $('.popup-audio-files')[0];
+
     if (popUp.is(e.target)) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+      $('.js-popup-button').removeClass('button-stop');
+
       popUp.removeClass('show');
       $('body').removeClass('body-wrapper');
     }
