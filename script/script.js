@@ -34,19 +34,25 @@ $(document).ready(function () {
 
     var titleText = section.attr('data-title');
     var topText = section.attr('data-top');
-    var audioElement = section.attr('data-audio');
+    var audioSource = section.attr('data-audio');
 
     $('.js-popup-title-text').text(titleText);
     $('.js-popup-top').text(topText);
-    $('.popup-audio-files').attr('src' , audioElement);
+    $('.popup-audio-files').attr('src' , audioSource);
 
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
   });
 
   // audio-button
+  var audioElement = $('.popup-audio-files')[0];
+  function stopAndResetAudio(audioElement) {
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    updateDisplayTime();
+  };
+
   $('.js-popup-button').click(function () {
-    var audioElement = $('.popup-audio-files')[0];
 
     if (audioElement.paused) {
       audioElement.play();
@@ -57,12 +63,33 @@ $(document).ready(function () {
     }
   });
 
+  // display-time
+  function formatTime(seconds) {
+    var minutes = Math.floor(seconds / 60);
+    var seconds = Math.floor(seconds % 60);
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  }
+
+  function updateDisplayTime() {
+    var currentTime = formatTime(audioElement.currentTime);
+    var duration = formatTime(audioElement.duration);
+
+    $('.current-time').text(currentTime);
+    $('.total-time').text(duration);
+  }
+
+  audioElement.addEventListener('loadedmetadata', function () {
+    updateDisplayTime();
+  });
+
+  audioElement.addEventListener('timeupdate', function () {
+    updateDisplayTime();
+  });
+
   // close-popup
   $('.popup-close').click(function () {
-    var audioElement = $('.popup-audio-files')[0];
 
-    audioElement.pause();
-    audioElement.currentTime = 0;
+    stopAndResetAudio(audioElement);
     $('.js-popup-button').removeClass('button-stop');
 
     $('.popup').removeClass('show');
@@ -71,11 +98,10 @@ $(document).ready(function () {
 
   $('.popup').click(function (e) {
     var popUp = $('.popup');
-    var audioElement = $('.popup-audio-files')[0];
 
     if (popUp.is(e.target)) {
-      audioElement.pause();
-      audioElement.currentTime = 0;
+      
+      stopAndResetAudio(audioElement);
       $('.js-popup-button').removeClass('button-stop');
 
       popUp.removeClass('show');

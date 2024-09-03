@@ -128,6 +128,16 @@ a {
     right: 30px;
   }
 }
+
+.display-time {
+  padding: 10px;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  color: $main-text-color;
+  transform:translateX(-50%);
+  border: 1px solid;
+}
 /* ------------------------------------------------ */
 @media (max-width: 1024px) {
   .button-play {
@@ -156,6 +166,11 @@ a {
       right: 25px;
     }
   }
+
+  .display-time {
+    padding: 6px;
+    font-size: 14px;
+  }
 }
 @media (max-width: 768px) {
   .button-play {
@@ -183,6 +198,11 @@ a {
     &::after {
       right: 18px;
     }
+  }
+
+  .display-time {
+    padding: 3px;
+    font-size: 10px;
   }
 }
 
