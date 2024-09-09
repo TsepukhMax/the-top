@@ -28,6 +28,11 @@ $(document).ready(function () {
   });
 
   /*-------Popup---------*/
+  function stopAndResetAudio(audioElement) {
+    audioElement.pause();
+    audioElement.currentTime = 0;
+  }
+
   // Open-popup
   $('.js-button').click(function () {
     var section = $(this).closest('section')
@@ -45,15 +50,9 @@ $(document).ready(function () {
   });
 
   // audio-button
-  var audioElement = $('.popup-audio-files')[0];
-  function stopAndResetAudio(audioElement) {
-    audioElement.pause();
-    audioElement.currentTime = 0;
-    updateDisplayTime();
-  };
-
   $('.js-popup-button').click(function () {
-
+    var parentElement = $(this).closest('.popup-audio');
+    var audioElement = parentElement.find('audio')[0];
     if (audioElement.paused) {
       audioElement.play();
       $(this).addClass('button-stop');
@@ -70,25 +69,29 @@ $(document).ready(function () {
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   }
 
-  function updateDisplayTime() {
+  function updateDisplayTime(parentElement) {
+    var audioElement = parentElement.find('audio')[0];
     var currentTime = formatTime(audioElement.currentTime);
     var duration = formatTime(audioElement.duration);
 
-    $('.current-time').text(currentTime);
-    $('.total-time').text(duration);
+    parentElement.find('.current-time').text(currentTime);
+    parentElement.find('.total-time').text(duration);
   }
 
-  audioElement.addEventListener('loadedmetadata', function () {
-    updateDisplayTime();
+  $('.popup-audio-files').on('loadedmetadata', function () {
+    var parentElement = $(this).closest('.popup-audio');
+    updateDisplayTime(parentElement);
   });
 
-  audioElement.addEventListener('timeupdate', function () {
-    updateDisplayTime();
+  $('.popup-audio-files').on('timeupdate', function () {
+    var parentElement = $(this).closest('.popup-audio');
+    updateDisplayTime(parentElement);
   });
 
   // close-popup
   $('.popup-close').click(function () {
-
+    var parentElement = $(this).closest('.popup-content');
+    var audioElement = parentElement.find('audio')[0];
     stopAndResetAudio(audioElement);
     $('.js-popup-button').removeClass('button-stop');
 
@@ -100,7 +103,8 @@ $(document).ready(function () {
     var popUp = $('.popup');
 
     if (popUp.is(e.target)) {
-      
+      var parentElement = $(this).find('.popup-content');
+      var audioElement = parentElement.find('audio')[0];
       stopAndResetAudio(audioElement);
       $('.js-popup-button').removeClass('button-stop');
 
