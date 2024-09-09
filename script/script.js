@@ -1,3 +1,24 @@
+function stopAndResetAudio(audioElement) {
+  audioElement.pause();
+  audioElement.currentTime = 0;
+}
+
+// display-time in audio
+function formatTime(seconds) {
+  var minutes = Math.floor(seconds / 60);
+  var seconds = Math.floor(seconds % 60);
+  return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+
+function updateDisplayTime(parentElement) {
+  var audioElement = parentElement.find('audio')[0];
+  var currentTime = formatTime(audioElement.currentTime);
+  var duration = formatTime(audioElement.duration);
+
+  parentElement.find('.current-time').text(currentTime);
+  parentElement.find('.total-time').text(duration);
+}
+
 $(document).ready(function () {
   /*-------Burger---------*/
   $('.burger').click(function () {
@@ -28,11 +49,6 @@ $(document).ready(function () {
   });
 
   /*-------Popup---------*/
-  function stopAndResetAudio(audioElement) {
-    audioElement.pause();
-    audioElement.currentTime = 0;
-  }
-
   // Open-popup
   $('.js-button').click(function () {
     var section = $(this).closest('section')
@@ -49,10 +65,13 @@ $(document).ready(function () {
     $('body').addClass('body-wrapper');
   });
 
-  // audio-button
+  var audioFiles = $('.popup-audio-files');
+
+  // audio-element
   $('.js-popup-button').click(function () {
     var parentElement = $(this).closest('.popup-audio');
     var audioElement = parentElement.find('audio')[0];
+
     if (audioElement.paused) {
       audioElement.play();
       $(this).addClass('button-stop');
@@ -62,28 +81,12 @@ $(document).ready(function () {
     }
   });
 
-  // display-time
-  function formatTime(seconds) {
-    var minutes = Math.floor(seconds / 60);
-    var seconds = Math.floor(seconds % 60);
-    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-  }
-
-  function updateDisplayTime(parentElement) {
-    var audioElement = parentElement.find('audio')[0];
-    var currentTime = formatTime(audioElement.currentTime);
-    var duration = formatTime(audioElement.duration);
-
-    parentElement.find('.current-time').text(currentTime);
-    parentElement.find('.total-time').text(duration);
-  }
-
-  $('.popup-audio-files').on('loadedmetadata', function () {
+  audioFiles.on('loadedmetadata', function () {
     var parentElement = $(this).closest('.popup-audio');
     updateDisplayTime(parentElement);
   });
 
-  $('.popup-audio-files').on('timeupdate', function () {
+  audioFiles.on('timeupdate', function () {
     var parentElement = $(this).closest('.popup-audio');
     updateDisplayTime(parentElement);
   });
