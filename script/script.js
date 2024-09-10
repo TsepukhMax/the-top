@@ -1,24 +1,3 @@
-function stopAndResetAudio(audioElement) {
-  audioElement.pause();
-  audioElement.currentTime = 0;
-}
-
-// display-time in audio
-function formatTime(seconds) {
-  var minutes = Math.floor(seconds / 60);
-  var seconds = Math.floor(seconds % 60);
-  return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-}
-
-function updateDisplayTime(parentElement) {
-  var audioElement = parentElement.find('audio')[0];
-  var currentTime = formatTime(audioElement.currentTime);
-  var duration = formatTime(audioElement.duration);
-
-  parentElement.find('.current-time').text(currentTime);
-  parentElement.find('.total-time').text(duration);
-}
-
 $(document).ready(function () {
   /*-------Burger---------*/
   $('.burger').click(function () {
@@ -89,6 +68,25 @@ $(document).ready(function () {
   audioFiles.on('timeupdate', function () {
     var parentElement = $(this).closest('.popup-audio');
     updateDisplayTime(parentElement);
+    updateProgressBar(parentElement);
+  });
+
+  // progress-bar in audio
+  var progressBar = $('.progress-bar');
+  var progressCursor = $('.progress-cursor');
+
+  $('.progress-bar-container').click(function (e) {
+    var parentElement = $(this).closest('.popup-audio');
+    var audioElement = parentElement.find('audio')[0];
+    
+    // calculate % progress-bar
+    var offsetX = e.offsetX;
+    var totalWidth = $(this).width();
+    var clickPosition = (offsetX / totalWidth) * audioElement.duration;
+
+    // time in progress-bar
+    audioElement.currentTime = clickPosition;
+    updateProgressBar(parentElement);
   });
 
   // close-popup
@@ -142,3 +140,33 @@ $(document).ready(function () {
     });
   });
 });
+
+function stopAndResetAudio(audioElement) {
+  audioElement.pause();
+  audioElement.currentTime = 0;
+}
+
+// display-time in audio
+function formatTime(seconds) {
+  var minutes = Math.floor(seconds / 60);
+  var seconds = Math.floor(seconds % 60);
+  return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+
+function updateDisplayTime(parentElement) {
+  var audioElement = parentElement.find('audio')[0];
+  var currentTime = formatTime(audioElement.currentTime);
+  var duration = formatTime(audioElement.duration);
+
+  parentElement.find('.current-time').text(currentTime);
+  parentElement.find('.total-time').text(duration);
+}
+
+// progress-bar in audio
+function updateProgressBar(parentElement) {
+  var audioElement = parentElement.find('audio')[0];
+  var progress = (audioElement.currentTime / audioElement.duration) * 100;
+
+  parentElement.find('.progress-bar').css('width', progress + '%');
+  parentElement.find('.progress-cursor').css('left', progress + '%');
+}

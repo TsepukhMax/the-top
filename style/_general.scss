@@ -103,7 +103,7 @@ a {
     border-style: solid;
     border-width: 15px 0 15px 30px;
     border-color: transparent transparent transparent black;
-    transform:translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -136,6 +136,30 @@ a {
   bottom: 0;
   transform:translateX(-50%);
   border: 1px solid;
+}
+
+.progress-bar-container {
+  position: relative;
+  margin: 30px 10px;
+  height: 8px;
+  background-color: $main-color;
+  cursor: pointer;
+
+  .progress-bar {
+    position: absolute;
+    height: 100%;
+    background-color: #f00;
+  }
+
+  .progress-cursor {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: $main-text-color;
+    transform: translate(-50%, -50%);
+  }
 }
 /* ------------------------------------------------ */
 @media (max-width: 1024px) {
@@ -170,6 +194,16 @@ a {
     padding: 6px;
     font-size: 14px;
   }
+
+  .progress-bar-container {
+    margin: 20px 8px;
+    height: 6px;
+  
+    .progress-cursor {
+      width: 12px;
+      height: 12px;
+    }
+  }
 }
 @media (max-width: 768px) {
   .button-play {
@@ -202,6 +236,16 @@ a {
   .display-time {
     padding: 3px;
     font-size: 10px;
+  }
+
+  .progress-bar-container {
+    margin: 10px 5px;
+    height: 4px;
+  
+    .progress-cursor {
+      width: 8px;
+      height: 8px;
+    }
   }
 }
 
