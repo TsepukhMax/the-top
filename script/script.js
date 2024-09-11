@@ -40,8 +40,6 @@ $(document).ready(function () {
     $('.js-popup-top').text(topText);
     $('.popup-audio-files').attr('src' , audioSource);
 
-    $('.progress-bar').css('width', '0%');
-
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
   });
@@ -65,6 +63,7 @@ $(document).ready(function () {
   audioFiles.on('loadedmetadata', function () {
     var parentElement = $(this).closest('.popup-audio');
     updateDisplayTime(parentElement);
+    updateProgressBar(parentElement);
   });
 
   audioFiles.on('timeupdate', function () {
@@ -86,6 +85,19 @@ $(document).ready(function () {
     // time in progress-bar
     audioElement.currentTime = clickPosition;
     updateProgressBar(parentElement);
+  });
+
+  // reset time in progress-bar
+  $('.popup-audio-files').on('ended', function () {
+    var parentElement = $(this).closest('.popup-audio');
+    var audioElement = $(this)[0];
+    
+    audioElement.currentTime = 0;
+
+    updateDisplayTime(parentElement);
+    updateProgressBar(parentElement);
+
+    parentElement.find('.js-popup-button').removeClass('button-stop');
   });
 
   // close-popup
