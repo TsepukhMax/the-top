@@ -40,6 +40,8 @@ $(document).ready(function () {
     $('.js-popup-top').text(topText);
     $('.popup-audio-files').attr('src' , audioSource);
 
+    $('.progress-bar').css('width', '0%');
+
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
   });
@@ -72,10 +74,7 @@ $(document).ready(function () {
   });
 
   // progress-bar in audio
-  var progressBar = $('.progress-bar');
-  var progressCursor = $('.progress-cursor');
-
-  $('.progress-bar-container').click(function (e) {
+  $('.js-progress-bar-container').click(function (e) {
     var parentElement = $(this).closest('.popup-audio');
     var audioElement = parentElement.find('audio')[0];
     
@@ -168,5 +167,4 @@ function updateProgressBar(parentElement) {
   var progress = (audioElement.currentTime / audioElement.duration) * 100;
 
   parentElement.find('.progress-bar').css('width', progress + '%');
-  parentElement.find('.progress-cursor').css('left', progress + '%');
 }

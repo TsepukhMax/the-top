@@ -139,26 +139,14 @@ a {
 }
 
 .progress-bar-container {
-  position: relative;
   margin: 30px 10px;
   height: 8px;
-  background-color: $main-color;
+  background-color: #515151;
   cursor: pointer;
 
   .progress-bar {
-    position: absolute;
     height: 100%;
-    background-color: #f00;
-  }
-
-  .progress-cursor {
-    position: absolute;
-    top: 50%;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: $main-text-color;
-    transform: translate(-50%, -50%);
+    background-color: $main-color
   }
 }
 /* ------------------------------------------------ */
@@ -198,11 +186,6 @@ a {
   .progress-bar-container {
     margin: 20px 8px;
     height: 6px;
-  
-    .progress-cursor {
-      width: 12px;
-      height: 12px;
-    }
   }
 }
 @media (max-width: 768px) {
@@ -241,11 +224,6 @@ a {
   .progress-bar-container {
     margin: 10px 5px;
     height: 4px;
-  
-    .progress-cursor {
-      width: 8px;
-      height: 8px;
-    }
   }
 }
 
