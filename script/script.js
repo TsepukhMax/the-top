@@ -1,11 +1,11 @@
 $(document).ready(function () {
   /*-------Burger---------*/
-  $('.burger').click(function () {
+  $('.burger').on('click' , function () {
     $('.js-burger-content').toggleClass('burger-content-open');
     $('.navigational-list').toggleClass('navigational-list-visible');
   });
 
-	$(document).click(function (e) { 
+	$(document).on('click' , function (e) { 
     var menu = $('.navigational-menu');
     if (!menu.is(e.target) && menu.has(e.target).length === 0 ) {
       $('.js-burger-content').removeClass('burger-content-open');
@@ -13,7 +13,7 @@ $(document).ready(function () {
     }
   }); 
   /*------submenu---------*/
-  $('.js-movie-link').click(function () {
+  $('.js-movie-link').on('click' , function () {
     var href = $(this).attr('href');
 
     $('html').animate({
@@ -29,7 +29,7 @@ $(document).ready(function () {
 
   /*-------Popup---------*/
   // Open-popup
-  $('.js-button').click(function () {
+  $('.js-button').on('click' , function () {
     var section = $(this).closest('section')
 
     var titleText = section.attr('data-title');
@@ -47,7 +47,7 @@ $(document).ready(function () {
   var audioFiles = $('.popup-audio-files');
 
   // audio-element
-  $('.js-popup-button').click(function () {
+  $('.js-popup-button').on('click' , function () {
     var parentElement = $(this).closest('.popup-audio');
     var audioElement = parentElement.find('audio')[0];
 
@@ -73,7 +73,7 @@ $(document).ready(function () {
   });
 
   // progress-bar in audio
-  $('.js-progress-bar-container').click(function (e) {
+  $('.js-progress-bar-container').on('click' , function (e) {
     var parentElement = $(this).closest('.popup-audio');
     var audioElement = parentElement.find('audio')[0];
     
@@ -90,7 +90,7 @@ $(document).ready(function () {
   // reset time in progress-bar
   $('.popup-audio-files').on('ended', function () {
     var parentElement = $(this).closest('.popup-audio');
-    var audioElement = $(this)[0];
+    var audioElement = this;
     
     audioElement.currentTime = 0;
 
@@ -101,7 +101,7 @@ $(document).ready(function () {
   });
 
   // close-popup
-  $('.popup-close').click(function () {
+  $('.popup-close').on('click' , function () {
     var parentElement = $(this).closest('.popup-content');
     var audioElement = parentElement.find('audio')[0];
     stopAndResetAudio(audioElement);
@@ -111,7 +111,7 @@ $(document).ready(function () {
     $('body').removeClass('body-wrapper');
   });
 
-  $('.popup').click(function (e) {
+  $('.popup').on('click' , function (e) {
     var popUp = $('.popup');
 
     if (popUp.is(e.target)) {
@@ -134,7 +134,7 @@ $(document).ready(function () {
     var maxSlideIndex = slider.find('.slid').length -1;
     var currentSlide = 0;
 
-    arrowRight.click(function (e) {
+    arrowRight.on('click' , function (e) {
       e.preventDefault();
       if (currentSlide <  maxSlideIndex) {
         currentSlide++;
@@ -142,7 +142,7 @@ $(document).ready(function () {
       }
     });
 
-    arrowLeft.click(function (e) {
+    arrowLeft.on('click' , function (e) {
       e.preventDefault();
       if (currentSlide > 0) {
         currentSlide--;

@@ -1,2 +1,4 @@
 style/index.css
 style/index.css.map
+node_modules
+script/node_modules/jquery/dist/jquery.min.js
