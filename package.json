@@ -6,15 +6,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "styles": "sass style/index.scss style/index.css --watch",
     "styles:build": "sass style/index.scss style/index.css",
-    "js-jquery": "copyfiles node_modules/jquery/dist/jquery.min.js script/"
+    "js-jquery": "cp node_modules/jquery/dist/jquery.min.js script/"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "jquery": "^3.7.1"
-  },
-  "devDependencies": {
-    "copyfiles": "^2.4.1"
   }
 }
