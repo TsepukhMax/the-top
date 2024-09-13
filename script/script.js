@@ -54,9 +54,23 @@ $(document).ready(function () {
     if (audioElement.paused) {
       audioElement.play();
       $(this).addClass('button-stop');
+
+      // updateProgressBar using setInterval
+    if (!progressInterval) {
+      progressInterval = setInterval(function () {
+        updateDisplayTime(parentElement);
+        updateProgressBar(parentElement);
+      }, PROGRESS_UPDATE_INTERVAL);
+      parentElement.data('progress-interval', progressInterval);
+    }
+
     } else {
       audioElement.pause();
       $(this).removeClass('button-stop');
+
+      //stop updateProgressBar in pause
+      clearInterval(progressInterval);
+      parentElement.removeData('progress-interval');
     }
   });
 
@@ -98,6 +112,11 @@ $(document).ready(function () {
     updateProgressBar(parentElement);
 
     parentElement.find('.js-popup-button').removeClass('button-stop');
+
+    // clearInterval in finish audio
+    var progressInterval = parentElement.data('progress-interval');
+    clearInterval(progressInterval);
+    parentElement.removeData('progress-interval');
   });
 
   // close-popup
@@ -163,6 +182,9 @@ function formatTime(seconds) {
   var seconds = Math.floor(seconds % 60);
   return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
+
+const PROGRESS_UPDATE_INTERVAL = 1;
+var progressInterval;
 
 function updateDisplayTime(parentElement) {
   var audioElement = parentElement.find('audio')[0];
