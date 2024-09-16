@@ -56,13 +56,10 @@ $(document).ready(function () {
       $(this).addClass('button-stop');
 
       // updateProgressBar using setInterval
-    if (!progressInterval) {
       progressInterval = setInterval(function () {
         updateDisplayTime(parentElement);
         updateProgressBar(parentElement);
       }, PROGRESS_UPDATE_INTERVAL);
-      parentElement.data('progress-interval', progressInterval);
-    }
 
     } else {
       audioElement.pause();
@@ -75,12 +72,6 @@ $(document).ready(function () {
   });
 
   audioFiles.on('loadedmetadata', function () {
-    var parentElement = $(this).closest('.popup-audio');
-    updateDisplayTime(parentElement);
-    updateProgressBar(parentElement);
-  });
-
-  audioFiles.on('timeupdate', function () {
     var parentElement = $(this).closest('.popup-audio');
     updateDisplayTime(parentElement);
     updateProgressBar(parentElement);
@@ -116,7 +107,6 @@ $(document).ready(function () {
     // clearInterval in finish audio
     var progressInterval = parentElement.data('progress-interval');
     clearInterval(progressInterval);
-    parentElement.removeData('progress-interval');
   });
 
   // close-popup
@@ -183,7 +173,7 @@ function formatTime(seconds) {
   return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
 
-const PROGRESS_UPDATE_INTERVAL = 1;
+const PROGRESS_UPDATE_INTERVAL = 1000 / 24;
 var progressInterval;
 
 function updateDisplayTime(parentElement) {
