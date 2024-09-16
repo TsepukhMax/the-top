@@ -63,14 +63,11 @@ $(document).ready(function () {
   // action play and pause
   audioFiles.on('play', function () {
     var parentElement = $(this).closest('.popup-audio');
-    progressInterval = setInterval(function () {
-      updateProgressBar(parentElement);
-      updateDisplayTime(parentElement);
-    }, PROGRESS_UPDATE_INTERVAL);
+    updateProgressWithTimeout(parentElement);
   });
 
   audioFiles.on('pause', function () {
-    clearInterval(progressInterval);
+    clearTimeout(progressTimeout);
   });
 
   audioFiles.on('loadedmetadata', function () {
@@ -104,6 +101,7 @@ $(document).ready(function () {
 
     updateDisplayTime(parentElement);
     updateProgressBar(parentElement);
+    clearTimeout(progressTimeout);
 
     parentElement.find('.js-popup-button').removeClass('button-stop');
   });
@@ -173,10 +171,19 @@ function formatTime(seconds) {
 }
 
 const MS_IN_SECOND = 1000;
-const FPS = 24
+const FPS = 60;
 
 const PROGRESS_UPDATE_INTERVAL = MS_IN_SECOND / FPS;
-var progressInterval;
+var progressTimeout;
+
+function updateProgressWithTimeout(parentElement) {
+  updateProgressBar(parentElement);
+  updateDisplayTime(parentElement);
+
+  progressTimeout = setTimeout(function () {
+    updateProgressWithTimeout(parentElement);
+  }, PROGRESS_UPDATE_INTERVAL);
+}
 
 function updateDisplayTime(parentElement) {
   var audioElement = parentElement.find('audio')[0];
