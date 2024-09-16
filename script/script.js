@@ -54,21 +54,23 @@ $(document).ready(function () {
     if (audioElement.paused) {
       audioElement.play();
       $(this).addClass('button-stop');
-
-      // updateProgressBar using setInterval
-      progressInterval = setInterval(function () {
-        updateDisplayTime(parentElement);
-        updateProgressBar(parentElement);
-      }, PROGRESS_UPDATE_INTERVAL);
-
     } else {
       audioElement.pause();
       $(this).removeClass('button-stop');
-
-      //stop updateProgressBar in pause
-      clearInterval(progressInterval);
-      parentElement.removeData('progress-interval');
     }
+  });
+
+  // action play and pause
+  $('.popup-audio-files').on('play', function () {
+    var parentElement = $(this).closest('.popup-audio');
+    progressInterval = setInterval(function () {
+      updateProgressBar(parentElement);
+      updateDisplayTime(parentElement);
+    }, PROGRESS_UPDATE_INTERVAL);
+  });
+
+  $('.popup-audio-files').on('pause', function () {
+    clearInterval(progressInterval);
   });
 
   audioFiles.on('loadedmetadata', function () {
@@ -90,6 +92,7 @@ $(document).ready(function () {
     // time in progress-bar
     audioElement.currentTime = clickPosition;
     updateProgressBar(parentElement);
+    updateDisplayTime(parentElement);
   });
 
   // reset time in progress-bar
@@ -103,10 +106,6 @@ $(document).ready(function () {
     updateProgressBar(parentElement);
 
     parentElement.find('.js-popup-button').removeClass('button-stop');
-
-    // clearInterval in finish audio
-    var progressInterval = parentElement.data('progress-interval');
-    clearInterval(progressInterval);
   });
 
   // close-popup
@@ -173,7 +172,10 @@ function formatTime(seconds) {
   return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
 
-const PROGRESS_UPDATE_INTERVAL = 1000 / 24;
+const milSec = 1000;
+const FPS = 24
+
+const PROGRESS_UPDATE_INTERVAL = milSec / FPS;
 var progressInterval;
 
 function updateDisplayTime(parentElement) {
