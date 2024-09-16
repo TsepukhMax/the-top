@@ -61,7 +61,7 @@ $(document).ready(function () {
   });
 
   // action play and pause
-  $('.popup-audio-files').on('play', function () {
+  audioFiles.on('play', function () {
     var parentElement = $(this).closest('.popup-audio');
     progressInterval = setInterval(function () {
       updateProgressBar(parentElement);
@@ -69,7 +69,7 @@ $(document).ready(function () {
     }, PROGRESS_UPDATE_INTERVAL);
   });
 
-  $('.popup-audio-files').on('pause', function () {
+  audioFiles.on('pause', function () {
     clearInterval(progressInterval);
   });
 
@@ -96,7 +96,7 @@ $(document).ready(function () {
   });
 
   // reset time in progress-bar
-  $('.popup-audio-files').on('ended', function () {
+  audioFiles.on('ended', function () {
     var parentElement = $(this).closest('.popup-audio');
     var audioElement = this;
     
@@ -172,10 +172,10 @@ function formatTime(seconds) {
   return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
 
-const milSec = 1000;
+const MS_IN_SECOND = 1000;
 const FPS = 24
 
-const PROGRESS_UPDATE_INTERVAL = milSec / FPS;
+const PROGRESS_UPDATE_INTERVAL = MS_IN_SECOND / FPS;
 var progressInterval;
 
 function updateDisplayTime(parentElement) {
