@@ -40,6 +40,10 @@ $(document).ready(function () {
     $('.js-popup-top').text(topText);
     $('.popup-audio-files').attr('src' , audioSource);
 
+    var audioElement = $('.popup-audio-files')[0];
+    audioElement.volume = 0.5;
+    updateVolumeSlider(audioElement);
+
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
   });
@@ -64,10 +68,12 @@ $(document).ready(function () {
   audioFiles.on('play', function () {
     var parentElement = $(this).closest('.popup-audio');
     updateProgressWithAnimationFrame(parentElement);
+    updateVolumeWithAnimationFrame(parentElement);
   });
 
   audioFiles.on('pause', function () {
     cancelAnimationFrame(progressAnimationFrame);
+    cancelAnimationFrame(volumeAnimationFrame);
   });
 
   audioFiles.on('loadedmetadata', function () {
@@ -103,6 +109,21 @@ $(document).ready(function () {
     updateProgressBar(parentElement);
 
     parentElement.find('.js-popup-button').removeClass('button-stop');
+  });
+
+  // Changing the volume
+  $('.volume-bar-container').on('click', function (e) {
+    var parentElement = $(this).closest('.popup-audio');
+    var audioElement = parentElement.find('audio')[0];
+
+    // calculate % the volume
+    var offsetX = e.offsetX;
+    var totalWidth = $(this).width();
+    var newVolume = offsetX / totalWidth;
+
+    // update the volume
+    audioElement.volume = newVolume;
+    updateVolumeSlider(audioElement);
   });
 
   // close-popup
@@ -196,4 +217,18 @@ function updateProgressBar(parentElement) {
   var progress = (audioElement.currentTime / audioElement.duration) * 100;
 
   parentElement.find('.progress-bar').css('width', progress + '%');
+}
+
+// controls volume in audios
+var volumeAnimationFrame;
+
+function updateVolumeSlider(audioElement) {
+  var volume = audioElement.volume * 100;
+  var volumeBarWidth = $('.volume-bar-container').width();
+
+  $('.volume-slider').css('width', volume + '%');
+
+   // Update depends on position
+   var cursorPosition = (volume / 100) * volumeBarWidth;
+   $('.volume-cursor').css('left', cursorPosition + 'px');
 }
