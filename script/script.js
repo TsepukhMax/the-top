@@ -40,9 +40,10 @@ $(document).ready(function () {
     $('.js-popup-top').text(topText);
     $('.popup-audio-files').attr('src' , audioSource);
 
-    var audioElement = $('.popup-audio-files')[0];
-    audioElement.volume = 0.5;
-    updateVolumeSlider(audioElement);
+    var parentElement = $('.popup-audio');
+    var audioElement = parentElement.find('audio')[0];
+    
+    updateVolumeSlider(audioElement, parentElement);
 
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
@@ -123,7 +124,7 @@ $(document).ready(function () {
 
     // update the volume
     audioElement.volume = newVolume;
-    updateVolumeSlider(audioElement);
+    updateVolumeSlider(audioElement, parentElement);
   });
 
   // close-popup
@@ -222,13 +223,14 @@ function updateProgressBar(parentElement) {
 // controls volume in audios
 var volumeAnimationFrame;
 
-function updateVolumeSlider(audioElement) {
+function updateVolumeWithAnimationFrame(parentElement) {
+  var audioElement = parentElement.find('audio')[0];
+  
+  updateVolumeSlider(audioElement , parentElement);
+
+}
+
+function updateVolumeSlider(audioElement, parentElement) {
   var volume = audioElement.volume * 100;
-  var volumeBarWidth = $('.volume-bar-container').width();
-
-  $('.volume-slider').css('width', volume + '%');
-
-   // Update depends on position
-   var cursorPosition = (volume / 100) * volumeBarWidth;
-   $('.volume-cursor').css('left', cursorPosition + 'px');
+  parentElement.find('.volume-slider').css('width', volume + '%');
 }

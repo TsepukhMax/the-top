@@ -29,7 +29,7 @@
           outline: none;
 
           &::placeholder{
-            color: #515151;
+            color: $grey-color;
             text-transform: uppercase;
           }
         }
