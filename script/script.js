@@ -63,11 +63,11 @@ $(document).ready(function () {
   // action play and pause
   audioFiles.on('play', function () {
     var parentElement = $(this).closest('.popup-audio');
-    updateProgressWithTimeout(parentElement);
+    updateProgressWithAnimationFrame(parentElement);
   });
 
   audioFiles.on('pause', function () {
-    clearTimeout(progressTimeout);
+    cancelAnimationFrame(progressAnimationFrame);
   });
 
   audioFiles.on('loadedmetadata', function () {
@@ -101,7 +101,6 @@ $(document).ready(function () {
 
     updateDisplayTime(parentElement);
     updateProgressBar(parentElement);
-    clearTimeout(progressTimeout);
 
     parentElement.find('.js-popup-button').removeClass('button-stop');
   });
@@ -170,19 +169,16 @@ function formatTime(seconds) {
   return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
 
-const MS_IN_SECOND = 1000;
-const FPS = 60;
+var progressAnimationFrame;
 
-const PROGRESS_UPDATE_INTERVAL = MS_IN_SECOND / FPS;
-var progressTimeout;
-
-function updateProgressWithTimeout(parentElement) {
+function updateProgressWithAnimationFrame(parentElement) {
   updateProgressBar(parentElement);
   updateDisplayTime(parentElement);
 
-  progressTimeout = setTimeout(function () {
-    updateProgressWithTimeout(parentElement);
-  }, PROGRESS_UPDATE_INTERVAL);
+  // call the animation again for the next frame
+  progressAnimationFrame = requestAnimationFrame(function () {
+    updateProgressWithAnimationFrame(parentElement);
+  });
 }
 
 function updateDisplayTime(parentElement) {
