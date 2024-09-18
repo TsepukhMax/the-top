@@ -69,12 +69,10 @@ $(document).ready(function () {
   audioFiles.on('play', function () {
     var parentElement = $(this).closest('.popup-audio');
     updateProgressWithAnimationFrame(parentElement);
-    updateVolumeWithAnimationFrame(parentElement);
   });
 
   audioFiles.on('pause', function () {
     cancelAnimationFrame(progressAnimationFrame);
-    cancelAnimationFrame(volumeAnimationFrame);
   });
 
   audioFiles.on('loadedmetadata', function () {
@@ -220,16 +218,7 @@ function updateProgressBar(parentElement) {
   parentElement.find('.progress-bar').css('width', progress + '%');
 }
 
-// controls volume in audios
-var volumeAnimationFrame;
-
-function updateVolumeWithAnimationFrame(parentElement) {
-  var audioElement = parentElement.find('audio')[0];
-  
-  updateVolumeSlider(audioElement , parentElement);
-
-}
-
+// controls volume 
 function updateVolumeSlider(audioElement, parentElement) {
   var volume = audioElement.volume * 100;
   parentElement.find('.volume-slider').css('width', volume + '%');
