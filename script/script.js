@@ -40,11 +40,6 @@ $(document).ready(function () {
     $('.js-popup-top').text(topText);
     $('.popup-audio-files').attr('src' , audioSource);
 
-    var parentElement = $('.popup-audio');
-    var audioElement = parentElement.find('audio')[0];
-    
-    updateVolumeSlider(audioElement, parentElement);
-
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
   });
@@ -110,19 +105,24 @@ $(document).ready(function () {
     parentElement.find('.js-popup-button').removeClass('button-stop');
   });
 
-  // Changing the volume
-  $('.volume-bar-container').on('click', function (e) {
+  // Changing the volume "mousedown"
+  $('.volume-bar-container').on('mousedown', function (e) {
     var parentElement = $(this).closest('.popup-audio');
-    var audioElement = parentElement.find('audio')[0];
+    isDragging = true; // for moving
+    setVolume(e, parentElement); // update
 
-    // calculate % the volume
-    var offsetX = e.offsetX;
-    var totalWidth = $(this).width();
-    var newVolume = offsetX / totalWidth;
+    // Changing the volume "mousemove"
+    $(window).on('mousemove.volumeControl', function (e) {
+      if (isDragging) {
+        setVolume(e, parentElement); // update
+      }
+    });
 
-    // update the volume
-    audioElement.volume = newVolume;
-    updateVolumeSlider(audioElement, parentElement);
+    // Changing the volume "mouseup"
+    $(window).one('mouseup.volumeControl', function () {
+      isDragging = false; // for stop
+      $(window).off('mousemove.volumeControl'); // unfollow 
+    });
   });
 
   // close-popup
@@ -219,7 +219,22 @@ function updateProgressBar(parentElement) {
 }
 
 // controls volume 
+var isDragging = false;
+
 function updateVolumeSlider(audioElement, parentElement) {
   var volume = audioElement.volume * 100;
   parentElement.find('.volume-slider').css('width', volume + '%');
+}
+
+// for updata volume
+function setVolume(e, parentElement) {
+  var volumeBar = parentElement.find('.volume-bar-container');
+  var audioElement = parentElement.find('audio')[0];
+  
+  var offsetX = e.pageX - volumeBar.offset().left;
+  var totalWidth = volumeBar.width();
+  var newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
+
+  audioElement.volume = newVolume; // updata volume
+  updateVolumeSlider(audioElement, parentElement); // updata slider
 }
