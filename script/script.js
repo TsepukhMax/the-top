@@ -40,6 +40,11 @@ $(document).ready(function () {
     $('.js-popup-top').text(topText);
     $('.popup-audio-files').attr('src' , audioSource);
 
+    var parentElement = $('.popup-audio');
+    var audioElement = parentElement.find('audio')[0];
+
+    updateVolumeSlider(audioElement, parentElement);
+
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
   });
@@ -105,23 +110,27 @@ $(document).ready(function () {
     parentElement.find('.js-popup-button').removeClass('button-stop');
   });
 
+  // mousemove function for volume
+  function handleMouseMove(e, parentElement) {
+    setVolume(e, parentElement); // updata volume
+  }
+
   // Changing the volume "mousedown"
   $('.volume-bar-container').on('mousedown', function (e) {
     var parentElement = $(this).closest('.popup-audio');
-    isDragging = true; // for moving
     setVolume(e, parentElement); // update
 
-    // Changing the volume "mousemove"
-    $(window).on('mousemove.volumeControl', function (e) {
-      if (isDragging) {
-        setVolume(e, parentElement); // update
-      }
-    });
+    // var for mousemove function
+    var mouseMoveHandler = function (event) {
+      handleMouseMove(event, parentElement); // Викликаємо обробник для mousemove
+    };
+
+    // follow for "mousemove" and "mouseup" on window
+    $(window).on('mousemove', mouseMoveHandler);
 
     // Changing the volume "mouseup"
-    $(window).one('mouseup.volumeControl', function () {
-      isDragging = false; // for stop
-      $(window).off('mousemove.volumeControl'); // unfollow 
+    $(window).one('mouseup', function () {
+      $(window).off('mousemove' , mouseMoveHandler); // unfollow 
     });
   });
 
@@ -219,8 +228,6 @@ function updateProgressBar(parentElement) {
 }
 
 // controls volume 
-var isDragging = false;
-
 function updateVolumeSlider(audioElement, parentElement) {
   var volume = audioElement.volume * 100;
   parentElement.find('.volume-slider').css('width', volume + '%');
