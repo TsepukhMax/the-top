@@ -110,19 +110,14 @@ $(document).ready(function () {
     parentElement.find('.js-popup-button').removeClass('button-stop');
   });
 
-  // mousemove function for volume
-  function handleMouseMove(e, parentElement) {
-    setVolume(e, parentElement); // updata volume
-  }
-
   // Changing the volume "mousedown"
   $('.volume-bar-container').on('mousedown', function (e) {
     var parentElement = $(this).closest('.popup-audio');
     setVolume(e, parentElement); // update
 
     // var for mousemove function
-    var mouseMoveHandler = function (event) {
-      handleMouseMove(event, parentElement); // Викликаємо обробник для mousemove
+    var mouseMoveHandler = function (e) {
+      setVolume(e, parentElement);
     };
 
     // follow for "mousemove" and "mouseup" on window
