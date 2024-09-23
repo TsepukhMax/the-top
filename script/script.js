@@ -179,6 +179,39 @@ $(document).ready(function () {
       }
     });
   });
+
+  // add video for slid
+  $('.slid').each(function () {
+    var $slide = $(this);
+    var $video = $slide.find('.slid-video')[0];
+    var $image = $slide.find('img');
+    var $playButton = $slide.find('.button-play');
+
+    // click for button Play/Stop
+    $playButton.on('click', function () {
+      if ($video.paused) {
+        $video.play();
+        $image.hide(); // hide img
+        $playButton.addClass('button-stop'); // change for button-stop
+      } else {
+        $video.pause();
+        $image.show(); // show img
+        $playButton.removeClass('button-stop'); // change for button-play
+      }
+    });
+
+    $slide.on('mouseenter', function () {
+      if (!$video.paused) {
+        $playButton.fadeIn(); // show button-stop
+      }
+    });
+    
+    $slide.on('mouseleave', function () {
+      if (!$video.paused) {
+        $playButton.fadeOut(); // hide button-stop
+      }
+    });
+  });
 });
 
 function stopAndResetAudio(audioElement) {
