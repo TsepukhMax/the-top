@@ -25,6 +25,7 @@
           height: 100%;
           position: absolute;
           object-fit: cover;
+          transition: opacity 0.3s ease;
         }
 
         .slid-video {
@@ -42,6 +43,10 @@
         }
 
         &.playing {
+
+          img {
+            opacity: 0;
+          }
 
           .button-play{
             opacity: 0;

@@ -184,32 +184,30 @@ $(document).ready(function () {
   $('.slid').each(function () {
     var slide = $(this);
     var video = slide.find('.slid-video')[0];
-    var image = slide.find('img');
     var playButton = slide.find('.button-play');
 
     // click for button Play/Stop
     playButton.on('click', function () {
 
       // stop other Video
-      $('.slid-video').each(function () {
-        var otherVideo = this;
+      $('.slid').each(function () {
+        var otherSlide = $(this);
+        var otherVideo = otherSlide.find('.slid-video')[0];
+
         if (otherVideo !== video) { //check for no stop this video
           otherVideo.pause(); 
-          $(otherVideo).closest('.slid').find('img').show(); // show img for other Slider
-          $(otherVideo).closest('.slid').find('.button-play').removeClass('button-stop'); //change for button-play
-          $(otherVideo).closest('.slid').removeClass('playing');
+          $(otherSlide).removeClass('playing');
+          $(otherSlide).find('.button-play').removeClass('button-stop'); //change for button-play
         }
       });
 
       //stop or play this video
       if (video.paused) {
         video.play();
-        image.hide(); // hide img
         playButton.addClass('button-stop'); // change for button-stop
         slide.addClass('playing'); 
       } else {
         video.pause();
-        image.show(); // show img
         playButton.removeClass('button-stop'); // change for button-play
         slide.removeClass('playing');
       }
