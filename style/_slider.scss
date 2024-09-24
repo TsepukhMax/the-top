@@ -38,10 +38,24 @@
           left:50%;
           position: absolute;
           transform:translate(-50%, -50%);
+          transition: opacity 0.3s ease;
+        }
+
+        &.playing {
+
+          .button-play{
+            opacity: 0;
+          }
+    
+          &:hover{
+    
+            .button-play {
+              opacity: 1;
+            }
+          }
         }
       }
     }
-
     .arrow-left, .arrow-right {
       position: absolute;
       top: 50%;
