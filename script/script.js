@@ -44,11 +44,6 @@ $(document).ready(function () {
     var audioElement = parentElement.find('audio')[0];
 
     updateVolumeSlider(audioElement, parentElement);
-
-    audioElement.addEventListener('loadedmetadata', function () {
-      updateDisplayTime(parentElement, audioElement);
-      updateProgressBar(parentElement);
-    });
     
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
@@ -82,7 +77,8 @@ $(document).ready(function () {
 
   audioFiles.on('loadedmetadata', function () {
     var parentElement = $(this).closest('.popup-audio');
-    updateDisplayTime(parentElement);
+    var audioElement = parentElement.find('audio')[0];
+    updateDisplayTime(parentElement , audioElement);
     updateProgressBar(parentElement);
   });
 
@@ -99,7 +95,7 @@ $(document).ready(function () {
     // time in progress-bar
     audioElement.currentTime = clickPosition;
     updateProgressBar(parentElement);
-    updateDisplayTime(parentElement);
+    updateDisplayTime(parentElement , audioElement);
   });
 
   // reset time in progress-bar
@@ -256,11 +252,6 @@ function updateProgressWithAnimationFrame(parentElement) {
 }
 
 function updateDisplayTime(parentElement , mediaElement) {
-  // check
-  if (!mediaElement || isNaN(mediaElement.currentTime)) {
-    console.error("Медіаелемент ще не готовий або не знайдено.");
-    return;
-  }
 
   var currentTime = formatTime(mediaElement.currentTime);
   var duration = mediaElement.duration ? formatTime(mediaElement.duration) : "00:00";

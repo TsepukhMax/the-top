@@ -42,6 +42,10 @@
           transition: opacity 0.3s ease;
         }
 
+        .display-time{
+          opacity: 0;
+        }
+
         &.playing {
 
           img {
@@ -55,6 +59,10 @@
           &:hover{
     
             .button-play {
+              opacity: 1;
+            }
+
+            .display-time {
               opacity: 1;
             }
           }
