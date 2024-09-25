@@ -45,6 +45,11 @@ $(document).ready(function () {
 
     updateVolumeSlider(audioElement, parentElement);
 
+    audioElement.addEventListener('loadedmetadata', function () {
+      updateDisplayTime(parentElement, audioElement);
+      updateProgressBar(parentElement);
+    });
+    
     $('.popup').addClass('show');
     $('body').addClass('body-wrapper');
   });
@@ -104,7 +109,7 @@ $(document).ready(function () {
     
     audioElement.currentTime = 0;
 
-    updateDisplayTime(parentElement);
+    updateDisplayTime(parentElement , audioElement);
     updateProgressBar(parentElement);
 
     parentElement.find('.js-popup-button').removeClass('button-stop');
@@ -212,6 +217,16 @@ $(document).ready(function () {
         slide.removeClass('playing');
       }
     });
+
+    // update playback time
+    video.addEventListener('timeupdate', function () {
+    updateDisplayTime(slide, video);
+    });
+
+    // update total time
+    video.addEventListener('loadedmetadata', function () {
+    updateDisplayTime(slide, video);
+    });
   });
 });
 
@@ -231,7 +246,8 @@ var progressAnimationFrame;
 
 function updateProgressWithAnimationFrame(parentElement) {
   updateProgressBar(parentElement);
-  updateDisplayTime(parentElement);
+  var audioElement = parentElement.find('audio')[0];
+  updateDisplayTime(parentElement , audioElement);
 
   // call the animation again for the next frame
   progressAnimationFrame = requestAnimationFrame(function () {
@@ -239,10 +255,15 @@ function updateProgressWithAnimationFrame(parentElement) {
   });
 }
 
-function updateDisplayTime(parentElement) {
-  var audioElement = parentElement.find('audio')[0];
-  var currentTime = formatTime(audioElement.currentTime);
-  var duration = formatTime(audioElement.duration);
+function updateDisplayTime(parentElement , mediaElement) {
+  // check
+  if (!mediaElement || isNaN(mediaElement.currentTime)) {
+    console.error("Медіаелемент ще не готовий або не знайдено.");
+    return;
+  }
+
+  var currentTime = formatTime(mediaElement.currentTime);
+  var duration = mediaElement.duration ? formatTime(mediaElement.duration) : "00:00";
 
   parentElement.find('.current-time').text(currentTime);
   parentElement.find('.total-time').text(duration);
