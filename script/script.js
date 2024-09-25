@@ -215,12 +215,12 @@ $(document).ready(function () {
     });
 
     // update playback time
-    video.addEventListener('timeupdate', function () {
+    $(video).on('timeupdate', function () {
     updateDisplayTime(slide, video);
     });
 
     // update total time
-    video.addEventListener('loadedmetadata', function () {
+    $(video).on('loadedmetadata', function () {
     updateDisplayTime(slide, video);
     });
   });
