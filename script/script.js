@@ -68,7 +68,8 @@ $(document).ready(function () {
   // action play and pause
   audioFiles.on('play', function () {
     var parentElement = $(this).closest('.popup-audio');
-    updateProgressWithAnimationFrame(parentElement);
+    var audioElement = parentElement.find('audio')[0];
+    updateProgressWithAnimationFrame(parentElement, audioElement);
   });
 
   audioFiles.on('pause', function () {
@@ -79,23 +80,7 @@ $(document).ready(function () {
     var parentElement = $(this).closest('.popup-audio');
     var audioElement = parentElement.find('audio')[0];
     updateDisplayTime(parentElement , audioElement);
-    updateProgressBar(parentElement);
-  });
-
-  // progress-bar in audio
-  $('.js-progress-bar-container').on('click' , function (e) {
-    var parentElement = $(this).closest('.popup-audio');
-    var audioElement = parentElement.find('audio')[0];
-    
-    // calculate % progress-bar
-    var offsetX = e.offsetX;
-    var totalWidth = $(this).width();
-    var clickPosition = (offsetX / totalWidth) * audioElement.duration;
-
-    // time in progress-bar
-    audioElement.currentTime = clickPosition;
-    updateProgressBar(parentElement);
-    updateDisplayTime(parentElement , audioElement);
+    updateProgressBar(parentElement , audioElement);
   });
 
   // reset time in progress-bar
@@ -106,7 +91,7 @@ $(document).ready(function () {
     audioElement.currentTime = 0;
 
     updateDisplayTime(parentElement , audioElement);
-    updateProgressBar(parentElement);
+    updateProgressBar(parentElement , audioElement);
 
     parentElement.find('.js-popup-button').removeClass('button-stop');
   });
@@ -215,13 +200,15 @@ $(document).ready(function () {
     });
 
     // update playback time
-    $(video).on('timeupdate', function () {
+    $(video).on('timeupdate', function() {
     updateDisplayTime(slide, video);
+    updateProgressBar(slide, video);
     });
 
     // update total time
-    $(video).on('loadedmetadata', function () {
+    $(video).on('loadedmetadata', function() {
     updateDisplayTime(slide, video);
+    updateProgressBar(slide, video);
     });
   });
 });
@@ -240,14 +227,13 @@ function formatTime(seconds) {
 
 var progressAnimationFrame;
 
-function updateProgressWithAnimationFrame(parentElement) {
-  updateProgressBar(parentElement);
-  var audioElement = parentElement.find('audio')[0];
-  updateDisplayTime(parentElement , audioElement);
+function updateProgressWithAnimationFrame(parentElement , mediaElement) {
+  updateProgressBar(parentElement , mediaElement);
+  updateDisplayTime(parentElement , mediaElement);
 
   // call the animation again for the next frame
   progressAnimationFrame = requestAnimationFrame(function () {
-    updateProgressWithAnimationFrame(parentElement);
+    updateProgressWithAnimationFrame(parentElement, mediaElement);
   });
 }
 
@@ -261,10 +247,8 @@ function updateDisplayTime(parentElement , mediaElement) {
 }
 
 // progress-bar in audio
-function updateProgressBar(parentElement) {
-  var audioElement = parentElement.find('audio')[0];
-  var progress = (audioElement.currentTime / audioElement.duration) * 100;
-
+function updateProgressBar(parentElement, mediaElement) {
+  var progress = (mediaElement.currentTime / mediaElement.duration) * 100;
   parentElement.find('.progress-bar').css('width', progress + '%');
 }
 
@@ -285,4 +269,27 @@ function setVolume(e, parentElement) {
 
   audioElement.volume = newVolume; // updata volume
   updateVolumeSlider(audioElement, parentElement); // updata slider
+}
+
+// progress-bar in media
+$('.js-progress-bar-container').on('click' , function (e) {
+  var parentElement = $(this).closest('.popup-audio, .slid');
+  var mediaElement = parentElement.find('audio, .slid-video')[0];
+
+  updateProgressOnClick(e, parentElement, mediaElement);
+});
+
+// update progress-bar in media
+function updateProgressOnClick(e, parentElement, mediaElement) {
+  // calculate % progress-bar
+  var offsetX = e.offsetX;
+  var totalWidth = $(e.currentTarget).width();
+  var clickPosition = (offsetX / totalWidth) * mediaElement.duration;
+
+  // update time
+  mediaElement.currentTime = clickPosition;
+
+  // update progress-bar and show time
+  updateProgressBar(parentElement, mediaElement);
+  updateDisplayTime(parentElement, mediaElement);
 }
