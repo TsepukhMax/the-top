@@ -83,6 +83,15 @@ $(document).ready(function () {
     updateProgressBar(parentElement , audioElement);
   });
 
+  //tracking progress-bar for click
+  $('.popup').find('.js-progress-bar-container').on('click', function(e) {
+    var parentElement = $(this).closest('.popup-audio');
+    var audioElement = parentElement.find('audio')[0];
+
+  // update function
+  updateProgressOnClick(e, parentElement, audioElement);
+});
+
   // reset time in progress-bar
   audioFiles.on('ended', function () {
     var parentElement = $(this).closest('.popup-audio');
@@ -199,16 +208,24 @@ $(document).ready(function () {
       }
     });
 
+    // tracking progress-bar for click
+    slide.find('.js-progress-bar-container').on('click', function(e) {
+      var parentElement = $(this).closest('.slid');
+    
+      // update function
+      updateProgressOnClick(e, parentElement, video);
+    });
+
     // update playback time
     $(video).on('timeupdate', function() {
-    updateDisplayTime(slide, video);
-    updateProgressBar(slide, video);
+      updateDisplayTime(slide, video);
+      updateProgressBar(slide, video);
     });
 
     // update total time
     $(video).on('loadedmetadata', function() {
-    updateDisplayTime(slide, video);
-    updateProgressBar(slide, video);
+      updateDisplayTime(slide, video);
+      updateProgressBar(slide, video);
     });
   });
 });
@@ -270,14 +287,6 @@ function setVolume(e, parentElement) {
   audioElement.volume = newVolume; // updata volume
   updateVolumeSlider(audioElement, parentElement); // updata slider
 }
-
-// progress-bar in media
-$('.js-progress-bar-container').on('click' , function (e) {
-  var parentElement = $(this).closest('.popup-audio, .slid');
-  var mediaElement = parentElement.find('audio, .slid-video')[0];
-
-  updateProgressOnClick(e, parentElement, mediaElement);
-});
 
 // update progress-bar in media
 function updateProgressOnClick(e, parentElement, mediaElement) {
