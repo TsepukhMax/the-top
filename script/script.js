@@ -30,6 +30,14 @@ $(document).ready(function () {
   /*-------Popup---------*/
   // Open-popup
   $('.js-button').on('click' , function () {
+    
+    // Зупиняємо всі відео в слайдері
+    $('.slid-video').each(function () {
+      this.pause();  // зупиняємо відео
+      $(this).closest('.slid').removeClass('playing');  // видаляємо клас playing
+      $(this).closest('.slid').find('.button-play').removeClass('button-stop'); // скидаємо кнопку play
+    });
+
     var section = $(this).closest('section')
 
     var titleText = section.attr('data-title');
@@ -226,6 +234,18 @@ $(document).ready(function () {
     $(video).on('loadedmetadata', function() {
       updateDisplayTime(slide, video);
       updateProgressBar(slide, video);
+    });
+
+    // reset time in progress-bar
+    $(video).on('ended', function () {
+
+      video.currentTime = 0;
+
+      updateDisplayTime(slide, video);
+      updateProgressBar(slide, video);
+      
+      playButton.removeClass('button-stop'); // change for button-play
+      slide.removeClass('playing');
     });
   });
 });
