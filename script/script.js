@@ -116,11 +116,12 @@ $(document).ready(function () {
   // Changing the volume "mousedown"
   $('.volume-bar-container').on('mousedown', function (e) {
     var parentElement = $(this).closest('.popup-audio');
-    setVolume(e, parentElement); // update
+    var audioElement = parentElement.find('audio')[0];
+    setVolume(e, parentElement, audioElement); // update
 
     // var for mousemove function
     var mouseMoveHandler = function (e) {
-      setVolume(e, parentElement);
+      setVolume(e, parentElement, audioElement);
     };
 
     // follow for "mousemove" and "mouseup" on window
@@ -224,11 +225,6 @@ $(document).ready(function () {
       updateProgressOnClick(e, parentElement, video);
     });
 
-    // update playback time
-    $(video).on('timeupdate', function() {
-      updateDisplayTime(slide, video);
-    });
-
     // update total time
     $(video).on('loadedmetadata', function() {
       updateDisplayTime(slide, video);
@@ -254,6 +250,26 @@ $(document).ready(function () {
 
       playButton.removeClass('button-stop'); // change for button-play
       slide.removeClass('playing');
+    });
+
+    // Changing the volume "mousedown"
+    $('.volume-bar-container').on('mousedown', function (e) {
+      var slide = $(this).closest('.slid');
+      var video = slide.find('.slid-video')[0];
+      setVolume(e, slide, video); // update
+
+      // var for mousemove function
+      var mouseMoveHandler = function (e) {
+        setVolume(e, slide, video);
+      };
+
+      // follow for "mousemove" and "mouseup" on window
+      $(window).on('mousemove', mouseMoveHandler);
+
+      // Changing the volume "mouseup"
+      $(window).one('mouseup', function () {
+        $(window).off('mousemove', mouseMoveHandler); // unfollow 
+      });
     });
   });
 });
@@ -298,22 +314,21 @@ function updateProgressBar(parentElement, mediaElement) {
 }
 
 // controls volume 
-function updateVolumeSlider(audioElement, parentElement) {
-  var volume = audioElement.volume * 100;
+function updateVolumeSlider(mediaElement, parentElement) {
+  var volume = mediaElement.volume * 100;
   parentElement.find('.volume-slider').css('width', volume + '%');
 }
 
 // for updata volume
-function setVolume(e, parentElement) {
+function setVolume(e, parentElement, mediaElement) {
   var volumeBar = parentElement.find('.volume-bar-container');
-  var audioElement = parentElement.find('audio')[0];
   
   var offsetX = e.pageX - volumeBar.offset().left;
   var totalWidth = volumeBar.width();
   var newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
 
-  audioElement.volume = newVolume; // updata volume
-  updateVolumeSlider(audioElement, parentElement); // updata slider
+  mediaElement.volume = newVolume; // updata volume
+  updateVolumeSlider(mediaElement, parentElement); // updata slider
 }
 
 // update progress-bar in media
