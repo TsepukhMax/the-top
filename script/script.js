@@ -227,13 +227,21 @@ $(document).ready(function () {
     // update playback time
     $(video).on('timeupdate', function() {
       updateDisplayTime(slide, video);
-      updateProgressBar(slide, video);
     });
 
     // update total time
     $(video).on('loadedmetadata', function() {
       updateDisplayTime(slide, video);
       updateProgressBar(slide, video);
+    });
+
+    // action play and pause
+    $(video).on('play', function () {
+      updateProgressWithAnimationFrame(slide, video);
+    });
+
+    $(video).on('pause', function () {
+      cancelAnimationFrame(progressAnimationFrame);
     });
 
     // reset time in progress-bar
@@ -243,7 +251,7 @@ $(document).ready(function () {
 
       updateDisplayTime(slide, video);
       updateProgressBar(slide, video);
-      
+
       playButton.removeClass('button-stop'); // change for button-play
       slide.removeClass('playing');
     });
