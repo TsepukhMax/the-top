@@ -114,7 +114,7 @@ $(document).ready(function () {
   });
 
   // Changing the volume "mousedown"
-  $('.popup .volume-bar-container').on('mousedown', function (e) {
+  $('.popup-audio').find('.volume-bar-container').on('mousedown', function (e) {
     var parentElement = $(this).closest('.popup-audio');
     var audioElement = parentElement.find('audio')[0];
     setVolume(e, parentElement, audioElement); // update
@@ -189,6 +189,7 @@ $(document).ready(function () {
     var slide = $(this);
     var video = slide.find('.slid-video')[0];
     var playButton = slide.find('.button-play');
+    var volumeBarContainer = slide.find('.volume-bar-container');
 
     // click for button Play/Stop
     playButton.on('click', function () {
@@ -253,22 +254,19 @@ $(document).ready(function () {
     });
 
     // Changing the volume "mousedown"
-    $('.slid .volume-bar-container').on('mousedown', function (e) {
-      var slide = $(this).closest('.slid');
-      var video = slide.find('.slid-video')[0];
-      setVolume(e, slide, video); // update
-    
+    volumeBarContainer.on('mousedown', function (e) {
+      setVolume(e, slide, video); // updata volume
+
       // var for mousemove function
       var mouseMoveHandler = function (e) {
         setVolume(e, slide, video);
       };
 
-      // follow for "mousemove" and "mouseup" on window
       $(window).on('mousemove', mouseMoveHandler);
 
       // Changing the volume "mouseup"
       $(window).one('mouseup', function () {
-        $(window).off('mousemove', mouseMoveHandler); // unfollow 
+        $(window).off('mousemove', mouseMoveHandler);
       });
     });
   });
