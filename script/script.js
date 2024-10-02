@@ -114,7 +114,7 @@ $(document).ready(function () {
   });
 
   // Changing the volume "mousedown"
-  $('.volume-bar-container').on('mousedown', function (e) {
+  $('.popup .volume-bar-container').on('mousedown', function (e) {
     var parentElement = $(this).closest('.popup-audio');
     var audioElement = parentElement.find('audio')[0];
     setVolume(e, parentElement, audioElement); // update
@@ -253,11 +253,11 @@ $(document).ready(function () {
     });
 
     // Changing the volume "mousedown"
-    $('.volume-bar-container').on('mousedown', function (e) {
+    $('.slid .volume-bar-container').on('mousedown', function (e) {
       var slide = $(this).closest('.slid');
       var video = slide.find('.slid-video')[0];
       setVolume(e, slide, video); // update
-
+    
       // var for mousemove function
       var mouseMoveHandler = function (e) {
         setVolume(e, slide, video);
@@ -322,7 +322,6 @@ function updateVolumeSlider(mediaElement, parentElement) {
 // for updata volume
 function setVolume(e, parentElement, mediaElement) {
   var volumeBar = parentElement.find('.volume-bar-container');
-  
   var offsetX = e.pageX - volumeBar.offset().left;
   var totalWidth = volumeBar.width();
   var newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
