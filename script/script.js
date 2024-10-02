@@ -1,31 +1,51 @@
-$(document).ready(function () {
-  /*-------Burger---------*/
-  $('.burger').on('click' , function () {
-    $('.js-burger-content').toggleClass('burger-content-open');
-    $('.navigational-list').toggleClass('navigational-list-visible');
-  });
+//BURGER MENU
+const burger = document.querySelector('.burger');
+const burgerContent = document.querySelector('.js-burger-content');
+const navigationalList = document.querySelector('.navigational-list');
+const menu = document.querySelector('.navigational-menu');
 
-	$(document).on('click' , function (e) { 
-    var menu = $('.navigational-menu');
-    if (!menu.is(e.target) && menu.has(e.target).length === 0 ) {
-      $('.js-burger-content').removeClass('burger-content-open');
-      $('.navigational-list').removeClass('navigational-list-visible');
-    }
-  }); 
-  /*------submenu---------*/
-  $('.js-movie-link').on('click' , function () {
-    var href = $(this).attr('href');
+// click for burger
+burger.addEventListener('click', function() {
+  burgerContent.classList.toggle('burger-content-open');
+  navigationalList.classList.toggle('navigational-list-visible');
+});
 
-    $('html').animate({
-      scrollTop: $(href).offset().top
-    },{
-      duration: 300, 
-      easing: 'linear',
+// close burger menu if click no burger
+document.addEventListener('click', function(e) {
+  if (!menu.contains(e.target) && !burger.contains(e.target)) {
+    burgerContent.classList.remove('burger-content-open');
+    navigationalList.classList.remove('navigational-list-visible');
+  }
+});
+
+// SUBMENU
+const jsMovieLink = document.querySelectorAll('.js-movie-link');
+
+jsMovieLink.forEach(function(link){
+  link.addEventListener('click', function(event) {
+    // cancel standart behavior for link
+    event.preventDefault();
+
+    // get href
+    var href = this.getAttribute('href');
+    var targetElement = document.querySelector(href);
+
+    // get position element
+    var targetPosition = targetElement.offsetTop;
+
+    // scroll to element
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth' // animation
     });
-    $('.js-burger-content').removeClass('burger-content-open');
-    $('.navigational-list').removeClass('navigational-list-visible');
-    return false;
+
+    // close burger menu
+    document.querySelector('.js-burger-content').classList.remove('burger-content-open');
+    document.querySelector('.navigational-list').classList.remove('navigational-list-visible');
   });
+});
+
+$(document).ready(function () {
 
   /*-------Popup---------*/
   // Open-popup
