@@ -68,8 +68,8 @@ $(document).ready(function () {
     $('.js-popup-top').text(topText);
     $('.popup-audio-files').attr('src' , audioSource);
 
-    var parentElement = $('.popup-audio');
-    var audioElement = parentElement.find('audio')[0];
+    var parentElement = document.querySelector('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
 
     updateVolumeSlider(audioElement, parentElement);
     
@@ -82,20 +82,18 @@ $(document).ready(function () {
   // AUDIO-ELEMENT
   var jsPopupButton = document.querySelector('.js-popup-button');
 
-  if (jsPopupButton) {
-    jsPopupButton.addEventListener('click', function() {
-      var parentElement = this.closest('.popup-audio');
-      var audioElement = parentElement.querySelector('audio');
-      
-      if (audioElement.paused) {
-        audioElement.play();
-        this.classList.add('button-stop');
-      } else {
-        audioElement.pause();
-        this.classList.remove('button-stop');
-      }
-    });
-  };
+  jsPopupButton.addEventListener('click', function() {
+    var parentElement = this.closest('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
+    
+    if (audioElement.paused) {
+      audioElement.play();
+      this.classList.add('button-stop');
+    } else {
+      audioElement.pause();
+      this.classList.remove('button-stop');
+    }
+  });
 
   // action play and pause
   audioFiles.on('play', function () {
@@ -162,49 +160,46 @@ $(document).ready(function () {
   var popup = document.querySelector('.popup');
   var popupClose = document.querySelector('.popup-close');
 
-  if (popupClose) {
-    popupClose.addEventListener('click', function() {
-      var parentElement = this.closest('.popup-content');
-      var audioElement = parentElement.querySelector('audio');
+  popupClose.addEventListener('click', function() {
+    var parentElement = this.closest('.popup-content');
+    var audioElement = parentElement.querySelector('audio');
 
+    stopAndResetAudio(audioElement);
+    
+    jsPopupButton.classList.remove('button-stop');
+    popup.classList.remove('show');
+    body.classList.remove('body-wrapper');
+  });
+
+  // CLOSE-POPUP when click on window
+
+  popup.addEventListener('click', function(e) {
+  
+    if (e.target === popup) {
+      var parentElement = this.querySelector('.popup-content');
+      var audioElement = parentElement.querySelector('audio');
+      
       stopAndResetAudio(audioElement);
       
       jsPopupButton.classList.remove('button-stop');
       popup.classList.remove('show');
       body.classList.remove('body-wrapper');
-    });
-  }
-
-  // CLOSE-POPUP when click on window
-  if (popup) {
-    popup.addEventListener('click', function(e) {
-    
-      if (e.target === popup) {
-        var parentElement = this.querySelector('.popup-content');
-        var audioElement = parentElement.querySelector('audio');
-        
-        stopAndResetAudio(audioElement);
-        
-        jsPopupButton.classList.remove('button-stop');
-        popup.classList.remove('show');
-        body.classList.remove('body-wrapper');
-      }
-    });
-  }
+    }
+  });
 
 
   // SLIDER
-  document.querySelectorAll('.slider-section').forEach(function(slider){
+  document.querySelectorAll('.slider-section').forEach(function(slider) {
     var arrowRight = slider.querySelector('.arrow-right');
     var arrowLeft = slider.querySelector('.arrow-left');
     var slidsWrapper = slider.querySelector('.slids-wrapper');
-    var slid = slider.querySelectorAll('.slid');
+    var maxSlideIndex = slider.querySelectorAll('.slid').length - 1;
     var currentSlid = 0;
 
     // event for arrow-right
     arrowRight.addEventListener('click', function(e) {
       e.preventDefault();
-      if (currentSlid < slid.length - 1) {
+      if (currentSlid < maxSlideIndex) {
         currentSlid++;
         slidsWrapper.style.marginLeft = currentSlid * -100 + '%';
       }
@@ -350,14 +345,17 @@ function updateProgressBar(parentElement, mediaElement) {
 // controls volume 
 function updateVolumeSlider(mediaElement, parentElement) {
   var volume = mediaElement.volume * 100;
-  parentElement.find('.volume-slider').css('width', volume + '%');
+  var volumeSlider = parentElement.querySelector('.volume-slider');
+  volumeSlider.style.width = volume + '%';
 }
 
 // for updata volume
 function setVolume(e, parentElement, mediaElement) {
-  var volumeBar = parentElement.find('.volume-bar-container');
-  var offsetX = e.pageX - volumeBar.offset().left;
-  var totalWidth = volumeBar.width();
+  parentElement = parentElement[0];
+  var volumeBar = parentElement.querySelector('.volume-bar-container');
+  
+  var offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
+  var totalWidth = volumeBar.offsetWidth;
   var newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
 
   mediaElement.volume = newVolume; // updata volume
