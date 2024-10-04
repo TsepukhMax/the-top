@@ -136,9 +136,9 @@ $(document).ready(function () {
   });
 
   // Changing the volume "mousedown"
-  $('.popup-audio').find('.volume-bar-container').on('mousedown', function (e) {
-    var parentElement = $(this).closest('.popup-audio');
-    var audioElement = parentElement.find('audio')[0];
+  document.querySelector('.popup-audio').addEventListener('mousedown', function(e) {
+    var parentElement = e.currentTarget;
+    var audioElement = parentElement.querySelector('audio');
     setVolume(e, parentElement, audioElement); // update
 
     // var for mousemove function
@@ -147,12 +147,12 @@ $(document).ready(function () {
     };
 
     // follow for "mousemove" and "mouseup" on window
-    $(window).on('mousemove', mouseMoveHandler);
+    window.addEventListener('mousemove', mouseMoveHandler);
 
     // Changing the volume "mouseup"
-    $(window).one('mouseup', function () {
-      $(window).off('mousemove' , mouseMoveHandler); // unfollow 
-    });
+    window.addEventListener('mouseup', function() {
+      window.removeEventListener('mousemove', mouseMoveHandler); //unfolow
+    }, { once: true }); // only one time
   });
 
   // CLOSE-POPUP
@@ -286,11 +286,13 @@ $(document).ready(function () {
 
     // Changing the volume "mousedown"
     volumeBarContainer.on('mousedown', function (e) {
-      setVolume(e, slide, video); // updata volume
+      var domParentElement = slide.get(0); // chenge jQuery for DOM-element
+      var videoElement = video; // DOM-element
+      setVolume(e, domParentElement, videoElement); // updata volume
 
       // var for mousemove function
       var mouseMoveHandler = function (e) {
-        setVolume(e, slide, video);
+        setVolume(e, domParentElement, videoElement);
       };
 
       $(window).on('mousemove', mouseMoveHandler);
@@ -351,7 +353,6 @@ function updateVolumeSlider(mediaElement, parentElement) {
 
 // for updata volume
 function setVolume(e, parentElement, mediaElement) {
-  parentElement = parentElement[0];
   var volumeBar = parentElement.querySelector('.volume-bar-container');
   
   var offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
