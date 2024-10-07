@@ -47,34 +47,45 @@ $(document).ready(function () {
     });
   });
   
-  /*-------Popup---------*/
+  //POPUP
   // Open-popup
-  $('.js-button').on('click' , function () {
-    
-    // Зупиняємо всі відео в слайдері
-    $('.slid-video').each(function () {
-      this.pause();  // зупиняємо відео
-      $(this).closest('.slid').removeClass('playing');  // видаляємо клас playing
-      $(this).closest('.slid').find('.button-play').removeClass('button-stop'); // скидаємо кнопку play
+  document.querySelectorAll('.js-button').forEach(function(button) {
+    button.addEventListener('click', function() {
+  
+      // Зупиняємо всі відео в слайдері
+      document.querySelectorAll('.slid-video').forEach(function(video) {
+        video.pause();
+        var closestSlide = video.closest('.slid');
+        closestSlide.classList.remove('playing'); // видаляємо клас playing
+        closestSlide.querySelector('.button-play').classList.remove('button-stop'); // скидаємо кнопку play
+      });
+
+      var section = button.closest('section')
+
+      var titleText = section.getAttribute('data-title');
+      var topText = section.getAttribute('data-top');
+      var audioSource = section.getAttribute('data-audio');
+
+      document.querySelectorAll('.js-popup-title-text').forEach(function(e) {
+        e.textContent = titleText;
+      });
+      document.querySelectorAll('.js-popup-top').forEach(function(e){
+        e.textContent = topText;
+      });
+
+      document.querySelectorAll('.popup-audio-files').forEach(function(audioEl) {
+        audioEl.setAttribute('src' , audioSource);
+      });
+        
+
+      var parentElement = document.querySelector('.popup-audio');
+      var audioElement = parentElement.querySelector('audio');
+
+      updateVolumeSlider(audioElement, parentElement);
+      
+      document.querySelector('.popup').classList.add('show');
+      document.body.classList.add('body-wrapper');
     });
-
-    var section = $(this).closest('section')
-
-    var titleText = section.attr('data-title');
-    var topText = section.attr('data-top');
-    var audioSource = section.attr('data-audio');
-
-    $('.js-popup-title-text').text(titleText);
-    $('.js-popup-top').text(topText);
-    $('.popup-audio-files').attr('src' , audioSource);
-
-    var parentElement = document.querySelector('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
-
-    updateVolumeSlider(audioElement, parentElement);
-    
-    $('.popup').addClass('show');
-    $('body').addClass('body-wrapper');
   });
 
   var audioFiles = $('.popup-audio-files');
@@ -285,14 +296,13 @@ $(document).ready(function () {
     });
 
     // Changing the volume "mousedown"
-    volumeBarContainer.on('mousedown', function (e) {
+    volumeBarContainer.get(0).addEventListener('mousedown', function (e) {
       var domParentElement = slide.get(0); // chenge jQuery for DOM-element
-      var videoElement = video; // DOM-element
-      setVolume(e, domParentElement, videoElement); // updata volume
+      setVolume(e, domParentElement, video); // updata volume
 
       // var for mousemove function
       var mouseMoveHandler = function (e) {
-        setVolume(e, domParentElement, videoElement);
+        setVolume(e, domParentElement, video);
       };
 
       $(window).on('mousemove', mouseMoveHandler);
