@@ -62,22 +62,14 @@ $(document).ready(function () {
 
       var section = button.closest('section')
 
-      var titleText = section.getAttribute('data-title');
-      var topText = section.getAttribute('data-top');
-      var audioSource = section.getAttribute('data-audio');
+      var titleText = section.dataset.title;
+      var topText = section.dataset.top;
+      var audioSource = section.dataset.audio;
 
-      document.querySelectorAll('.js-popup-title-text').forEach(function(e) {
-        e.textContent = titleText;
-      });
-      document.querySelectorAll('.js-popup-top').forEach(function(e){
-        e.textContent = topText;
-      });
-
-      document.querySelectorAll('.popup-audio-files').forEach(function(audioEl) {
-        audioEl.setAttribute('src' , audioSource);
-      });
+      document.querySelector('.js-popup-title-text').textContent = titleText;
+      document.querySelector('.js-popup-top').textContent = topText;
+      document.querySelector('.popup-audio-files').setAttribute('src' , audioSource);
         
-
       var parentElement = document.querySelector('.popup-audio');
       var audioElement = parentElement.querySelector('audio');
 
@@ -231,7 +223,7 @@ $(document).ready(function () {
     var slide = $(this);
     var video = slide.find('.slid-video')[0];
     var playButton = slide.find('.button-play');
-    var volumeBarContainer = slide.find('.volume-bar-container');
+    var volumeBarContainer = slide.find('.volume-bar-container')[0];
 
     // click for button Play/Stop
     playButton.on('click', function () {
@@ -296,7 +288,7 @@ $(document).ready(function () {
     });
 
     // Changing the volume "mousedown"
-    volumeBarContainer.get(0).addEventListener('mousedown', function (e) {
+    volumeBarContainer.addEventListener('mousedown', function (e) {
       var domParentElement = slide.get(0); // chenge jQuery for DOM-element
       setVolume(e, domParentElement, video); // updata volume
 
@@ -305,12 +297,15 @@ $(document).ready(function () {
         setVolume(e, domParentElement, video);
       };
 
-      $(window).on('mousemove', mouseMoveHandler);
-
       // Changing the volume "mouseup"
-      $(window).one('mouseup', function () {
-        $(window).off('mousemove', mouseMoveHandler);
-      });
+      var mouseUpHandler = function() {
+        window.removeEventListener('mousemove', mouseMoveHandler);
+        window.removeEventListener('mouseup', mouseUpHandler);
+      }
+
+      window.addEventListener('mousemove', mouseMoveHandler);
+
+      window.addEventListener('mouseup', mouseUpHandler, { once: true });
     });
   });
 });
