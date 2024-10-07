@@ -80,7 +80,7 @@ $(document).ready(function () {
     });
   });
 
-  var audioFiles = $('.popup-audio-files');
+  var audioFiles = document.querySelector('.popup-audio-files');
 
   // AUDIO-ELEMENT
   var jsPopupButton = document.querySelector('.js-popup-button');
@@ -99,21 +99,21 @@ $(document).ready(function () {
   });
 
   // action play and pause
-  audioFiles.on('play', function () {
-    var parentElement = $(this).closest('.popup-audio');
-    var audioElement = parentElement.find('audio')[0];
+  audioFiles.addEventListener('play', function () {
+    var parentElement = this.closest('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
     updateProgressWithAnimationFrame(parentElement, audioElement);
   });
 
-  audioFiles.on('pause', function () {
+  audioFiles.addEventListener('pause', function () {
     cancelAnimationFrame(progressAnimationFrame);
   });
 
-  audioFiles.on('loadedmetadata', function () {
-    var parentElement = $(this).closest('.popup-audio');
-    var audioElement = parentElement.find('audio')[0];
-    updateDisplayTime(parentElement , audioElement);
-    updateProgressBar(parentElement , audioElement);
+  audioFiles.addEventListener('loadedmetadata', function () {
+    var parentElement = this.closest('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
+    updateDisplayTime(parentElement, audioElement);
+    updateProgressBar(parentElement, audioElement);
   });
 
   //tracking progress-bar for click
@@ -126,16 +126,16 @@ $(document).ready(function () {
 });
 
   // reset time in progress-bar
-  audioFiles.on('ended', function () {
-    var parentElement = $(this).closest('.popup-audio');
-    var audioElement = this;
+  audioFiles.addEventListener('ended', function () {
+    var parentElement = this.closest('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
     
     audioElement.currentTime = 0;
 
-    updateDisplayTime(parentElement , audioElement);
-    updateProgressBar(parentElement , audioElement);
+    updateDisplayTime(parentElement, audioElement);
+    updateProgressBar(parentElement, audioElement);
 
-    parentElement.find('.js-popup-button').removeClass('button-stop');
+    parentElement.querySelector('.js-popup-button').classList.remove('button-stop');
   });
 
   // Changing the volume "mousedown"
@@ -261,30 +261,36 @@ $(document).ready(function () {
     });
 
     // update total time
-    $(video).on('loadedmetadata', function() {
-      updateDisplayTime(slide, video);
-      updateProgressBar(slide, video);
+    video.addEventListener('loadedmetadata', function() {
+      var slideElement = slide.get(0);
+
+      updateDisplayTime(slideElement, video);
+      updateProgressBar(slideElement, video);
     });
 
     // action play and pause
-    $(video).on('play', function () {
-      updateProgressWithAnimationFrame(slide, video);
+    video.addEventListener('play', function () {
+      var slideElement = slide.get(0);
+      
+      updateProgressWithAnimationFrame(slideElement, video);
     });
 
-    $(video).on('pause', function () {
+    video.addEventListener('pause', function () {
       cancelAnimationFrame(progressAnimationFrame);
     });
 
     // reset time in progress-bar
-    $(video).on('ended', function () {
+    video.addEventListener('ended', function () {
+      var slideElement = slide.get(0);
+      var playButton = slideElement.querySelector('.button-play');
 
       video.currentTime = 0;
 
-      updateDisplayTime(slide, video);
-      updateProgressBar(slide, video);
+      updateDisplayTime(slideElement, video);
+      updateProgressBar(slideElement, video);
 
-      playButton.removeClass('button-stop'); // change for button-play
-      slide.removeClass('playing');
+      playButton.classList.remove('button-stop'); // change for button-play
+      slideElement.classList.remove('playing');
     });
 
     // Changing the volume "mousedown"
@@ -323,9 +329,9 @@ function formatTime(seconds) {
 
 var progressAnimationFrame;
 
-function updateProgressWithAnimationFrame(parentElement , mediaElement) {
-  updateProgressBar(parentElement , mediaElement);
-  updateDisplayTime(parentElement , mediaElement);
+function updateProgressWithAnimationFrame(parentElement, mediaElement) {
+  updateProgressBar(parentElement, mediaElement);
+  updateDisplayTime(parentElement, mediaElement);
 
   // call the animation again for the next frame
   progressAnimationFrame = requestAnimationFrame(function () {
@@ -334,10 +340,6 @@ function updateProgressWithAnimationFrame(parentElement , mediaElement) {
 }
 
 function updateDisplayTime(parentElement, mediaElement) {
-  if (parentElement instanceof jQuery) {
-    parentElement = parentElement.get(0);
-  }
-
   var currentTime = formatTime(mediaElement.currentTime);
   var duration = mediaElement.duration ? formatTime(mediaElement.duration) : "00:00";
 
@@ -347,9 +349,6 @@ function updateDisplayTime(parentElement, mediaElement) {
 
 // progress-bar in audio
 function updateProgressBar(parentElement, mediaElement) {
-  if (parentElement instanceof jQuery) {
-    parentElement = parentElement.get(0);
-  }
   var progress = (mediaElement.currentTime / mediaElement.duration) * 100;
   parentElement.querySelector('.progress-bar').style.width = progress + '%';
 }
