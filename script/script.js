@@ -300,7 +300,6 @@ $(document).ready(function () {
       // Changing the volume "mouseup"
       var mouseUpHandler = function() {
         window.removeEventListener('mousemove', mouseMoveHandler);
-        window.removeEventListener('mouseup', mouseUpHandler);
       }
 
       window.addEventListener('mousemove', mouseMoveHandler);
@@ -334,19 +333,25 @@ function updateProgressWithAnimationFrame(parentElement , mediaElement) {
   });
 }
 
-function updateDisplayTime(parentElement , mediaElement) {
+function updateDisplayTime(parentElement, mediaElement) {
+  if (parentElement instanceof jQuery) {
+    parentElement = parentElement.get(0);
+  }
 
   var currentTime = formatTime(mediaElement.currentTime);
   var duration = mediaElement.duration ? formatTime(mediaElement.duration) : "00:00";
 
-  parentElement.find('.current-time').text(currentTime);
-  parentElement.find('.total-time').text(duration);
+  parentElement.querySelector('.current-time').textContent = currentTime;
+  parentElement.querySelector('.total-time').textContent = duration;
 }
 
 // progress-bar in audio
 function updateProgressBar(parentElement, mediaElement) {
+  if (parentElement instanceof jQuery) {
+    parentElement = parentElement.get(0);
+  }
   var progress = (mediaElement.currentTime / mediaElement.duration) * 100;
-  parentElement.find('.progress-bar').css('width', progress + '%');
+  parentElement.querySelector('.progress-bar').style.width = progress + '%';
 }
 
 // controls volume 
