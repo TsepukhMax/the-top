@@ -117,13 +117,13 @@ $(document).ready(function () {
   });
 
   //tracking progress-bar for click
-  $('.popup').find('.js-progress-bar-container').on('click', function(e) {
-    var parentElement = $(this).closest('.popup-audio');
-    var audioElement = parentElement.find('audio')[0];
+  document.querySelector('.popup').querySelector('.js-progress-bar-container').addEventListener('click', function(e) {
+    var parentElement = document.querySelector('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
 
   // update function
   updateProgressOnClick(e, parentElement, audioElement);
-});
+  });
 
   // reset time in progress-bar
   audioFiles.addEventListener('ended', function () {
@@ -253,11 +253,11 @@ $(document).ready(function () {
     });
 
     // tracking progress-bar for click
-    slide.find('.js-progress-bar-container').on('click', function(e) {
-      var parentElement = $(this).closest('.slid');
-    
+    slide.get(0).querySelector('.js-progress-bar-container').addEventListener('click', function(e) { // USING JQWERY obj 
+      var slideElement = slide.get(0);
+  
       // update function
-      updateProgressOnClick(e, parentElement, video);
+      updateProgressOnClick(e, slideElement, video);
     });
 
     // update total time
@@ -376,7 +376,7 @@ function setVolume(e, parentElement, mediaElement) {
 function updateProgressOnClick(e, parentElement, mediaElement) {
   // calculate % progress-bar
   var offsetX = e.offsetX;
-  var totalWidth = $(e.currentTarget).width();
+  var totalWidth = e.currentTarget.offsetWidth;;
   var clickPosition = (offsetX / totalWidth) * mediaElement.duration;
 
   // update time
