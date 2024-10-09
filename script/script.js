@@ -139,34 +139,25 @@ $(document).ready(function () {
   });
 
   // Changing the volume "mousedown"
-  var volumeBarPopup = document.querySelectorAll('.volume-bar-container');
-  volumeBarPopup.forEach(function(volumeBar) {
-    volumeBar.addEventListener('mousedown', function(e){
-      var parentElement = document.querySelector('.popup-audio');
-      var audioElement = parentElement.querySelector('audio');
-      setVolume(e, parentElement, audioElement); // update
+  var volumeBarPopup = document.querySelector('.popup-audio').querySelector('.volume-bar-container');
+  volumeBarPopup.addEventListener('mousedown', function(e) {
+    var parentElement = document.querySelector('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
+    setVolume(e, parentElement, audioElement); // update
 
-      // var for mousemove function
-      var mouseMoveHandler = function (e) {
-        setVolume(e, parentElement, audioElement);
-      };
+    // var for mousemove function
+    var mouseMoveHandler = function (e) {
+      setVolume(e, parentElement, audioElement);
+    };
 
-      // follow for "mousemove" and "mouseup" on window
-      window.addEventListener('mousemove', mouseMoveHandler);
+    // follow for "mousemove" and "mouseup" on window
+    window.addEventListener('mousemove', mouseMoveHandler);
 
-      // Changing the volume "mouseup"
-      window.addEventListener('mouseup', function() {
-        window.removeEventListener('mousemove', mouseMoveHandler); //unfollow
-      }, { once: true }); // only one time
-    }) 
-  });
-
-
-
-
-
-
-
+    // Changing the volume "mouseup"
+    window.addEventListener('mouseup', function() {
+      window.removeEventListener('mousemove', mouseMoveHandler); //unfollow
+    }, { once: true }); // only one time
+  }) 
 
   // CLOSE-POPUP
   var body = document.body;
