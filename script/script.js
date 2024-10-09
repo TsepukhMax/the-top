@@ -1,4 +1,4 @@
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
 
   //BURGER MENU
   var burger = document.querySelector('.burger');
