@@ -219,60 +219,56 @@ $(document).ready(function () {
   })
 
   // add video for slid
-  $('.slid').each(function () {
-    var slide = $(this);
-    var video = slide.find('.slid-video')[0];
-    var playButton = slide.find('.button-play');
-    var volumeBarContainer = slide.find('.volume-bar-container')[0];
+  var slides = document.querySelectorAll('.slid');
+  slides.forEach(function (slide) {
+    var video = slide.querySelector('.slid-video');
+    var playButton = slide.querySelector('.button-play');
+    var volumeBarContainer = slide.querySelector('.volume-bar-container');
 
     // click for button Play/Stop
-    playButton.on('click', function () {
+    playButton.addEventListener('click', function () {
 
       // stop other Video
-      $('.slid').each(function () {
-        var otherSlide = $(this);
-        var otherVideo = otherSlide.find('.slid-video')[0];
+      slides.forEach(function (otherSlide) {
+        var otherVideo = otherSlide.querySelector('.slid-video');
 
         if (otherVideo !== video) { //check for no stop this video
           otherVideo.pause(); 
-          $(otherSlide).removeClass('playing');
-          $(otherSlide).find('.button-play').removeClass('button-stop'); //change for button-play
+          otherSlide.classList.remove('playing');
+          otherSlide.querySelector('.button-play').classList.remove('button-stop'); //change for button-play
         }
       });
 
       //stop or play this video
       if (video.paused) {
         video.play();
-        playButton.addClass('button-stop'); // change for button-stop
-        slide.addClass('playing'); 
+        playButton.classList.add('button-stop'); // change for button-stop
+        slide.classList.add('playing'); 
       } else {
         video.pause();
-        playButton.removeClass('button-stop'); // change for button-play
-        slide.removeClass('playing');
+        playButton.classList.remove('button-stop'); // change for button-play
+        slide.classList.remove('playing');
       }
     });
 
     // tracking progress-bar for click
-    slide.get(0).querySelector('.js-progress-bar-container').addEventListener('click', function(e) { // USING JQWERY obj 
-      var slideElement = slide.get(0);
+    slide.querySelector('.js-progress-bar-container').addEventListener('click', function(e) {
   
       // update function
-      updateProgressOnClick(e, slideElement, video);
+      updateProgressOnClick(e, slide, video);
     });
 
     // update total time
     video.addEventListener('loadedmetadata', function() {
-      var slideElement = slide.get(0);
 
-      updateDisplayTime(slideElement, video);
-      updateProgressBar(slideElement, video);
+      updateDisplayTime(slide, video);
+      updateProgressBar(slide, video);
     });
 
     // action play and pause
     video.addEventListener('play', function () {
-      var slideElement = slide.get(0);
       
-      updateProgressWithAnimationFrame(slideElement, video);
+      updateProgressWithAnimationFrame(slide, video);
     });
 
     video.addEventListener('pause', function () {
@@ -281,13 +277,11 @@ $(document).ready(function () {
 
     // reset time in progress-bar
     video.addEventListener('ended', function () {
-      var slideElement = slide.get(0);
-      var playButton = slideElement.querySelector('.button-play');
 
       video.currentTime = 0;
 
-      updateDisplayTime(slideElement, video);
-      updateProgressBar(slideElement, video);
+      updateDisplayTime(slide, video);
+      updateProgressBar(slide, video);
 
       playButton.classList.remove('button-stop'); // change for button-play
       slideElement.classList.remove('playing');
@@ -295,12 +289,11 @@ $(document).ready(function () {
 
     // Changing the volume "mousedown"
     volumeBarContainer.addEventListener('mousedown', function (e) {
-      var domParentElement = slide.get(0); // chenge jQuery for DOM-element
-      setVolume(e, domParentElement, video); // updata volume
+      setVolume(e, slide, video); // updata volume
 
       // var for mousemove function
       var mouseMoveHandler = function (e) {
-        setVolume(e, domParentElement, video);
+        setVolume(e, slide, video);
       };
 
       // Changing the volume "mouseup"
