@@ -36,10 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var targetPosition = targetElement.offsetTop;
 
       // scroll to element
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth' // animation
-      });
+      smoothScrollTo(targetPosition, duration);
 
       // close burger menu
       document.querySelector('.js-burger-content').classList.remove('burger-content-open');
@@ -379,4 +376,33 @@ function updateProgressOnClick(e, parentElement, mediaElement) {
   // update progress-bar and show time
   updateProgressBar(parentElement, mediaElement);
   updateDisplayTime(parentElement, mediaElement);
+}
+
+//-----SCROLL function--------
+const duration = 800;
+function smoothScrollTo(targetPosition, duration) {
+  var startPosition = window.scrollY || document.documentElement.scrollTop; // use scrollY
+  var distance = targetPosition - startPosition;
+  var startTime = performance.now(); // fix start time
+
+  function animationScroll(currentTime) {
+    var timeElapsed = currentTime - startTime; // how long
+    var progress = Math.min(timeElapsed / duration, 1); // 0-100%
+    var easeProgress = ease(progress); // use EASY function
+
+    // new position with use EASY function
+    window.scrollTo(0, startPosition + distance * easeProgress); // animation scroll
+
+    // check that time (how long) < for duration for this
+    if (timeElapsed < duration) {
+      requestAnimationFrame(animationScroll); // continue animation if have time
+    }
+  }
+
+  // EASY function
+  function ease(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // easeInOut function 
+  }
+
+  requestAnimationFrame(animationScroll); // start animation
 }
