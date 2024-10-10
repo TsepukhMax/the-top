@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var targetPosition = targetElement.offsetTop;
 
       // scroll to element
-      smoothScrollTo(targetPosition, duration);
+      smoothScrollTo(targetPosition, durationScrollTo);
 
       // close burger menu
       document.querySelector('.js-burger-content').classList.remove('burger-content-open');
@@ -379,29 +379,23 @@ function updateProgressOnClick(e, parentElement, mediaElement) {
 }
 
 //-----SCROLL function--------
-const duration = 800;
-function smoothScrollTo(targetPosition, duration) {
-  var startPosition = window.scrollY || document.documentElement.scrollTop; // use scrollY
+var durationScrollTo = 800;
+function smoothScrollTo(targetPosition, durationScrollTo) {
+  var startPosition = document.documentElement.scrollTop;
   var distance = targetPosition - startPosition;
   var startTime = performance.now(); // fix start time
 
   function animationScroll(currentTime) {
     var timeElapsed = currentTime - startTime; // how long
-    var progress = Math.min(timeElapsed / duration, 1); // 0-100%
-    var easeProgress = ease(progress); // use EASY function
+    var progress = Math.min(timeElapsed / durationScrollTo, 1); // 0-100%
 
     // new position with use EASY function
-    window.scrollTo(0, startPosition + distance * easeProgress); // animation scroll
+    document.documentElement.scrollTop = startPosition + distance * progress; // animation scroll
 
-    // check that time (how long) < for duration for this
-    if (timeElapsed < duration) {
+    // check that time (how long) < for duration for this - recursion that creates a scroll
+    if (timeElapsed < durationScrollTo) {
       requestAnimationFrame(animationScroll); // continue animation if have time
     }
-  }
-
-  // EASY function
-  function ease(t) {
-    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // easeInOut function 
   }
 
   requestAnimationFrame(animationScroll); // start animation
