@@ -79,22 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var audioFiles = document.querySelector('.popup-audio-files');
 
-  // AUDIO-ELEMENT
-  var jsPopupButton = document.querySelector('.js-popup-button');
-
-  jsPopupButton.addEventListener('click', function() {
-    var parentElement = this.closest('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
-    
-    if (audioElement.paused) {
-      audioElement.play();
-      this.classList.add('button-stop');
-    } else {
-      audioElement.pause();
-      this.classList.remove('button-stop');
-    }
-  });
-
   // action play and pause
   audioFiles.addEventListener('play', function () {
     var parentElement = this.closest('.popup-audio');
@@ -131,8 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateDisplayTime(parentElement, audioElement);
     updateProgressBar(parentElement, audioElement);
-
-    parentElement.querySelector('.js-popup-button').classList.remove('button-stop');
   });
 
   // Changing the volume "mousedown"
@@ -167,13 +149,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     stopAndResetAudio(audioElement);
     
-    jsPopupButton.classList.remove('button-stop');
     popup.classList.remove('show');
     body.classList.remove('body-wrapper');
   });
 
   // CLOSE-POPUP when click on window
-
   popup.addEventListener('click', function(e) {
   
     if (e.target === popup) {
@@ -182,12 +162,10 @@ document.addEventListener('DOMContentLoaded', function () {
       
       stopAndResetAudio(audioElement);
       
-      jsPopupButton.classList.remove('button-stop');
       popup.classList.remove('show');
       body.classList.remove('body-wrapper');
     }
   });
-
 
   // SLIDER
   document.querySelectorAll('.slider-section').forEach(function(slider) {
@@ -304,6 +282,39 @@ document.addEventListener('DOMContentLoaded', function () {
       window.addEventListener('mouseup', mouseUpHandler, { once: true });
     });
   });
+
+  // Button Play for Popup
+  var buttonPlaying = new ButtonComponent('', function(playing) {
+    var parentElement = document.querySelector('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
+
+    if (playing) {
+      audioElement.play();
+      buttonPlayingEl.classList.add('button-stop');
+    } else {
+      audioElement.pause();
+      buttonPlayingEl.classList.remove('button-stop');
+    }
+
+    audioElement.addEventListener('ended', function () {
+      buttonPlayingEl.playing = false;
+      buttonPlayingEl.classList.remove('button-stop');
+    });
+
+    popupClose.addEventListener('click', function() {
+      buttonPlayingEl.classList.remove('button-stop');
+    });
+
+    popup.addEventListener('click', function(e) {
+      if (e.target === popup) {
+        buttonPlayingEl.classList.remove('button-stop');
+      }
+    });
+  });
+
+  // render button Play for Popup
+  var buttonPlayingEl = buttonPlaying.render();
+  document.querySelector('.popup-audio').appendChild(buttonPlayingEl);
 });
 
 function stopAndResetAudio(audioElement) {
@@ -400,3 +411,24 @@ function smoothScrollTo(targetPosition, durationScroll) {
 
   requestAnimationFrame(animationScroll); // start animation
 }
+
+//-----OOP function for button play--------
+function ButtonComponent(text, cbOnClick) {
+  this._text = text;
+  this._onClick = cbOnClick;
+  this.playing = false;
+}
+
+ButtonComponent.prototype.render = function() {
+  var button = document.createElement('button');
+  button.textContent = this._text;
+  button.classList.add('button-play');
+  var that = this;
+
+  button.addEventListener('click', function() {
+    that.playing = !that.playing;
+    that._onClick(that.playing);
+  });
+
+  return button;
+};
