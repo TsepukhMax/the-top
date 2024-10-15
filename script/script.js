@@ -1,5 +1,44 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+  // ----Start play-button function for popup------
+  var buttonPlaying = new PlayButtonComponent(function(playing) {
+    var parentElement = document.querySelector('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
+
+    if (playing) {
+      audioElement.play(); // for "playing" on audio
+    } else {
+      audioElement.pause(); // for "playing" off audio (pause)
+    }
+
+    // Handle audio only once
+    audioElement.removeEventListener('ended', handleAudioEnd);
+    audioElement.addEventListener('ended', handleAudioEnd);
+
+    function handleAudioEnd() {
+      buttonPlaying.reset(); // Use the new factory reset method to disable the button
+    }
+  });
+
+  // // render button Play for Popup
+  var buttonPlayingEl = buttonPlaying.render();
+  document.querySelector('.popup-audio').appendChild(buttonPlayingEl);
+
+  // close popup and reset play button
+  var popupClose = document.querySelector('.popup-close');
+  popupClose.addEventListener('click', function() {
+    buttonPlaying.reset();
+  });
+
+  // close popup when click for not popup
+  var popup = document.querySelector('.popup');
+  popup.addEventListener('click', function(e) {
+    if (e.target === popup) {
+      buttonPlaying.reset();
+    }
+  });
+  // -----End play-button function for popup----
+
   //BURGER MENU
   var burger = document.querySelector('.burger');
   var burgerContent = document.querySelector('.js-burger-content');
@@ -140,8 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // CLOSE-POPUP
   var body = document.body;
-  var popup = document.querySelector('.popup');
-  var popupClose = document.querySelector('.popup-close');
 
   popupClose.addEventListener('click', function() {
     var parentElement = this.closest('.popup-content');
@@ -282,39 +319,6 @@ document.addEventListener('DOMContentLoaded', function () {
       window.addEventListener('mouseup', mouseUpHandler, { once: true });
     });
   });
-
-  // Button Play for Popup
-  var buttonPlaying = new ButtonComponent('', function(playing) {
-    var parentElement = document.querySelector('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
-
-    if (playing) {
-      audioElement.play();
-      buttonPlayingEl.classList.add('button-stop');
-    } else {
-      audioElement.pause();
-      buttonPlayingEl.classList.remove('button-stop');
-    }
-
-    audioElement.addEventListener('ended', function () {
-      buttonPlayingEl.playing = false;
-      buttonPlayingEl.classList.remove('button-stop');
-    });
-
-    popupClose.addEventListener('click', function() {
-      buttonPlayingEl.classList.remove('button-stop');
-    });
-
-    popup.addEventListener('click', function(e) {
-      if (e.target === popup) {
-        buttonPlayingEl.classList.remove('button-stop');
-      }
-    });
-  });
-
-  // render button Play for Popup
-  var buttonPlayingEl = buttonPlaying.render();
-  document.querySelector('.popup-audio').appendChild(buttonPlayingEl);
 });
 
 function stopAndResetAudio(audioElement) {
@@ -413,22 +417,38 @@ function smoothScrollTo(targetPosition, durationScroll) {
 }
 
 //-----OOP function for button play--------
-function ButtonComponent(text, cbOnClick) {
-  this._text = text;
+function PlayButtonComponent(cbOnClick) {
   this._onClick = cbOnClick;
   this.playing = false;
+  this._button = null; //private property for button
 }
 
-ButtonComponent.prototype.render = function() {
+PlayButtonComponent.prototype.render = function() {
   var button = document.createElement('button');
-  button.textContent = this._text;
   button.classList.add('button-play');
   var that = this;
 
   button.addEventListener('click', function() {
     that.playing = !that.playing;
+
+    if (that.playing) {
+      button.classList.add('button-stop');
+    } else {
+      button.classList.remove('button-stop');
+    }
+
     that._onClick(that.playing);
   });
 
+  this._button = button;
+
   return button;
+};
+
+// method for reset PlayButtonComponent
+PlayButtonComponent.prototype.reset = function() {
+  this.playing = false; // reset for false(no play)
+  if (this._button) {
+    this._button.classList.remove('button-stop'); // remove "button-stop"
+  }
 };
