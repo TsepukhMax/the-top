@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // // render button Play for Popup
   var buttonPlayingEl = buttonPlaying.render();
   document.querySelector('.popup-audio').appendChild(buttonPlayingEl);
-  
+
   // -----End play-button function for popup----
 
   //BURGER MENU
@@ -430,7 +430,5 @@ PlayButtonComponent.prototype.render = function() {
 // method for reset PlayButtonComponent
 PlayButtonComponent.prototype.reset = function() {
   this._playing = false; // reset for false(no play)
-  if (this._button) {
     this._button.classList.remove('button-stop'); // remove "button-stop"
-  }
 };
