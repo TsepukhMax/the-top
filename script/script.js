@@ -10,10 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       audioElement.pause(); // for "playing" off audio (pause)
     }
-
-    audioElement.addEventListener('ended', function() {
-      buttonPlaying.reset();
-    });
   });
 
   // // render button Play for Popup
@@ -32,6 +28,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.target === popup) {
       buttonPlaying.reset();
     }
+
+    var parentElement = document.querySelector('.popup-audio');
+    var audioElement = parentElement.querySelector('audio');
+    audioElement.addEventListener('ended', function() {
+      buttonPlaying.reset();
+    });
   });
   // -----End play-button function for popup----
 
