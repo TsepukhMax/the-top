@@ -15,26 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // // render button Play for Popup
   var buttonPlayingEl = buttonPlaying.render();
   document.querySelector('.popup-audio').appendChild(buttonPlayingEl);
-
-  // close popup and reset play button
-  var popupClose = document.querySelector('.popup-close');
-  popupClose.addEventListener('click', function() {
-    buttonPlaying.reset();
-  });
-
-  // close popup when click for not popup
-  var popup = document.querySelector('.popup');
-  popup.addEventListener('click', function(e) {
-    if (e.target === popup) {
-      buttonPlaying.reset();
-    }
-
-    var parentElement = document.querySelector('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
-    audioElement.addEventListener('ended', function() {
-      buttonPlaying.reset();
-    });
-  });
+  
   // -----End play-button function for popup----
 
   //BURGER MENU
@@ -152,6 +133,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateDisplayTime(parentElement, audioElement);
     updateProgressBar(parentElement, audioElement);
+
+    buttonPlaying.reset();
   });
 
   // Changing the volume "mousedown"
@@ -177,18 +160,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // CLOSE-POPUP
   var body = document.body;
-
+  var popupClose = document.querySelector('.popup-close');
   popupClose.addEventListener('click', function() {
     var parentElement = this.closest('.popup-content');
     var audioElement = parentElement.querySelector('audio');
 
     stopAndResetAudio(audioElement);
-    
+
+    buttonPlaying.reset()
     popup.classList.remove('show');
     body.classList.remove('body-wrapper');
   });
 
   // CLOSE-POPUP when click on window
+  var popup = document.querySelector('.popup');
   popup.addEventListener('click', function(e) {
   
     if (e.target === popup) {
@@ -196,7 +181,8 @@ document.addEventListener('DOMContentLoaded', function () {
       var audioElement = parentElement.querySelector('audio');
       
       stopAndResetAudio(audioElement);
-      
+
+      buttonPlaying.reset()
       popup.classList.remove('show');
       body.classList.remove('body-wrapper');
     }
