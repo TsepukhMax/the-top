@@ -11,13 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
       audioElement.pause(); // for "playing" off audio (pause)
     }
 
-    // Handle audio only once
-    audioElement.removeEventListener('ended', handleAudioEnd);
-    audioElement.addEventListener('ended', handleAudioEnd);
-
-    function handleAudioEnd() {
-      buttonPlaying.reset(); // Use the new factory reset method to disable the button
-    }
+    audioElement.addEventListener('ended', function() {
+      buttonPlaying.reset();
+    });
   });
 
   // // render button Play for Popup
@@ -419,35 +415,33 @@ function smoothScrollTo(targetPosition, durationScroll) {
 //-----OOP function for button play--------
 function PlayButtonComponent(cbOnClick) {
   this._onClick = cbOnClick;
-  this.playing = false;
+  this._playing = false;
   this._button = null; //private property for button
 }
 
 PlayButtonComponent.prototype.render = function() {
-  var button = document.createElement('button');
-  button.classList.add('button-play');
+  this._button = document.createElement('button');
+  this._button.classList.add('button-play');
   var that = this;
 
-  button.addEventListener('click', function() {
-    that.playing = !that.playing;
+  this._button.addEventListener('click', function() {
+    that._playing = !that._playing;
 
-    if (that.playing) {
-      button.classList.add('button-stop');
+    if (that._playing) {
+      that._button.classList.add('button-stop');
     } else {
-      button.classList.remove('button-stop');
+      that._button.classList.remove('button-stop');
     }
 
-    that._onClick(that.playing);
+    that._onClick(that._playing);
   });
 
-  this._button = button;
-
-  return button;
+  return this._button;
 };
 
 // method for reset PlayButtonComponent
 PlayButtonComponent.prototype.reset = function() {
-  this.playing = false; // reset for false(no play)
+  this._playing = false; // reset for false(no play)
   if (this._button) {
     this._button.classList.remove('button-stop'); // remove "button-stop"
   }
