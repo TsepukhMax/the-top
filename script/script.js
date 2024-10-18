@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
     slide.querySelector('.js-progress-bar-container').addEventListener('click', function(e) {
   
       // update function
-      updateProgressOnClick(e, slide, video, displayTime);
+      updateProgressOnClick(e, slide, video);
     });
 
     // update total time
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // action play and pause
     video.addEventListener('play', function () {
       
-      updateProgressWithAnimationFrame(slide, video, displayTime);
+      updateProgressWithAnimationFrame(slide, video);
     });
 
     video.addEventListener('pause', function () {
@@ -320,7 +320,9 @@ var progressAnimationFrame;
 function updateProgressWithAnimationFrame(parentElement, mediaElement, displayTime) {
   updateProgressBar(parentElement, mediaElement);
   updateDisplayTime(parentElement, mediaElement);
-  displayTime.updateDisplayTime();
+  if (displayTime) {
+    displayTime.updateDisplayTime(); // Only update displayTime if passed
+  }
 
   // call the animation again for the next frame
   progressAnimationFrame = requestAnimationFrame(function () {
@@ -374,7 +376,9 @@ function updateProgressOnClick(e, parentElement, mediaElement, displayTime) {
   // update progress-bar and show time
   updateProgressBar(parentElement, mediaElement);
   updateDisplayTime(parentElement, mediaElement);
-  displayTime.updateDisplayTime();
+  if (displayTime) {
+    displayTime.updateDisplayTime(); // Only update displayTime if passed
+  }
 }
 
 //-----SCROLL function--------
@@ -434,42 +438,45 @@ PlayButtonComponent.prototype.reset = function() {
 };
 
 //-----OOP function for DisplayTimeComponent --------
-class DisplayTimeComponent {
-  constructor(mediaElement) {
-    this._mediaElement = mediaElement; // private property for media el.
-
-    // create HTML-elements for DisplayTimeComponent
-    this._currentTimeEl = document.createElement('span');
-    this._currentTimeEl.classList.add('current-time');
-    this._currentTimeEl.textContent = '00:00';
-
-    this._totalTimeEl = document.createElement('span');
-    this._totalTimeEl.classList.add('total-time');
-    this._totalTimeEl.textContent = '00:00';
-
-    // container(div) for DisplayTimeComponent
-    this._container = document.createElement('div');
-    this._container.classList.add('display-time');
-    this._container.appendChild(this._currentTimeEl);
-    this._container.appendChild(document.createTextNode(' / '));
-    this._container.appendChild(this._totalTimeEl);
-  }
+function DisplayTimeComponent(mediaElement) {
+  // private property for media el.
+  this._mediaElement = mediaElement;
 
   // rendering method for DOM
-  render() {
-    return this._container;
-  }
+  this.render = function() {
+    
+    // create HTML-elements for DisplayTimeComponent
+    var currentTimeEl = document.createElement('span');
+    currentTimeEl.classList.add('current-time');
+    currentTimeEl.textContent = '00:00';
+
+    var totalTimeEl = document.createElement('span');
+    totalTimeEl.classList.add('total-time');
+    totalTimeEl.textContent = '00:00';
+
+    // container(div) for DisplayTimeComponent
+    var container = document.createElement('div');
+    container.classList.add('display-time');
+    container.appendChild(currentTimeEl);
+    container.appendChild(document.createTextNode(' / '));
+    container.appendChild(totalTimeEl);
+    return container;
+  };
 
   // main method
-  updateDisplayTime() {
-    this._currentTimeEl.textContent = this._formatTime(this._mediaElement.currentTime);
-    this._totalTimeEl.textContent = this._formatTime(this._mediaElement.duration || 0);
-  }
+  this.updateDisplayTime = function() {
+    var currentTimeEl = document.querySelector('.current-time');
+    var totalTimeEl = document.querySelector('.total-time');
+
+    // Використовуємо форматування часу
+    currentTimeEl.textContent = this._formatTime(this._mediaElement.currentTime);
+    totalTimeEl.textContent = this._formatTime(this._mediaElement.duration || 0);
+  };
 
   // private method for updateDisplayTime
-  _formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    return `${minutes}:${sec < 10 ? '0' : ''}${sec}`;
-  }
-}
+  this._formatTime = function(seconds) {
+    var minutes = Math.floor(seconds / 60);
+    var sec = Math.floor(seconds % 60);
+    return minutes + ':' + (sec < 10 ? '0' : '') + sec;
+  };
+};
