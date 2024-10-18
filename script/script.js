@@ -1,22 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+  var parentPopupElement = document.querySelector('.popup-audio');
+  var audioPopupElement = parentPopupElement.querySelector('audio');
+
   // ----Start play-button function for popup------
   var buttonPlaying = new PlayButtonComponent(function(playing) {
-    var parentElement = document.querySelector('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
 
     if (playing) {
-      audioElement.play(); // for "playing" on audio
+      audioPopupElement.play(); // for "playing" on audio
     } else {
-      audioElement.pause(); // for "playing" off audio (pause)
+      audioPopupElement.pause(); // for "playing" off audio (pause)
     }
   });
 
   // // render button Play for Popup
   var buttonPlayingEl = buttonPlaying.render();
-  document.querySelector('.popup-audio').appendChild(buttonPlayingEl);
+  parentPopupElement.appendChild(buttonPlayingEl);
 
   // -----End play-button function for popup----
+
+  // create displayTime and rendering
+  var displayTime = new DisplayTimeComponent(audioPopupElement);
+  parentPopupElement.appendChild(displayTime.render());
 
   //BURGER MENU
   var burger = document.querySelector('.burger');
@@ -84,11 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
       document.querySelector('.js-popup-title-text').textContent = titleText;
       document.querySelector('.js-popup-top').textContent = topText;
       document.querySelector('.popup-audio-files').setAttribute('src' , audioSource);
-        
-      var parentElement = document.querySelector('.popup-audio');
-      var audioElement = parentElement.querySelector('audio');
 
-      updateVolumeSlider(audioElement, parentElement);
+      updateVolumeSlider(audioPopupElement, parentPopupElement);
       
       document.querySelector('.popup').classList.add('show');
       document.body.classList.add('body-wrapper');
@@ -101,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
   audioFiles.addEventListener('play', function () {
     var parentElement = this.closest('.popup-audio');
     var audioElement = parentElement.querySelector('audio');
-    updateProgressWithAnimationFrame(parentElement, audioElement);
+    updateProgressWithAnimationFrame(parentElement, audioElement, displayTime);
   });
 
   audioFiles.addEventListener('pause', function () {
@@ -111,17 +113,15 @@ document.addEventListener('DOMContentLoaded', function () {
   audioFiles.addEventListener('loadedmetadata', function () {
     var parentElement = this.closest('.popup-audio');
     var audioElement = parentElement.querySelector('audio');
-    updateDisplayTime(parentElement, audioElement);
     updateProgressBar(parentElement, audioElement);
+    displayTime.updateDisplayTime();
   });
 
   //tracking progress-bar for click
   document.querySelector('.popup').querySelector('.js-progress-bar-container').addEventListener('click', function(e) {
-    var parentElement = document.querySelector('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
 
   // update function
-  updateProgressOnClick(e, parentElement, audioElement);
+  updateProgressOnClick(e, parentPopupElement, audioPopupElement, displayTime);
   });
 
   // reset time in progress-bar
@@ -131,22 +131,20 @@ document.addEventListener('DOMContentLoaded', function () {
     
     audioElement.currentTime = 0;
 
-    updateDisplayTime(parentElement, audioElement);
     updateProgressBar(parentElement, audioElement);
+    displayTime.updateDisplayTime();
 
     buttonPlaying.reset();
   });
 
   // Changing the volume "mousedown"
-  var volumeBarPopup = document.querySelector('.popup-audio').querySelector('.volume-bar-container');
+  var volumeBarPopup = parentPopupElement.querySelector('.volume-bar-container');
   volumeBarPopup.addEventListener('mousedown', function(e) {
-    var parentElement = document.querySelector('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
-    setVolume(e, parentElement, audioElement); // update
+    setVolume(e, parentPopupElement, audioPopupElement); // update
 
     // var for mousemove function
     var mouseMoveHandler = function (e) {
-      setVolume(e, parentElement, audioElement);
+      setVolume(e, parentPopupElement, audioPopupElement);
     };
 
     // follow for "mousemove" and "mouseup" on window
@@ -252,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
     slide.querySelector('.js-progress-bar-container').addEventListener('click', function(e) {
   
       // update function
-      updateProgressOnClick(e, slide, video);
+      updateProgressOnClick(e, slide, video, displayTime);
     });
 
     // update total time
@@ -265,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // action play and pause
     video.addEventListener('play', function () {
       
-      updateProgressWithAnimationFrame(slide, video);
+      updateProgressWithAnimationFrame(slide, video, displayTime);
     });
 
     video.addEventListener('pause', function () {
@@ -319,13 +317,14 @@ function formatTime(seconds) {
 
 var progressAnimationFrame;
 
-function updateProgressWithAnimationFrame(parentElement, mediaElement) {
+function updateProgressWithAnimationFrame(parentElement, mediaElement, displayTime) {
   updateProgressBar(parentElement, mediaElement);
   updateDisplayTime(parentElement, mediaElement);
+  displayTime.updateDisplayTime();
 
   // call the animation again for the next frame
   progressAnimationFrame = requestAnimationFrame(function () {
-    updateProgressWithAnimationFrame(parentElement, mediaElement);
+    updateProgressWithAnimationFrame(parentElement, mediaElement, displayTime);
   });
 }
 
@@ -363,7 +362,7 @@ function setVolume(e, parentElement, mediaElement) {
 }
 
 // update progress-bar in media
-function updateProgressOnClick(e, parentElement, mediaElement) {
+function updateProgressOnClick(e, parentElement, mediaElement, displayTime) {
   // calculate % progress-bar
   var offsetX = e.offsetX;
   var totalWidth = e.currentTarget.offsetWidth;;
@@ -375,6 +374,7 @@ function updateProgressOnClick(e, parentElement, mediaElement) {
   // update progress-bar and show time
   updateProgressBar(parentElement, mediaElement);
   updateDisplayTime(parentElement, mediaElement);
+  displayTime.updateDisplayTime();
 }
 
 //-----SCROLL function--------
@@ -432,3 +432,44 @@ PlayButtonComponent.prototype.reset = function() {
   this._playing = false; // reset for false(no play)
     this._button.classList.remove('button-stop'); // remove "button-stop"
 };
+
+//-----OOP function for DisplayTimeComponent --------
+class DisplayTimeComponent {
+  constructor(mediaElement) {
+    this._mediaElement = mediaElement; // private property for media el.
+
+    // create HTML-elements for DisplayTimeComponent
+    this._currentTimeEl = document.createElement('span');
+    this._currentTimeEl.classList.add('current-time');
+    this._currentTimeEl.textContent = '00:00';
+
+    this._totalTimeEl = document.createElement('span');
+    this._totalTimeEl.classList.add('total-time');
+    this._totalTimeEl.textContent = '00:00';
+
+    // container(div) for DisplayTimeComponent
+    this._container = document.createElement('div');
+    this._container.classList.add('display-time');
+    this._container.appendChild(this._currentTimeEl);
+    this._container.appendChild(document.createTextNode(' / '));
+    this._container.appendChild(this._totalTimeEl);
+  }
+
+  // rendering method for DOM
+  render() {
+    return this._container;
+  }
+
+  // main method
+  updateDisplayTime() {
+    this._currentTimeEl.textContent = this._formatTime(this._mediaElement.currentTime);
+    this._totalTimeEl.textContent = this._formatTime(this._mediaElement.duration || 0);
+  }
+
+  // private method for updateDisplayTime
+  _formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${minutes}:${sec < 10 ? '0' : ''}${sec}`;
+  }
+}
