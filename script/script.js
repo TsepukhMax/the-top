@@ -319,9 +319,10 @@ var progressAnimationFrame;
 
 function updateProgressWithAnimationFrame(parentElement, mediaElement, displayTime) {
   updateProgressBar(parentElement, mediaElement);
-  updateDisplayTime(parentElement, mediaElement);
   if (displayTime) {
-    displayTime.updateDisplayTime(); // Only update displayTime if passed
+    displayTime.updateDisplayTime(); //update with displayTime.updateDisplayTime
+  } else {
+    updateDisplayTime(parentElement, mediaElement); // update with updateDisplayTime function
   }
 
   // call the animation again for the next frame
@@ -375,9 +376,10 @@ function updateProgressOnClick(e, parentElement, mediaElement, displayTime) {
 
   // update progress-bar and show time
   updateProgressBar(parentElement, mediaElement);
-  updateDisplayTime(parentElement, mediaElement);
   if (displayTime) {
-    displayTime.updateDisplayTime(); // Only update displayTime if passed
+    displayTime.updateDisplayTime(); //update with displayTime.updateDisplayTime
+  } else {
+    updateDisplayTime(parentElement, mediaElement); // update with updateDisplayTime function
   }
 }
 
@@ -441,42 +443,40 @@ PlayButtonComponent.prototype.reset = function() {
 function DisplayTimeComponent(mediaElement) {
   // private property for media el.
   this._mediaElement = mediaElement;
+};
 
-  // rendering method for DOM
-  this.render = function() {
+// rendering method for DOM
+DisplayTimeComponent.prototype.render = function() {
     
-    // create HTML-elements for DisplayTimeComponent
-    var currentTimeEl = document.createElement('span');
-    currentTimeEl.classList.add('current-time');
-    currentTimeEl.textContent = '00:00';
+  // create HTML-elements for DisplayTimeComponent
+  this._currentTimeEl = document.createElement('span');
+  this._currentTimeEl.classList.add('current-time');
+  this._currentTimeEl.textContent = '00:00';
 
-    var totalTimeEl = document.createElement('span');
-    totalTimeEl.classList.add('total-time');
-    totalTimeEl.textContent = '00:00';
+  this._totalTimeEl = document.createElement('span');
+  this._totalTimeEl.classList.add('total-time');
+  this._totalTimeEl.textContent = '00:00';
 
-    // container(div) for DisplayTimeComponent
-    var container = document.createElement('div');
-    container.classList.add('display-time');
-    container.appendChild(currentTimeEl);
-    container.appendChild(document.createTextNode(' / '));
-    container.appendChild(totalTimeEl);
-    return container;
-  };
+  // create container (but don't store it in a property)
+  var container = document.createElement('div');
+  container.classList.add('display-time');
+  container.appendChild(this._currentTimeEl);
+  container.appendChild(document.createTextNode(' / '));
+  container.appendChild(this._totalTimeEl);
 
-  // main method
-  this.updateDisplayTime = function() {
-    var currentTimeEl = document.querySelector('.current-time');
-    var totalTimeEl = document.querySelector('.total-time');
+  // return container without saving it to a property
+  return container;
+};
 
-    // Використовуємо форматування часу
-    currentTimeEl.textContent = this._formatTime(this._mediaElement.currentTime);
-    totalTimeEl.textContent = this._formatTime(this._mediaElement.duration || 0);
-  };
+// main method
+DisplayTimeComponent.prototype.updateDisplayTime = function() {
+  this._currentTimeEl.textContent = this._formatTime(this._mediaElement.currentTime);
+  this._totalTimeEl.textContent = this._formatTime(this._mediaElement.duration || 0);
+};
 
-  // private method for updateDisplayTime
-  this._formatTime = function(seconds) {
-    var minutes = Math.floor(seconds / 60);
-    var sec = Math.floor(seconds % 60);
-    return minutes + ':' + (sec < 10 ? '0' : '') + sec;
-  };
+// private method for updateDisplayTime
+DisplayTimeComponent.prototype._formatTime = function(seconds) {
+  var minutes = Math.floor(seconds / 60);
+  var sec = Math.floor(seconds % 60);
+  return minutes + ':' + (sec < 10 ? '0' : '') + sec;
 };
