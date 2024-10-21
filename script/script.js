@@ -466,9 +466,12 @@ DisplayTimeComponent.prototype._formatTime = function(seconds) {
 
 //-----OOP function for VolumeBarComponent --------
 function VolumeBarComponent(mediaElement) {
-  
   // private property for media el.
   this._mediaElement = mediaElement;
+};
+
+// rendering method for DOM
+VolumeBarComponent.prototype.render = function() {
   
   // create HTML-elements
   this._volumeSliderEl = document.createElement('div');
@@ -478,29 +481,33 @@ function VolumeBarComponent(mediaElement) {
   this._volumeBarContainer.classList.add('volume-bar-container');
   this._volumeBarContainer.appendChild(this._volumeSliderEl);
 
-   // add mousedown
-   this._volumeBarContainer.addEventListener('mousedown', this._onMouseDown.bind(this));
-};
+  // add mousedown using an anonymous function
+  var that = this;
+  this._volumeBarContainer.addEventListener('mousedown', function(e) {
+    that._onMouseDown(e);
+  });
 
-// rendering method for DOM
-VolumeBarComponent.prototype.render = function() {
   return this._volumeBarContainer;
 };
 
 // method for install volume
 VolumeBarComponent.prototype._onMouseDown = function(e) {
-  // update for click
-  this._setVolume(e);
-
+  
   // save "this" for callback use
   var that = this;
+
+  // update for click
+  that._setVolume(e);
 
   // function for mousemove
   var mouseMoveHandler = function(e) {
     that._setVolume(e);
   };
 
+  // follow mousemove
   window.addEventListener('mousemove', mouseMoveHandler);
+
+  // unfollow on mouseup
   window.addEventListener('mouseup', function() {
     window.removeEventListener('mousemove', mouseMoveHandler);
   }, { once: true });
