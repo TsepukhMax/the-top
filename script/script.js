@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.querySelector('.js-popup-top').textContent = topText;
       document.querySelector('.popup-audio-files').setAttribute('src' , audioSource);
 
-      volumeBar.updateVolumeSlider(parentPopupElement);
+      volumeBar.updateVolumeSlider();
       
       document.querySelector('.popup').classList.add('show');
       document.body.classList.add('body-wrapper');
@@ -138,25 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     buttonPlaying.reset();
   });
-
-  // Changing the volume "mousedown"
-  var volumeBarPopup = parentPopupElement.querySelector('.volume-bar-container');
-  volumeBarPopup.addEventListener('mousedown', function(e) {
-    volumeBar.setVolume(e, parentPopupElement); // update
-
-    // var for mousemove function
-    var mouseMoveHandler = function (e) {
-      volumeBar.setVolume(e, parentPopupElement);
-    };
-
-    // follow for "mousemove" and "mouseup" on window
-    window.addEventListener('mousemove', mouseMoveHandler);
-
-    // Changing the volume "mouseup"
-    window.addEventListener('mouseup', function() {
-      window.removeEventListener('mousemove', mouseMoveHandler); //unfollow
-    }, { once: true }); // only one time
-  }) 
 
   // CLOSE-POPUP
   var body = document.body;
@@ -485,38 +466,59 @@ DisplayTimeComponent.prototype._formatTime = function(seconds) {
 
 //-----OOP function for VolumeBarComponent --------
 function VolumeBarComponent(mediaElement) {
+  
   // private property for media el.
   this._mediaElement = mediaElement;
+  
+  // create HTML-elements
+  this._volumeSliderEl = document.createElement('div');
+  this._volumeSliderEl.classList.add('volume-slider');
+
+  this._volumeBarContainer = document.createElement('div');
+  this._volumeBarContainer.classList.add('volume-bar-container');
+  this._volumeBarContainer.appendChild(this._volumeSliderEl);
+
+   // add mousedown
+   this._volumeBarContainer.addEventListener('mousedown', this._onMouseDown.bind(this));
 };
 
 // rendering method for DOM
 VolumeBarComponent.prototype.render = function() {
-    
-  // create HTML-elements for VolumeBarComponent (but don't store it in a property)
-  var volumeSlider = document.createElement('div');
-  volumeSlider.classList.add('volume-slider');
-
-  var volumeBarContainer = document.createElement('div');
-  volumeBarContainer.classList.add('volume-bar-container');
-  volumeBarContainer.appendChild(volumeSlider);
-
-  // return volumeBarContainer without saving it to a property
-  return volumeBarContainer;
+  return this._volumeBarContainer;
 };
 
-// main method
-VolumeBarComponent.prototype.setVolume = function(e, parentElement) {
-  var volumeBar = parentElement.querySelector('.volume-bar-container');
+// method for install volume
+VolumeBarComponent.prototype._onMouseDown = function(e) {
+  // update for click
+  this._setVolume(e);
+
+  // save "this" for callback use
+  var that = this;
+
+  // function for mousemove
+  var mouseMoveHandler = function(e) {
+    that._setVolume(e);
+  };
+
+  window.addEventListener('mousemove', mouseMoveHandler);
+  window.addEventListener('mouseup', function() {
+    window.removeEventListener('mousemove', mouseMoveHandler);
+  }, { once: true });
+};
+
+// main method for control volume
+VolumeBarComponent.prototype._setVolume = function(e) {
+  var volumeBar = this._volumeBarContainer;
 
   var offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
   var totalWidth = volumeBar.offsetWidth;
   var newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
 
   this._mediaElement.volume = newVolume; // Update volume
-  this.updateVolumeSlider(parentElement); // Update slider position
+  this.updateVolumeSlider(); // Update slider position
 };
 
-VolumeBarComponent.prototype.updateVolumeSlider = function(parentElement) {
-  var volumeSlider = parentElement.querySelector('.volume-slider');
-  volumeSlider.style.width = (this._mediaElement.volume * 100) + '%'; // Set the width based on volume
+// method for updating slider position
+VolumeBarComponent.prototype.updateVolumeSlider = function() {
+  this._volumeSliderEl.style.width = (this._mediaElement.volume * 100) + '%'; // Set the width based on volume
 };
