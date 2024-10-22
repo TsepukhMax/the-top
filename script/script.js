@@ -481,9 +481,10 @@ VolumeBarComponent.prototype.render = function() {
   this._volumeBarContainer.classList.add('volume-bar-container');
   this._volumeBarContainer.appendChild(this._volumeSliderEl);
 
+  var that = this;
+
   // add mousedown using an anonymous function // method for install volume
   this._volumeBarContainer.addEventListener('mousedown', function(e) {
-    var that = this;
     
     // update for click
     that._setVolume(e);
@@ -500,7 +501,7 @@ VolumeBarComponent.prototype.render = function() {
     window.addEventListener('mouseup', function() {
       window.removeEventListener('mousemove', mouseMoveHandler);
     }, { once: true });
-  }.bind(this)); // Bind 'this' refer to the VolumeBarComponent
+  });
 
   return this._volumeBarContainer;
 };
