@@ -481,36 +481,28 @@ VolumeBarComponent.prototype.render = function() {
   this._volumeBarContainer.classList.add('volume-bar-container');
   this._volumeBarContainer.appendChild(this._volumeSliderEl);
 
-  // add mousedown using an anonymous function
-  var that = this;
+  // add mousedown using an anonymous function // method for install volume
   this._volumeBarContainer.addEventListener('mousedown', function(e) {
-    that._onMouseDown(e);
-  });
+    var that = this;
+    
+    // update for click
+    that._setVolume(e);
+
+    // function for mousemove
+    var mouseMoveHandler = function(e) {
+      that._setVolume(e);
+    };
+
+    // follow mousemove
+    window.addEventListener('mousemove', mouseMoveHandler);
+
+    // unfollow on mouseup
+    window.addEventListener('mouseup', function() {
+      window.removeEventListener('mousemove', mouseMoveHandler);
+    }, { once: true });
+  }.bind(this)); // Bind 'this' refer to the VolumeBarComponent
 
   return this._volumeBarContainer;
-};
-
-// method for install volume
-VolumeBarComponent.prototype._onMouseDown = function(e) {
-  
-  // save "this" for callback use
-  var that = this;
-
-  // update for click
-  that._setVolume(e);
-
-  // function for mousemove
-  var mouseMoveHandler = function(e) {
-    that._setVolume(e);
-  };
-
-  // follow mousemove
-  window.addEventListener('mousemove', mouseMoveHandler);
-
-  // unfollow on mouseup
-  window.addEventListener('mouseup', function() {
-    window.removeEventListener('mousemove', mouseMoveHandler);
-  }, { once: true });
 };
 
 // main method for control volume
