@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function () {
   parentPopupElement.appendChild(buttonPlayingEl);
 
   // create and render the displayTime ---OOP---
-  var displayTime = new DisplayTimeComponent(audioPopupElement);
+  const displayTime = new DisplayTimeComponent(audioPopupElement);
   parentPopupElement.appendChild(displayTime.render());
 
   // create and render the volumeBar ---OOP---
-  var volumeBar = new VolumeBarComponent(audioPopupElement);
+  const volumeBar = new VolumeBarComponent(audioPopupElement);
   parentPopupElement.appendChild(volumeBar.render());
 
   //BURGER MENU
@@ -389,7 +389,7 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
   requestAnimationFrame(animationScroll); // start animation
 }
 
-//-----OOP function for button play--------
+//-----OOP for button play--------
 class PlayButtonComponent {
   #playing = false;
   #button = null;
@@ -426,103 +426,109 @@ class PlayButtonComponent {
   };
 };
 
-//-----OOP function for DisplayTimeComponent --------
-function DisplayTimeComponent(mediaElement) {
-  // private property for media el.
-  this._mediaElement = mediaElement;
-};
+//-----OOP for DisplayTimeComponent --------
+class DisplayTimeComponent {
+  #mediaElement;
+  #currentTimeEl;
+  #totalTimeEl;
 
-// rendering method for DOM
-DisplayTimeComponent.prototype.render = function() {
-    
-  // create HTML-elements for DisplayTimeComponent
-  this._currentTimeEl = document.createElement('span');
-  this._currentTimeEl.classList.add('current-time');
-  this._currentTimeEl.textContent = '00:00';
-
-  this._totalTimeEl = document.createElement('span');
-  this._totalTimeEl.classList.add('total-time');
-  this._totalTimeEl.textContent = '00:00';
-
-  // create container (but don't store it in a property)
-  var container = document.createElement('div');
-  container.classList.add('display-time');
-  container.appendChild(this._currentTimeEl);
-  container.appendChild(document.createTextNode(' / '));
-  container.appendChild(this._totalTimeEl);
-
-  // return container without saving it to a property
-  return container;
-};
-
-// main method
-DisplayTimeComponent.prototype.updateDisplayTime = function() {
-  this._currentTimeEl.textContent = this._formatTime(this._mediaElement.currentTime);
-  this._totalTimeEl.textContent = this._formatTime(this._mediaElement.duration || 0);
-};
-
-// private method for updateDisplayTime
-DisplayTimeComponent.prototype._formatTime = function(seconds) {
-  var minutes = Math.floor(seconds / 60);
-  var sec = Math.floor(seconds % 60);
-  return minutes + ':' + (sec < 10 ? '0' : '') + sec;
-};
-
-//-----OOP function for VolumeBarComponent --------
-function VolumeBarComponent(mediaElement) {
-  // private property for media el.
-  this._mediaElement = mediaElement;
-};
-
-// rendering method for DOM
-VolumeBarComponent.prototype.render = function() {
+  constructor(mediaElement) {
+    this.#mediaElement = mediaElement;
+  };
   
-  // create HTML-elements
-  this._volumeSliderEl = document.createElement('div');
-  this._volumeSliderEl.classList.add('volume-slider');
+  render() {
+      
+    // create HTML-elements for DisplayTimeComponent
+    this.#currentTimeEl = document.createElement('span');
+    this.#currentTimeEl.classList.add('current-time');
+    this.#currentTimeEl.textContent = '00:00';
 
-  this._volumeBarContainer = document.createElement('div');
-  this._volumeBarContainer.classList.add('volume-bar-container');
-  this._volumeBarContainer.appendChild(this._volumeSliderEl);
+    this.#totalTimeEl = document.createElement('span');
+    this.#totalTimeEl.classList.add('total-time');
+    this.#totalTimeEl.textContent = '00:00';
 
-  var that = this;
+    // create container (but don't store it in a property)
+    const container = document.createElement('div');
+    container.classList.add('display-time');
+    container.appendChild(this.#currentTimeEl);
+    container.appendChild(document.createTextNode(' / '));
+    container.appendChild(this.#totalTimeEl);
 
-  // add mousedown using an anonymous function // method for install volume
-  this._volumeBarContainer.addEventListener('mousedown', function(e) {
+    // return container without saving it to a property
+    return container;
+  };
+  
+  updateDisplayTime() {
+  this.#currentTimeEl.textContent = this.#formatTime(this.#mediaElement.currentTime);
+  this.#totalTimeEl.textContent = this.#formatTime(this.#mediaElement.duration || 0);
+  };
+
+  // private method for updateDisplayTime
+  #formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return minutes + ':' + (sec < 10 ? '0' : '') + sec;
+  };
+};
+
+//-----OOP for VolumeBarComponent --------
+class VolumeBarComponent {
+  #mediaElement;
+  #volumeSliderEl;
+  #volumeBarContainer;
+
+  constructor(mediaElement) {
+    this.#mediaElement = mediaElement;
+  };
+
+  // rendering method for DOM
+  render() {
     
-    // update for click
-    that._setVolume(e);
+    // create HTML-elements
+    this.#volumeSliderEl = document.createElement('div');
+    this.#volumeSliderEl.classList.add('volume-slider');
 
-    // function for mousemove
-    var mouseMoveHandler = function(e) {
-      that._setVolume(e);
-    };
+    this.#volumeBarContainer = document.createElement('div');
+    this.#volumeBarContainer.classList.add('volume-bar-container');
+    this.#volumeBarContainer.appendChild(this.#volumeSliderEl);
 
-    // follow mousemove
-    window.addEventListener('mousemove', mouseMoveHandler);
+    // add mousedown using an anonymous function // method for install volume
+    this.#volumeBarContainer.addEventListener('mousedown',(e) => {
+      
+      // update for click
+      this.#setVolume(e);
 
-    // unfollow on mouseup
-    window.addEventListener('mouseup', function() {
-      window.removeEventListener('mousemove', mouseMoveHandler);
-    }, { once: true });
-  });
+      // function for mousemove
+      const mouseMoveHandler = (e) => {
+        this.#setVolume(e);
+      };
 
-  return this._volumeBarContainer;
-};
+      // follow mousemove
+      window.addEventListener('mousemove', mouseMoveHandler);
 
-// main method for control volume
-VolumeBarComponent.prototype._setVolume = function(e) {
-  var volumeBar = this._volumeBarContainer;
+      // unfollow on mouseup
+      window.addEventListener('mouseup', () => {
+        window.removeEventListener('mousemove', mouseMoveHandler);
+      }, { once: true });
+    });
 
-  var offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
-  var totalWidth = volumeBar.offsetWidth;
-  var newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
+    return this.#volumeBarContainer;
+  };
 
-  this._mediaElement.volume = newVolume; // Update volume
-  this.updateVolumeSlider(); // Update slider position
-};
+  // main method for control volume
+  #setVolume(e) {
+    const volumeBar = this.#volumeBarContainer;
 
-// method for updating slider position
-VolumeBarComponent.prototype.updateVolumeSlider = function() {
-  this._volumeSliderEl.style.width = (this._mediaElement.volume * 100) + '%'; // Set the width based on volume
+    const offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
+    const totalWidth = volumeBar.offsetWidth;
+    const newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
+
+    this.#mediaElement.volume = newVolume; // Update volume
+    this.updateVolumeSlider(); // Update slider position
+  };
+
+  // method for updating slider position
+  updateVolumeSlider() {
+    this.#volumeSliderEl.style.width = (this.#mediaElement.volume * 100) + '%'; // Set the width based on volume
+  };
 };
