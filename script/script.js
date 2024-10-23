@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var audioPopupElement = parentPopupElement.querySelector('audio');
 
   // ----Start play-button function for popup------
-  var buttonPlaying = new PlayButtonComponent(function(playing) {
+  const buttonPlaying = new PlayButtonComponent ((playing) => {
 
     if (playing) {
       audioPopupElement.play(); // for "playing" on audio
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // create and render the buttonPlayingEl ---OOP---
-  var buttonPlayingEl = buttonPlaying.render();
+  const buttonPlayingEl = buttonPlaying.render();
   parentPopupElement.appendChild(buttonPlayingEl);
 
   // create and render the displayTime ---OOP---
@@ -367,15 +367,15 @@ function updateProgressOnClick(e, parentElement, mediaElement, displayTime) {
 }
 
 //-----SCROLL function--------
-var DURATION_SCROLL = 800;
-function smoothScrollTo(targetPosition, durationScroll) {
-  var startPosition = document.documentElement.scrollTop;
-  var distance = targetPosition - startPosition;
-  var startTime = performance.now(); // fix start time
+const DURATION_SCROLL = 800;
+const smoothScrollTo = (targetPosition, durationScroll) => {
+  const startPosition = document.documentElement.scrollTop;
+  const distance = targetPosition - startPosition;
+  const startTime = performance.now(); // fix start time
 
-  function animationScroll(currentTime) {
-    var timeElapsed = currentTime - startTime; // how long
-    var progress = Math.min(timeElapsed / durationScroll, 1); // 0-100%
+  const animationScroll = (currentTime) => {
+    const timeElapsed = currentTime - startTime; // how long
+    const progress = Math.min(timeElapsed / durationScroll, 1); // 0-100%
 
     // new position with use EASY function
     document.documentElement.scrollTop = startPosition + distance * progress; // animation scroll
@@ -390,36 +390,40 @@ function smoothScrollTo(targetPosition, durationScroll) {
 }
 
 //-----OOP function for button play--------
-function PlayButtonComponent(cbOnClick) {
-  this._onClick = cbOnClick;
-  this._playing = false;
-  this._button = null; //private property for button
-}
+class PlayButtonComponent {
+  #playing = false;
+  #button = null;
+  #onClick = null;
 
-PlayButtonComponent.prototype.render = function() {
-  this._button = document.createElement('button');
-  this._button.classList.add('button-play');
-  var that = this;
+  constructor(cbOnClick) {
+    this.#onClick = cbOnClick;
+  }
 
-  this._button.addEventListener('click', function() {
-    that._playing = !that._playing;
+  // method for render PlayButtonComponent
+  render() {
+    this.#button = document.createElement('button');
+    this.#button.classList.add('button-play');
 
-    if (that._playing) {
-      that._button.classList.add('button-stop');
-    } else {
-      that._button.classList.remove('button-stop');
-    }
+    this.#button.addEventListener('click',() => {
+      this.#playing = !this.#playing;
 
-    that._onClick(that._playing);
-  });
+      if (this.#playing) {
+        this.#button.classList.add('button-stop');
+      } else {
+        this.#button.classList.remove('button-stop');
+      }
 
-  return this._button;
-};
+      this.#onClick(this.#playing);
+    });
 
-// method for reset PlayButtonComponent
-PlayButtonComponent.prototype.reset = function() {
-  this._playing = false; // reset for false(no play)
-    this._button.classList.remove('button-stop'); // remove "button-stop"
+    return this.#button;
+  };
+
+  // method for reset PlayButtonComponent
+  reset() {
+  this.#playing = false; // reset for false(no play)
+    this.#button.classList.remove('button-stop'); // remove "button-stop"
+  };
 };
 
 //-----OOP function for DisplayTimeComponent --------
