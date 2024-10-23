@@ -26,19 +26,19 @@ document.addEventListener('DOMContentLoaded', function () {
   parentPopupElement.appendChild(volumeBar.render());
 
   //BURGER MENU
-  var burger = document.querySelector('.burger');
-  var burgerContent = document.querySelector('.js-burger-content');
-  var navigationalList = document.querySelector('.navigational-list');
-  var menu = document.querySelector('.navigational-menu');
+  const burger = document.querySelector('.burger');
+  const burgerContent = document.querySelector('.js-burger-content');
+  const navigationalList = document.querySelector('.navigational-list');
+  const menu = document.querySelector('.navigational-menu');
 
   // click for burger
-  burger.addEventListener('click', function() {
+  burger.addEventListener('click', () => {
     burgerContent.classList.toggle('burger-content-open');
     navigationalList.classList.toggle('navigational-list-visible');
   });
 
   // close burger menu if click no burger
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', (e) => {
     if (!menu.contains(e.target) && !burger.contains(e.target)) {
       burgerContent.classList.remove('burger-content-open');
       navigationalList.classList.remove('navigational-list-visible');
@@ -46,19 +46,19 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // SUBMENU
-  var jsMovieLink = document.querySelectorAll('.js-movie-link');
+  const jsMovieLink = document.querySelectorAll('.js-movie-link');
 
-  jsMovieLink.forEach(function(link) {
-    link.addEventListener('click', function(event) {
+  jsMovieLink.forEach((link) => {
+    link.addEventListener('click', (event) => {
       // cancel standart behavior for link
       event.preventDefault();
 
       // get href
-      var href = this.getAttribute('href');
-      var targetElement = document.querySelector(href);
+      const href = event.target.getAttribute('href');
+      const targetElement = document.querySelector(href);
 
       // get position element
-      var targetPosition = targetElement.offsetTop;
+      const targetPosition = targetElement.offsetTop;
 
       // scroll to element
       smoothScrollTo(targetPosition, DURATION_SCROLL);
@@ -467,7 +467,7 @@ class DisplayTimeComponent {
   #formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
-    return minutes + ':' + (sec < 10 ? '0' : '') + sec;
+    return `${minutes}:${sec < 10 ? '0' : ''}${sec}`;
   };
 };
 
@@ -529,6 +529,6 @@ class VolumeBarComponent {
 
   // method for updating slider position
   updateVolumeSlider() {
-    this.#volumeSliderEl.style.width = (this.#mediaElement.volume * 100) + '%'; // Set the width based on volume
+    this.#volumeSliderEl.style.width = `${this.#mediaElement.volume * 100}%`; // Set the width based on volume
   };
 };
