@@ -1,8 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
 
-  var parentPopupElement = document.querySelector('.popup-audio');
-  var audioPopupElement = parentPopupElement.querySelector('audio');
-
+  const parentPopupElement = document.querySelector('.popup-audio');
+  const audioPopupElement = parentPopupElement.querySelector('audio');
   // ----Start play-button function for popup------
   const buttonPlaying = new PlayButtonComponent ((playing) => {
 
