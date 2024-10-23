@@ -140,75 +140,75 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // CLOSE-POPUP
-  var body = document.body;
-  var popupClose = document.querySelector('.popup-close');
-  popupClose.addEventListener('click', function() {
-    var parentElement = this.closest('.popup-content');
-    var audioElement = parentElement.querySelector('audio');
+  const body = document.body;
+  const popupClose = document.querySelector('.popup-close');
+  popupClose.addEventListener('click', (e) => {
+    const parentElement = e.currentTarget.closest('.popup-content');
+    const audioElement = parentElement.querySelector('audio');
 
     stopAndResetAudio(audioElement);
 
-    buttonPlaying.reset()
+    buttonPlaying.reset();
     popup.classList.remove('show');
     body.classList.remove('body-wrapper');
   });
 
   // CLOSE-POPUP when click on window
-  var popup = document.querySelector('.popup');
-  popup.addEventListener('click', function(e) {
-  
+  const popup = document.querySelector('.popup');
+  popup.addEventListener('click', (e) => {
+
     if (e.target === popup) {
-      var parentElement = this.querySelector('.popup-content');
-      var audioElement = parentElement.querySelector('audio');
+      const parentElement = popup.querySelector('.popup-content');
+      const audioElement = parentElement.querySelector('audio');
       
       stopAndResetAudio(audioElement);
 
-      buttonPlaying.reset()
+      buttonPlaying.reset();
       popup.classList.remove('show');
       body.classList.remove('body-wrapper');
     }
   });
 
   // SLIDER
-  document.querySelectorAll('.slider-section').forEach(function(slider) {
-    var arrowRight = slider.querySelector('.arrow-right');
-    var arrowLeft = slider.querySelector('.arrow-left');
-    var slidsWrapper = slider.querySelector('.slids-wrapper');
-    var maxSlideIndex = slider.querySelectorAll('.slid').length - 1;
-    var currentSlid = 0;
+  document.querySelectorAll('.slider-section').forEach((slider) => {
+    const arrowRight = slider.querySelector('.arrow-right');
+    const arrowLeft = slider.querySelector('.arrow-left');
+    const slidsWrapper = slider.querySelector('.slids-wrapper');
+    const maxSlideIndex = slider.querySelectorAll('.slid').length - 1;
+    let currentSlid = 0;
 
     // event for arrow-right
-    arrowRight.addEventListener('click', function(e) {
+    arrowRight.addEventListener('click', (e) => {
       e.preventDefault();
       if (currentSlid < maxSlideIndex) {
         currentSlid++;
-        slidsWrapper.style.marginLeft = currentSlid * -100 + '%';
+        slidsWrapper.style.marginLeft = `${currentSlid * -100}%`;
       }
     });
 
     // event for arrow-left
-    arrowLeft.addEventListener('click', function(e) {
+    arrowLeft.addEventListener('click', (e) => {
       e.preventDefault();
       if (currentSlid > 0) {
         currentSlid--;
-        slidsWrapper.style.marginLeft = currentSlid * -100 + '%';
+        slidsWrapper.style.marginLeft =`${currentSlid * -100}%`;
       }
     });
   })
 
   // add video for slid
-  var slides = document.querySelectorAll('.slid');
-  slides.forEach(function (slide) {
-    var video = slide.querySelector('.slid-video');
-    var playButton = slide.querySelector('.button-play');
-    var volumeBarContainer = slide.querySelector('.volume-bar-container');
+  const slides = document.querySelectorAll('.slid');
+  slides.forEach((slide) => {
+    const video = slide.querySelector('.slid-video');
+    const playButton = slide.querySelector('.button-play');
+    const volumeBarContainer = slide.querySelector('.volume-bar-container');
 
     // click for button Play/Stop
-    playButton.addEventListener('click', function () {
+    playButton.addEventListener('click', () => {
 
       // stop other Video
-      slides.forEach(function (otherSlide) {
-        var otherVideo = otherSlide.querySelector('.slid-video');
+      slides.forEach((otherSlide) => {
+        const otherVideo = otherSlide.querySelector('.slid-video');
 
         if (otherVideo !== video) { //check for no stop this video
           otherVideo.pause(); 
@@ -230,31 +230,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // tracking progress-bar for click
-    slide.querySelector('.js-progress-bar-container').addEventListener('click', function(e) {
+    slide.querySelector('.js-progress-bar-container').addEventListener('click', (e) => {
   
       // update function
       updateProgressOnClick(e, slide, video);
     });
 
     // update total time
-    video.addEventListener('loadedmetadata', function() {
+    video.addEventListener('loadedmetadata', () => {
 
       updateDisplayTime(slide, video);
       updateProgressBar(slide, video);
     });
 
     // action play and pause
-    video.addEventListener('play', function () {
+    video.addEventListener('play', () => {
       
       updateProgressWithAnimationFrame(slide, video);
     });
 
-    video.addEventListener('pause', function () {
+    video.addEventListener('pause', () => {
       cancelAnimationFrame(progressAnimationFrame);
     });
 
     // reset time in progress-bar
-    video.addEventListener('ended', function () {
+    video.addEventListener('ended', () => {
 
       video.currentTime = 0;
 
@@ -266,16 +266,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Changing the volume "mousedown"
-    volumeBarContainer.addEventListener('mousedown', function (e) {
+    volumeBarContainer.addEventListener('mousedown', (e) => {
       setVolume(e, slide, video); // updata volume
 
       // var for mousemove function
-      var mouseMoveHandler = function (e) {
+      const mouseMoveHandler = (e) => {
         setVolume(e, slide, video);
       };
 
       // Changing the volume "mouseup"
-      var mouseUpHandler = function() {
+      const mouseUpHandler = () => {
         window.removeEventListener('mousemove', mouseMoveHandler);
       }
 
