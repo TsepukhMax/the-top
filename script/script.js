@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
       event.preventDefault();
 
       // get href
-      const href = event.target.getAttribute('href');
+      const href = event.currentTarget.getAttribute('href');
       const targetElement = document.querySelector(href);
 
       // get position element
@@ -71,22 +71,22 @@ document.addEventListener('DOMContentLoaded', function () {
   
   //POPUP
   // Open-popup
-  document.querySelectorAll('.js-button').forEach(function(button) {
-    button.addEventListener('click', function() {
+  document.querySelectorAll('.js-button').forEach((button) => {
+    button.addEventListener('click', () => {
   
       // Зупиняємо всі відео в слайдері
-      document.querySelectorAll('.slid-video').forEach(function(video) {
+      document.querySelectorAll('.slid-video').forEach((video) => {
         video.pause();
-        var closestSlide = video.closest('.slid');
+        const closestSlide = video.closest('.slid');
         closestSlide.classList.remove('playing'); // видаляємо клас playing
         closestSlide.querySelector('.button-play').classList.remove('button-stop'); // скидаємо кнопку play
       });
 
-      var section = button.closest('section')
+      const section = button.closest('section')
 
-      var titleText = section.dataset.title;
-      var topText = section.dataset.top;
-      var audioSource = section.dataset.audio;
+      const titleText = section.dataset.title;
+      const topText = section.dataset.top;
+      const audioSource = section.dataset.audio;
 
       document.querySelector('.js-popup-title-text').textContent = titleText;
       document.querySelector('.js-popup-top').textContent = topText;
@@ -99,37 +99,37 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  var audioFiles = document.querySelector('.popup-audio-files');
+  const audioFiles = document.querySelector('.popup-audio-files');
 
   // action play and pause
-  audioFiles.addEventListener('play', function () {
-    var parentElement = this.closest('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
+  audioFiles.addEventListener('play', (event) => {
+    const parentElement = event.currentTarget.closest('.popup-audio');
+    const audioElement = parentElement.querySelector('audio');
     updateProgressWithAnimationFrame(parentElement, audioElement, displayTime);
   });
 
-  audioFiles.addEventListener('pause', function () {
+  audioFiles.addEventListener('pause', () => {
     cancelAnimationFrame(progressAnimationFrame);
   });
 
-  audioFiles.addEventListener('loadedmetadata', function () {
-    var parentElement = this.closest('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
+  audioFiles.addEventListener('loadedmetadata', (event) => {
+    const parentElement = event.currentTarget.closest('.popup-audio');
+    const audioElement = parentElement.querySelector('audio');
     updateProgressBar(parentElement, audioElement);
     displayTime.updateDisplayTime();
   });
 
   //tracking progress-bar for click
-  document.querySelector('.popup').querySelector('.js-progress-bar-container').addEventListener('click', function(e) {
+  document.querySelector('.popup').querySelector('.js-progress-bar-container').addEventListener('click', (e) => {
 
   // update function
   updateProgressOnClick(e, parentPopupElement, audioPopupElement, displayTime);
   });
 
   // reset time in progress-bar
-  audioFiles.addEventListener('ended', function () {
-    var parentElement = this.closest('.popup-audio');
-    var audioElement = parentElement.querySelector('audio');
+  audioFiles.addEventListener('ended', (event) => {
+    const parentElement = event.currentTarget.closest('.popup-audio');
+    const audioElement = parentElement.querySelector('audio');
     
     audioElement.currentTime = 0;
 
