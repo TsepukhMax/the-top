@@ -286,22 +286,23 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-function stopAndResetAudio(audioElement) {
+const stopAndResetAudio = (audioElement) => {
   audioElement.pause();
   audioElement.currentTime = 0;
 }
 
 // display-time in audio
-function formatTime(seconds) {
-  var minutes = Math.floor(seconds / 60);
-  var seconds = Math.floor(seconds % 60);
-  return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const secondsFormatted = Math.floor(seconds % 60);
+  return `${minutes}:${secondsFormatted < 10 ? '0' : ''}${secondsFormatted}`;
 }
 
-var progressAnimationFrame;
+let progressAnimationFrame; ////////
 
-function updateProgressWithAnimationFrame(parentElement, mediaElement, displayTime) {
+const updateProgressWithAnimationFrame = (parentElement, mediaElement, displayTime) => {
   updateProgressBar(parentElement, mediaElement);
+
   if (displayTime) {
     displayTime.updateDisplayTime(); //update with displayTime.updateDisplayTime
   } else {
@@ -309,50 +310,50 @@ function updateProgressWithAnimationFrame(parentElement, mediaElement, displayTi
   }
 
   // call the animation again for the next frame
-  progressAnimationFrame = requestAnimationFrame(function () {
+  progressAnimationFrame = requestAnimationFrame(() => {
     updateProgressWithAnimationFrame(parentElement, mediaElement, displayTime);
   });
 }
 
-function updateDisplayTime(parentElement, mediaElement) {
-  var currentTime = formatTime(mediaElement.currentTime);
-  var duration = mediaElement.duration ? formatTime(mediaElement.duration) : "00:00";
+const updateDisplayTime = (parentElement, mediaElement) => {
+  const currentTime = formatTime(mediaElement.currentTime);
+  const duration = mediaElement.duration ? formatTime(mediaElement.duration) : "00:00";
 
   parentElement.querySelector('.current-time').textContent = currentTime;
   parentElement.querySelector('.total-time').textContent = duration;
 }
 
 // progress-bar in audio
-function updateProgressBar(parentElement, mediaElement) {
-  var progress = (mediaElement.currentTime / mediaElement.duration) * 100;
-  parentElement.querySelector('.progress-bar').style.width = progress + '%';
+const updateProgressBar = (parentElement, mediaElement) => {
+  const progress = (mediaElement.currentTime / mediaElement.duration) * 100;
+  parentElement.querySelector('.progress-bar').style.width = `${progress}%`;
 }
 
 // controls volume 
-function updateVolumeSlider(mediaElement, parentElement) {
-  var volume = mediaElement.volume * 100;
-  var volumeSlider = parentElement.querySelector('.volume-slider');
-  volumeSlider.style.width = volume + '%';
+const updateVolumeSlider = (mediaElement, parentElement) => {
+  const volume = mediaElement.volume * 100;
+  const volumeSlider = parentElement.querySelector('.volume-slider');
+  volumeSlider.style.width = `${volume}%`;
 }
 
 // for updata volume
-function setVolume(e, parentElement, mediaElement) {
-  var volumeBar = parentElement.querySelector('.volume-bar-container');
+const setVolume = (e, parentElement, mediaElement) => {
+  const volumeBar = parentElement.querySelector('.volume-bar-container');
   
-  var offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
-  var totalWidth = volumeBar.offsetWidth;
-  var newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
+  const offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
+  const totalWidth = volumeBar.offsetWidth;
+  const newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
 
   mediaElement.volume = newVolume; // updata volume
   updateVolumeSlider(mediaElement, parentElement); // updata slider
 }
 
 // update progress-bar in media
-function updateProgressOnClick(e, parentElement, mediaElement, displayTime) {
+const updateProgressOnClick = (e, parentElement, mediaElement, displayTime) => {
   // calculate % progress-bar
-  var offsetX = e.offsetX;
-  var totalWidth = e.currentTarget.offsetWidth;;
-  var clickPosition = (offsetX / totalWidth) * mediaElement.duration;
+  const offsetX = e.offsetX;
+  const totalWidth = e.currentTarget.offsetWidth;;
+  const clickPosition = (offsetX / totalWidth) * mediaElement.duration;
 
   // update time
   mediaElement.currentTime = clickPosition;
