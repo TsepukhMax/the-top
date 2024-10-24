@@ -588,8 +588,6 @@ class ProgressBarComponent {
     this.updateProgressBar();
 
     // callback to update time for display
-    if (this.#cbOnProgressUpdate) {
-      this.#cbOnProgressUpdate();
-    }
+    this.#cbOnProgressUpdate();
   };
 };
