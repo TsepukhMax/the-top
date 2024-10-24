@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
   parentPopupElement.appendChild(volumeBar.render());
 
   // create and render the progressBar ---OOP---
-  const progressBar = new ProgressBarComponent(audioPopupElement);
+  const progressBar = new ProgressBarComponent(audioPopupElement, () => {
+    displayTime.updateDisplayTime(); // callback to update time
+  });
   parentPopupElement.appendChild(progressBar.render());
 
 
@@ -536,50 +538,58 @@ class VolumeBarComponent {
 };
 
 //-----OOP function for ProgressBarComponent --------
-function ProgressBarComponent(mediaElement) {
-  // private property for media el.
-  this._mediaElement = mediaElement;
-};
+class ProgressBarComponent {
+  #mediaElement;
+  #progressBarEl;
+  #progressBarContainer;
+  #cbOnProgressUpdate;
 
-// rendering method for DOM
-ProgressBarComponent.prototype.render = function() {
-  
-  // create HTML-elements
-  this._progressBarEl = document.createElement('div');
-  this._progressBarEl.classList.add('progress-bar');
-
-  this._progressBarContainer = document.createElement('div');
-  this._progressBarContainer.classList.add('progress-bar-container');
-  this._progressBarContainer.appendChild(this._progressBarEl);
-
-  // click for progressBar
-  var that = this;
-  this._progressBarContainer.addEventListener('click', function(e) {
-    that._updateProgressOnClick(e);
-  });
-
-  return this._progressBarContainer;
-};
-
-// 
-ProgressBarComponent.prototype.updateProgressBar = function() {
-  var progress = (this._mediaElement.currentTime / this._mediaElement.duration) * 100;
-  this._progressBarEl.style.width = progress + '%';
-};
-
-// method for update ProgressBarComponent
-ProgressBarComponent.prototype._updateProgressOnClick = function(e) {
-  const offsetX = e.offsetX;
-  const totalWidth = e.currentTarget.offsetWidth;
-  const clickPosition = (offsetX / totalWidth) * this._mediaElement.duration;
-
-  // update time
-  this._mediaElement.currentTime = clickPosition;
-
-  // update progressBar
-  this.updateProgressBar();
-
-  if (this._displayTime) {
-    this._displayTime.updateDisplayTime();
+  constructor(mediaElement, cbOnProgressUpdate) {
+    // private property for media el.
+    this.#mediaElement = mediaElement;
+    this.#cbOnProgressUpdate = cbOnProgressUpdate;
   }
+
+  // rendering method for DOM
+  render() {
+    
+    // create HTML-elements
+    this.#progressBarEl = document.createElement('div');
+    this.#progressBarEl.classList.add('progress-bar');
+
+    this.#progressBarContainer = document.createElement('div');
+    this.#progressBarContainer.classList.add('progress-bar-container');
+    this.#progressBarContainer.appendChild(this.#progressBarEl);
+
+    // click for progressBar
+    this.#progressBarContainer.addEventListener('click', (e) => {
+      this.#updateProgressOnClick(e);
+    });
+
+    return this.#progressBarContainer;
+  };
+  
+  // method for update ProgressBarComponent
+  updateProgressBar() {
+    const progress = (this.#mediaElement.currentTime / this.#mediaElement.duration) * 100;
+    this.#progressBarEl.style.width = `${progress}%`;
+  };
+
+  // method for update on click ProgressBarComponent
+  #updateProgressOnClick(e) {
+    const offsetX = e.offsetX;
+    const totalWidth = this.#progressBarContainer.offsetWidth;
+    const clickPosition = (offsetX / totalWidth) * this.#mediaElement.duration;
+
+    // move time according to position
+    this.#mediaElement.currentTime = clickPosition;
+
+    // update progressBar
+    this.updateProgressBar();
+
+    // callback to update time for display
+    if (this.#cbOnProgressUpdate) {
+      this.#cbOnProgressUpdate();
+    }
+  };
 };
