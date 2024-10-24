@@ -24,6 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const volumeBar = new VolumeBarComponent(audioPopupElement);
   parentPopupElement.appendChild(volumeBar.render());
 
+  // create and render the progressBar ---OOP---
+  const progressBar = new ProgressBarComponent(audioPopupElement);
+  parentPopupElement.appendChild(progressBar.render());
+
+
   //BURGER MENU
   const burger = document.querySelector('.burger');
   const burgerContent = document.querySelector('.js-burger-content');
@@ -104,25 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
   audioFiles.addEventListener('play', (event) => {
     const parentElement = event.currentTarget.closest('.popup-audio');
     const audioElement = parentElement.querySelector('audio');
-    updateProgressWithAnimationFrame(parentElement, audioElement, displayTime);
+    updateProgressWithAnimationFrame(parentElement, audioElement, displayTime, progressBar);
   });
 
   audioFiles.addEventListener('pause', () => {
     cancelAnimationFrame(progressAnimationFrame);
   });
 
-  audioFiles.addEventListener('loadedmetadata', (event) => {
-    const parentElement = event.currentTarget.closest('.popup-audio');
-    const audioElement = parentElement.querySelector('audio');
-    updateProgressBar(parentElement, audioElement);
+  audioFiles.addEventListener('loadedmetadata', () => {
+    progressBar.updateProgressBar();
     displayTime.updateDisplayTime();
-  });
-
-  //tracking progress-bar for click
-  document.querySelector('.popup').querySelector('.js-progress-bar-container').addEventListener('click', (e) => {
-
-  // update function
-  updateProgressOnClick(e, parentPopupElement, audioPopupElement, displayTime);
   });
 
   // reset time in progress-bar
@@ -132,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     audioElement.currentTime = 0;
 
-    updateProgressBar(parentElement, audioElement);
+    progressBar.updateProgressBar();
     displayTime.updateDisplayTime();
 
     buttonPlaying.reset();
@@ -261,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
       updateProgressBar(slide, video);
 
       playButton.classList.remove('button-stop'); // change for button-play
-      slideElement.classList.remove('playing');
+      slide.classList.remove('playing');
     });
 
     // Changing the volume "mousedown"
@@ -297,10 +293,15 @@ const formatTime = (seconds) => {
   return `${minutes}:${secondsFormatted < 10 ? '0' : ''}${secondsFormatted}`;
 }
 
-let progressAnimationFrame; ////////
+let progressAnimationFrame;
 
-const updateProgressWithAnimationFrame = (parentElement, mediaElement, displayTime) => {
-  updateProgressBar(parentElement, mediaElement);
+const updateProgressWithAnimationFrame = (parentElement, mediaElement, displayTime, progressBar) => {
+  
+  if (progressBar) {
+    progressBar.updateProgressBar();
+  } else {
+    updateProgressBar(parentElement, mediaElement);
+  }
 
   if (displayTime) {
     displayTime.updateDisplayTime(); //update with displayTime.updateDisplayTime
@@ -310,7 +311,7 @@ const updateProgressWithAnimationFrame = (parentElement, mediaElement, displayTi
 
   // call the animation again for the next frame
   progressAnimationFrame = requestAnimationFrame(() => {
-    updateProgressWithAnimationFrame(parentElement, mediaElement, displayTime);
+    updateProgressWithAnimationFrame(parentElement, mediaElement, displayTime, progressBar);
   });
 }
 
@@ -348,7 +349,7 @@ const setVolume = (e, parentElement, mediaElement) => {
 }
 
 // update progress-bar in media
-const updateProgressOnClick = (e, parentElement, mediaElement, displayTime) => {
+const updateProgressOnClick = (e, parentElement, mediaElement, displayTime,) => {
   // calculate % progress-bar
   const offsetX = e.offsetX;
   const totalWidth = e.currentTarget.offsetWidth;;
@@ -359,6 +360,7 @@ const updateProgressOnClick = (e, parentElement, mediaElement, displayTime) => {
 
   // update progress-bar and show time
   updateProgressBar(parentElement, mediaElement);
+
   if (displayTime) {
     displayTime.updateDisplayTime(); //update with displayTime.updateDisplayTime
   } else {
@@ -531,4 +533,53 @@ class VolumeBarComponent {
   updateVolumeSlider() {
     this.#volumeSliderEl.style.width = `${this.#mediaElement.volume * 100}%`; // Set the width based on volume
   };
+};
+
+//-----OOP function for ProgressBarComponent --------
+function ProgressBarComponent(mediaElement) {
+  // private property for media el.
+  this._mediaElement = mediaElement;
+};
+
+// rendering method for DOM
+ProgressBarComponent.prototype.render = function() {
+  
+  // create HTML-elements
+  this._progressBarEl = document.createElement('div');
+  this._progressBarEl.classList.add('progress-bar');
+
+  this._progressBarContainer = document.createElement('div');
+  this._progressBarContainer.classList.add('progress-bar-container');
+  this._progressBarContainer.appendChild(this._progressBarEl);
+
+  // click for progressBar
+  var that = this;
+  this._progressBarContainer.addEventListener('click', function(e) {
+    that._updateProgressOnClick(e);
+  });
+
+  return this._progressBarContainer;
+};
+
+// 
+ProgressBarComponent.prototype.updateProgressBar = function() {
+  var progress = (this._mediaElement.currentTime / this._mediaElement.duration) * 100;
+  this._progressBarEl.style.width = progress + '%';
+};
+
+// method for update ProgressBarComponent
+ProgressBarComponent.prototype._updateProgressOnClick = function(e) {
+  const offsetX = e.offsetX;
+  const totalWidth = e.currentTarget.offsetWidth;
+  const clickPosition = (offsetX / totalWidth) * this._mediaElement.duration;
+
+  // update time
+  this._mediaElement.currentTime = clickPosition;
+
+  // update progressBar
+  this.updateProgressBar();
+
+  if (this._displayTime) {
+    this._displayTime.updateDisplayTime();
+  }
 };
