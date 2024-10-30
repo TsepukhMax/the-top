@@ -215,7 +215,7 @@ const updateDisplayTime = (parentElement, mediaElement) => {
 
 // progress-bar in audio
 const updateProgressBar = (parentElement, mediaElement) => {
-  if (!mediaElement || !mediaElement.duration) return; // check mediaElement and duration
+
   const progress = (mediaElement.currentTime / mediaElement.duration) * 100;
   parentElement.querySelector('.progress-bar').style.width = `${progress}%`;
 }
@@ -278,38 +278,238 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
   requestAnimationFrame(animationScroll); // start animation
 }
 
+//-----OOP for button play--------
+class PlayButtonComponent {
+  #playing = false;
+  #button = null;
+  #onClick = null;
+
+  constructor(cbOnClick) {
+    this.#onClick = cbOnClick;
+  }
+
+  // method for render PlayButtonComponent
+  render() {
+    this.#button = document.createElement('button');
+    this.#button.classList.add('button-play');
+
+    this.#button.addEventListener('click',() => {
+      this.#playing = !this.#playing;
+
+      if (this.#playing) {
+        this.#button.classList.add('button-stop');
+      } else {
+        this.#button.classList.remove('button-stop');
+      }
+
+      this.#onClick(this.#playing);
+    });
+
+    return this.#button;
+  };
+
+  // method for reset PlayButtonComponent
+  reset() {
+  this.#playing = false; // reset for false(no play)
+    this.#button.classList.remove('button-stop'); // remove "button-stop"
+  };
+};
+
+//-----OOP for DisplayTimeComponent --------
+class DisplayTimeComponent {
+  #mediaElement;
+  #currentTimeEl;
+  #totalTimeEl;
+
+  constructor(mediaElement) {
+    this.#mediaElement = mediaElement;
+  };
+  
+  render() {
+      
+    // create HTML-elements for DisplayTimeComponent
+    this.#currentTimeEl = document.createElement('span');
+    this.#currentTimeEl.classList.add('current-time');
+    this.#currentTimeEl.textContent = '00:00';
+
+    this.#totalTimeEl = document.createElement('span');
+    this.#totalTimeEl.classList.add('total-time');
+    this.#totalTimeEl.textContent = '00:00';
+
+    // create container (but don't store it in a property)
+    const container = document.createElement('div');
+    container.classList.add('display-time');
+    container.appendChild(this.#currentTimeEl);
+    container.appendChild(document.createTextNode(' / '));
+    container.appendChild(this.#totalTimeEl);
+
+    // return container without saving it to a property
+    return container;
+  };
+  
+  updateDisplayTime() {
+  this.#currentTimeEl.textContent = this.#formatTime(this.#mediaElement.currentTime);
+  this.#totalTimeEl.textContent = this.#formatTime(this.#mediaElement.duration || 0);
+  };
+
+  // private method for updateDisplayTime
+  #formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${minutes}:${sec < 10 ? '0' : ''}${sec}`;
+  };
+};
+
+//-----OOP for VolumeBarComponent --------
+class VolumeBarComponent {
+  #mediaElement;
+  #volumeSliderEl;
+  #volumeBarContainer;
+
+  constructor(mediaElement) {
+    this.#mediaElement = mediaElement;
+  };
+
+  // rendering method for DOM
+  render() {
+    
+    // create HTML-elements
+    this.#volumeSliderEl = document.createElement('div');
+    this.#volumeSliderEl.classList.add('volume-slider');
+
+    this.#volumeBarContainer = document.createElement('div');
+    this.#volumeBarContainer.classList.add('volume-bar-container');
+    this.#volumeBarContainer.appendChild(this.#volumeSliderEl);
+
+    // add mousedown using an anonymous function // method for install volume
+    this.#volumeBarContainer.addEventListener('mousedown',(e) => {
+      
+      // update for click
+      this.#setVolume(e);
+
+      // function for mousemove
+      const mouseMoveHandler = (e) => {
+        this.#setVolume(e);
+      };
+
+      // follow mousemove
+      window.addEventListener('mousemove', mouseMoveHandler);
+
+      // unfollow on mouseup
+      window.addEventListener('mouseup', () => {
+        window.removeEventListener('mousemove', mouseMoveHandler);
+      }, { once: true });
+    });
+
+    return this.#volumeBarContainer;
+  };
+
+  // main method for control volume
+  #setVolume(e) {
+    const volumeBar = this.#volumeBarContainer;
+
+    const offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
+    const totalWidth = volumeBar.offsetWidth;
+    const newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
+
+    this.#mediaElement.volume = newVolume; // Update volume
+    this.updateVolumeSlider(); // Update slider position
+  };
+
+  // method for updating slider position
+  updateVolumeSlider() {
+    this.#volumeSliderEl.style.width = `${this.#mediaElement.volume * 100}%`; // Set the width based on volume
+  };
+};
+
+//-----OOP function for ProgressBarComponent --------
+class ProgressBarComponent {
+  #mediaElement;
+  #progressBarEl;
+  #progressBarContainer;
+  #cbOnProgressUpdate;
+
+  constructor(mediaElement, cbOnProgressUpdate) {
+    // private property for media el.
+    this.#mediaElement = mediaElement;
+    this.#cbOnProgressUpdate = cbOnProgressUpdate;
+  }
+
+  // rendering method for DOM
+  render() {
+    
+    // create HTML-elements
+    this.#progressBarEl = document.createElement('div');
+    this.#progressBarEl.classList.add('progress-bar');
+
+    this.#progressBarContainer = document.createElement('div');
+    this.#progressBarContainer.classList.add('progress-bar-container');
+    this.#progressBarContainer.appendChild(this.#progressBarEl);
+
+    // click for progressBar
+    this.#progressBarContainer.addEventListener('click', (e) => {
+      this.#updateProgressOnClick(e);
+    });
+
+    return this.#progressBarContainer;
+  };
+  
+  // method for update ProgressBarComponent
+  updateProgressBar() {
+    const progress = (this.#mediaElement.currentTime / this.#mediaElement.duration) * 100;
+    this.#progressBarEl.style.width = `${progress}%`;
+  };
+
+  // method for update on click ProgressBarComponent
+  #updateProgressOnClick(e) {
+    const offsetX = e.offsetX;
+    const totalWidth = this.#progressBarContainer.offsetWidth;
+    const clickPosition = (offsetX / totalWidth) * this.#mediaElement.duration;
+
+    // move time according to position
+    this.#mediaElement.currentTime = clickPosition;
+
+    // update progressBar
+    this.updateProgressBar();
+
+    // callback to update time for display
+    this.#cbOnProgressUpdate();
+  };
+};
+
 // //-----OOP for PopupComponent --------
 class PopupComponent {
-  currentTimeEl;
-  totalTimeEl;
-  volumeSliderEl;
-  volumeBarContainer;
-  progressBarEl;
-  progressBarContainer;
-  progressAnimationFrame;
+  #audioElement;
+  #playButton;
+  #displayTime;
+  #volumeBar;
+  #progressBar;
+  #popupElement;
+  #closeButton;
+  #progressAnimationFrame;
 
   constructor(titleText, topText, audioSource) {
     this.titleText = titleText;
     this.topText = topText;
     this.audioSource = audioSource;
-    this.audioElement = null;
+    this.#audioElement = null;
   }
 
   render() {
     // Main container for popup
-    this.popupElement = document.createElement('div');
-    this.popupElement.classList.add('popup');
+    this.#popupElement = document.createElement('div');
+    this.#popupElement.classList.add('popup');
 
     // Content area
     const popupContent = document.createElement('div');
     popupContent.classList.add('popup-content');
-    this.popupElement.appendChild(popupContent);
+    this.#popupElement.appendChild(popupContent);
 
     // Close button
-    this.closeButton = document.createElement('button');
-    this.closeButton.classList.add('popup-close');
-    this.closeButton.innerHTML = '&#x2715;';
-    popupContent.appendChild(this.closeButton);
+    this.#closeButton = document.createElement('button');
+    this.#closeButton.classList.add('popup-close');
+    this.#closeButton.innerHTML = '&#x2715;';
+    popupContent.appendChild(this.#closeButton);
 
     // Title container
     const titleContainer = document.createElement('div');
@@ -319,7 +519,7 @@ class PopupComponent {
     // Optional top text
     const topTextSpan = document.createElement('span');
     topTextSpan.classList.add('js-popup-top');
-    topTextSpan.textContent = this.topText; // Встановлення тексту зверху
+    topTextSpan.textContent = this.topText;
     titleContainer.appendChild(topTextSpan);
 
     // Title
@@ -334,206 +534,78 @@ class PopupComponent {
     popupContent.appendChild(popupAudio);
 
     // Create audio element
-    this.audioElement = document.createElement('audio'); // Виносимо audioElement
-    this.audioElement.classList.add('popup-audio-files');
-    this.audioElement.setAttribute('src', this.audioSource);
-    popupAudio.appendChild(this.audioElement);
+    this.#audioElement = document.createElement('audio');
+    this.#audioElement.classList.add('popup-audio-files');
+    this.#audioElement.setAttribute('src', this.audioSource);
+    popupAudio.appendChild(this.#audioElement);
 
     // Add "Play" button
-    const playButton = this.createPlayButton();
-    popupAudio.appendChild(playButton);
+    this.#playButton = new PlayButtonComponent((playing) => {
+      if (playing) {
+        this.#audioElement.play();
+        this.updateProgressWithAnimationFrame(); // start update
+      } else {
+        this.#audioElement.pause();
+        cancelAnimationFrame(this.#progressAnimationFrame); // stop update
+      }
+    });
+    popupAudio.appendChild(this.#playButton.render());
 
-    // Add "displayTime"
-    this.createDisplayTime(this.audioElement, popupAudio);
+    this.#displayTime = new DisplayTimeComponent(this.#audioElement);
+    popupAudio.appendChild(this.#displayTime.render());
 
-    // Add "volumeBar"
-    this.createVolumeControl(this.audioElement, popupAudio);
+    this.#volumeBar = new VolumeBarComponent(this.#audioElement);
+    popupAudio.appendChild(this.#volumeBar.render());
 
-    // Add progress bar
-    this.createProgressBar(this.audioElement, popupAudio);
+    this.#progressBar = new ProgressBarComponent(this.#audioElement, () => {
+      this.#displayTime.updateDisplayTime();
+    });
+    popupAudio.appendChild(this.#progressBar.render());
 
-    // Add handlers for closing
-    this.closeButton.addEventListener('click', () => this.close());
-    this.popupElement.addEventListener('click', (e) => {
-      if (e.target === this.popupElement) {
+    this.#closeButton.addEventListener('click', () => this.close());
+    this.#popupElement.addEventListener('click', (e) => {
+      if (e.target === this.#popupElement) {
         this.close();
       }
     });
 
-    return this.popupElement;
+    // add for events for audioElement
+    this.#audioElement.addEventListener('loadedmetadata', () => {
+      this.#displayTime.updateDisplayTime();
+      this.#progressBar.updateProgressBar(); // Initialize progress bar at 0
+    });
+
+    this.#audioElement.addEventListener('timeupdate', () => {
+      this.#displayTime.updateDisplayTime();
+      this.#progressBar.updateProgressBar(); // Update progress bar during playback
+    });
+
+    this.#audioElement.addEventListener('ended', () => {
+      this.#audioElement.currentTime = 0;
+      this.#displayTime.updateDisplayTime();
+      this.#progressBar.updateProgressBar(); // Reset progress bar to 0
+      this.#playButton.reset(); // reset button for "play" for end audio
+    });
+
+    return this.#popupElement;
   }
-
-  createPlayButton() {
-    this.playButton = document.createElement('button');
-    this.playButton.classList.add('button-play');
-
-    let playing = false; // Статус відтворення
-
-    this.playButton.addEventListener('click', () => {
-      playing = !playing;
-
-      if (playing) {
-        this.playButton.classList.add('button-stop');
-        this.audioElement.play(); // Використовуємо this.audioElement
-        this.updateProgressWithAnimationFrame(); // Запускаємо анімацію
-      } else {
-        this.playButton.classList.remove('button-stop');
-        this.audioElement.pause(); // Використовуємо this.audioElement
-        cancelAnimationFrame(this.progressAnimationFrame); // Зупиняємо анімацію
-      }
-    });
-
-    return this.playButton;
-  }
-
-  createDisplayTime(audioElement, popupAudio) {
-    // create HTML
-    this.currentTimeEl = document.createElement('span');
-    this.currentTimeEl.classList.add('current-time');
-    this.currentTimeEl.textContent = '00:00';
-
-    this.totalTimeEl = document.createElement('span');
-    this.totalTimeEl.classList.add('total-time');
-    this.totalTimeEl.textContent = '00:00';
-
-    const container = document.createElement('div');
-    container.classList.add('display-time');
-    container.appendChild(this.currentTimeEl);
-    container.appendChild(document.createTextNode(' / '));
-    container.appendChild(this.totalTimeEl);
-    popupAudio.appendChild(container); // Додаємо контейнер у popupAudio
-
-    // Оновлення часу відображення
-    audioElement.addEventListener('loadedmetadata', () => {
-      this.updateDisplayTime(); // Оновити загальний час при завантаженні метаданих
-    });
-    audioElement.addEventListener('timeupdate', () => {
-      this.updateDisplayTime(); // Оновлювати поточний час під час відтворення
-    });
-    audioElement.addEventListener('ended', () => {
-      audioElement.currentTime = 0; // Скидаємо карент тайм
-      this.updateProgressBar(); // Скидаємо прогрес-бар
-      this.updateDisplayTime(); // Скидаємо дисплей тайму
-      this.playButton.classList.remove('button-stop'); // Скидаємо кнопку на "Play"
-    });
-  }
-
-  // Method to create volume control
-  createVolumeControl(audioElement, popupAudio) {
-
-    // create HTML
-    this.volumeSliderEl = document.createElement('div');
-    this.volumeSliderEl.classList.add('volume-slider');
-
-    this.volumeBarContainer = document.createElement('div');
-    this.volumeBarContainer.classList.add('volume-bar-container');
-    this.volumeBarContainer.appendChild(this.volumeSliderEl);
-
-    popupAudio.appendChild(this.volumeBarContainer);
-
-    // Method to set volume
-    const setVolume = (e) => {
-        const offsetX = e.pageX - this.volumeBarContainer.getBoundingClientRect().left;
-        const totalWidth = this.volumeBarContainer.offsetWidth;
-        const newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
-
-        audioElement.volume = newVolume; // Оновлюємо гучність
-        updateVolumeSlider(); // Оновлюємо положення повзунка
-    };
-
-    // Метод для оновлення положення повзунка
-    const updateVolumeSlider = () => {
-        this.volumeSliderEl.style.width = `${audioElement.volume * 100}%`; // Ширина повзунка залежить від гучності
-    };
-
-    // Додаємо обробники подій для зміни гучності
-    this.volumeBarContainer.addEventListener('mousedown', (e) => {
-        setVolume(e); // Встановлюємо гучність при кліку
-
-        // Обробник руху миші
-        const mouseMoveHandler = (e) => setVolume(e);
-        window.addEventListener('mousemove', mouseMoveHandler);
-
-        // Видаляємо обробник при відпусканні кнопки
-        window.addEventListener('mouseup', () => {
-            window.removeEventListener('mousemove', mouseMoveHandler);
-        }, { once: true });
-    });
-  }
-
-  // Method to create progress bar with all necessary functions
-  createProgressBar(audioElement, popupAudio) {
-    
-    // create HTML
-    this.progressBarEl = document.createElement('div');
-    this.progressBarEl.classList.add('progress-bar');
-
-    this.progressBarContainer = document.createElement('div');
-    this.progressBarContainer.classList.add('progress-bar-container');
-    this.progressBarContainer.appendChild(this.progressBarEl);
-
-    popupAudio.appendChild(this.progressBarContainer);
-
-    // Reset progress bar when opened
-    const resetProgressBar = () => {
-      this.progressBarEl.style.width = '0%';
-    };
-
-    // Reset 
-    resetProgressBar();
-
-    // Update progress on click
-    const updateProgressOnClick = (e) => {
-      const offsetX = e.offsetX;
-      const totalWidth = this.progressBarContainer.offsetWidth;
-      const clickPosition = (offsetX / totalWidth) * audioElement.duration;
-
-      audioElement.currentTime = clickPosition;
-
-      this.updateProgressBar();
-
-      this.updateDisplayTime();
-    };
-
-    this.progressBarContainer.addEventListener('click', updateProgressOnClick);
-
-    audioElement.addEventListener('timeupdate', updateProgressBar);
-  };
-
-  // Method to update progress bar
-  updateProgressBar() {
-    const progress = (this.audioElement.currentTime / this.audioElement.duration) * 100;
-    this.progressBarEl.style.width = `${progress}%`;
-  };
-
-  // Method to update display time
-  updateDisplayTime() {
-    this.currentTimeEl.textContent = this.formatTime(this.audioElement.currentTime);
-    this.totalTimeEl.textContent = this.formatTime(this.audioElement.duration || 0);
-  };
-
-  // Method to format time
-  formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    return `${minutes}:${sec < 10 ? '0' : ''}${sec}`;
-  };
 
   // Method for updating progress with animation frame
   updateProgressWithAnimationFrame() {
-    this.updateProgressBar();
-    this.updateDisplayTime();
+    this.#progressBar.updateProgressBar();
+    this.#displayTime.updateDisplayTime();
 
-    this.progressAnimationFrame = requestAnimationFrame(() => {
+    this.#progressAnimationFrame = requestAnimationFrame(() => {
       this.updateProgressWithAnimationFrame();
     });
-  };
+  }
 
   // Method for closing popup
   close() {
-    if (this.popupElement && this.popupElement.parentNode) {
-      document.body.removeChild(this.popupElement);
+    if (this.#popupElement && this.#popupElement.parentNode) {
+      document.body.removeChild(this.#popupElement);
       document.body.classList.remove('body-wrapper');
+      cancelAnimationFrame(this.#progressAnimationFrame);
     }
   };
 };
