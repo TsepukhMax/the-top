@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+  // instance and render FooterComponent---OOP---
+  const footer = new FooterComponent();
+  document.body.appendChild(footer.render());
+
   //BURGER MENU
   const burger = document.querySelector('.burger');
   const burgerContent = document.querySelector('.js-burger-content');
@@ -477,7 +482,7 @@ class ProgressBarComponent {
   };
 };
 
-// //-----OOP for PopupComponent --------
+//-----OOP for PopupComponent --------
 class PopupComponent {
   #audioElement;
   #playButton;
@@ -613,3 +618,86 @@ class PopupComponent {
       document.body.classList.remove('body-wrapper');
   };
 };
+
+//-----OOP for FooterComponent-----
+class FooterComponent {
+  #footerElement;
+  #policyLinks;
+  #socialLinks;
+
+  constructor() {
+    
+    // policyLinks with content
+    this.#policyLinks = [
+      { text: 'Privacy policy', href: '#' },
+      { text: 'Cookie policy', href: '#' }
+    ];
+
+    // socialLinks with icons
+    this.#socialLinks = [
+      { iconSrc: 'img/twitter.svg', alt: 'twitter', href: '#' },
+      { iconSrc: 'img/instagram.svg', alt: 'instagram', href: '#' },
+      { iconSrc: 'img/facebook.svg', alt: 'facebook', href: '#' }
+    ];
+  }
+
+  render() {
+    // footer
+    this.#footerElement = document.createElement('footer');
+    this.#footerElement.classList.add('footer');
+
+    const container = document.createElement('div');
+    container.classList.add('container');
+    this.#footerElement.appendChild(container);
+
+    // footerLinks container
+    const footerLinks = document.createElement('div');
+    footerLinks.classList.add('footer-links');
+
+    // add methods for policy and social links
+    footerLinks.appendChild(this.#createPolicyLinks());
+    footerLinks.appendChild(this.#createSocialLinks());
+
+    container.appendChild(footerLinks);
+
+    return this.#footerElement;
+  }
+
+  // Method for PolicyLinks
+  #createPolicyLinks() {
+    const policyList = document.createElement('ul');
+    policyList.classList.add('policy');
+
+    this.#policyLinks.forEach(link => {
+      const listItem = document.createElement('li');
+      const anchor = document.createElement('a');
+      anchor.href = link.href;
+      anchor.textContent = link.text;
+
+      listItem.appendChild(anchor);
+      policyList.appendChild(listItem);
+    });
+    return policyList;
+  }
+
+  // Method for SocialLinks
+  #createSocialLinks() {
+    const socialList = document.createElement('ul');
+    socialList.classList.add('social-media');
+
+    this.#socialLinks.forEach(link => {
+      const listItem = document.createElement('li');
+      const anchor = document.createElement('a');
+      anchor.href = link.href;
+
+      const icon = document.createElement('img');
+      icon.src = link.iconSrc;
+      icon.alt = link.alt;
+
+      anchor.appendChild(icon);
+      listItem.appendChild(anchor);
+      socialList.appendChild(listItem);
+    });
+    return socialList;
+  }
+}
