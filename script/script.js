@@ -549,8 +549,8 @@ class PopupComponent {
     this.#displayTime = new DisplayTimeComponent(this.#audioElement);
     popupAudio.appendChild(this.#displayTime.render());
 
-    this.volumeBar = new VolumeBarComponent(this.#audioElement);
-    popupAudio.appendChild(this.volumeBar.render());
+    const volumeBar = new VolumeBarComponent(this.#audioElement);
+    popupAudio.appendChild(volumeBar.render());
 
     this.#progressBar = new ProgressBarComponent(this.#audioElement, () => {
       this.#displayTime.updateDisplayTime();
