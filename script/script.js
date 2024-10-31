@@ -482,7 +482,6 @@ class PopupComponent {
   #audioElement;
   #playButton;
   #displayTime;
-  #volumeBar;
   #progressBar;
   #popupElement;
   #closeButton;
@@ -518,13 +517,11 @@ class PopupComponent {
 
     // Optional top text
     const topTextSpan = document.createElement('span');
-    topTextSpan.classList.add('popup-top');
     topTextSpan.textContent = this.topText;
     titleContainer.appendChild(topTextSpan);
 
     // Title
     const title = document.createElement('h2');
-    title.classList.add('popup-title-text');
     title.textContent = this.titleText;
     titleContainer.appendChild(title);
 
@@ -541,10 +538,10 @@ class PopupComponent {
 
     // Add "Play" button
     this.#playButton = new PlayButtonComponent((playing) => {
-      if (!playing) {
-        this.#audioElement.pause(); // 'Stop' audio if not playing
-      } else {
+      if (playing) {
         this.#audioElement.play(); // 'Play' audio if playing
+      } else {
+        this.#audioElement.pause(); // 'Stop' audio if not playing
       }
     });
     popupAudio.appendChild(this.#playButton.render());
@@ -552,8 +549,8 @@ class PopupComponent {
     this.#displayTime = new DisplayTimeComponent(this.#audioElement);
     popupAudio.appendChild(this.#displayTime.render());
 
-    this.#volumeBar = new VolumeBarComponent(this.#audioElement);
-    popupAudio.appendChild(this.#volumeBar.render());
+    this.volumeBar = new VolumeBarComponent(this.#audioElement);
+    popupAudio.appendChild(this.volumeBar.render());
 
     this.#progressBar = new ProgressBarComponent(this.#audioElement, () => {
       this.#displayTime.updateDisplayTime();
@@ -571,12 +568,6 @@ class PopupComponent {
   #setupAudioEvents() {
     // preparation for the start
     this.#audioElement.addEventListener('loadedmetadata', () => {
-      this.#displayTime.updateDisplayTime();
-      this.#progressBar.updateProgressBar();
-    });
-
-    // change during the process
-    this.#audioElement.addEventListener('timeupdate', () => {
       this.#displayTime.updateDisplayTime();
       this.#progressBar.updateProgressBar();
     });
