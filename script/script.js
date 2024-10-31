@@ -488,11 +488,11 @@ class PopupComponent {
   #closeButton;
   #progressAnimationFrame;
 
+
   constructor(titleText, topText, audioSource) {
     this.titleText = titleText;
     this.topText = topText;
     this.audioSource = audioSource;
-    this.#audioElement = null;
   }
 
   render() {
@@ -518,13 +518,13 @@ class PopupComponent {
 
     // Optional top text
     const topTextSpan = document.createElement('span');
-    topTextSpan.classList.add('js-popup-top');
+    topTextSpan.classList.add('popup-top');
     topTextSpan.textContent = this.topText;
     titleContainer.appendChild(topTextSpan);
 
     // Title
     const title = document.createElement('h2');
-    title.classList.add('js-popup-title-text');
+    title.classList.add('popup-title-text');
     title.textContent = this.titleText;
     titleContainer.appendChild(title);
 
@@ -541,12 +541,10 @@ class PopupComponent {
 
     // Add "Play" button
     this.#playButton = new PlayButtonComponent((playing) => {
-      if (playing) {
-        this.#audioElement.play();
-        this.updateProgressWithAnimationFrame(); // start update
+      if (!playing) {
+        this.#audioElement.pause(); // 'Stop' audio if not playing
       } else {
-        this.#audioElement.pause();
-        cancelAnimationFrame(this.#progressAnimationFrame); // stop update
+        this.#audioElement.play(); // 'Play' audio if playing
       }
     });
     popupAudio.appendChild(this.#playButton.render());
@@ -562,50 +560,65 @@ class PopupComponent {
     });
     popupAudio.appendChild(this.#progressBar.render());
 
-    this.#closeButton.addEventListener('click', () => this.close());
-    this.#popupElement.addEventListener('click', (e) => {
-      if (e.target === this.#popupElement) {
-        this.close();
-      }
-    });
+    // use methods for audio and close
+    this.#setupAudioEvents();
+    this.#setupCloseEvents();
 
-    // add for events for audioElement
+    return this.#popupElement;
+  }
+
+  // Method for audio events
+  #setupAudioEvents() {
+    // preparation for the start
     this.#audioElement.addEventListener('loadedmetadata', () => {
       this.#displayTime.updateDisplayTime();
-      this.#progressBar.updateProgressBar(); // Initialize progress bar at 0
+      this.#progressBar.updateProgressBar();
     });
 
+    // change during the process
     this.#audioElement.addEventListener('timeupdate', () => {
       this.#displayTime.updateDisplayTime();
-      this.#progressBar.updateProgressBar(); // Update progress bar during playback
+      this.#progressBar.updateProgressBar();
+    });
+
+    this.#audioElement.addEventListener('play', () => {
+      this.#updateProgressWithAnimationFrame(); // start progress updates
+    });
+
+    this.#audioElement.addEventListener('pause', () => {
+      cancelAnimationFrame(this.#progressAnimationFrame); // stop progress updates
     });
 
     this.#audioElement.addEventListener('ended', () => {
       this.#audioElement.currentTime = 0;
       this.#displayTime.updateDisplayTime();
-      this.#progressBar.updateProgressBar(); // Reset progress bar to 0
-      this.#playButton.reset(); // reset button for "play" for end audio
+      this.#progressBar.updateProgressBar(); // reset
+      this.#playButton.reset(); // reset
     });
-
-    return this.#popupElement;
   }
 
+  // Method for close
+  #setupCloseEvents() {
+    this.#closeButton.addEventListener('click', () => this.#close());
+    this.#popupElement.addEventListener('click', (e) => {
+      if (e.target === this.#popupElement) {
+        this.#close();
+      }
+    });
+  }
   // Method for updating progress with animation frame
-  updateProgressWithAnimationFrame() {
+  #updateProgressWithAnimationFrame() {
     this.#progressBar.updateProgressBar();
     this.#displayTime.updateDisplayTime();
 
     this.#progressAnimationFrame = requestAnimationFrame(() => {
-      this.updateProgressWithAnimationFrame();
+      this.#updateProgressWithAnimationFrame();
     });
   }
 
   // Method for closing popup
-  close() {
-    if (this.#popupElement && this.#popupElement.parentNode) {
+  #close() {
       document.body.removeChild(this.#popupElement);
       document.body.classList.remove('body-wrapper');
-      cancelAnimationFrame(this.#progressAnimationFrame);
-    }
   };
 };
