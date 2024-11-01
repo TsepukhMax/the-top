@@ -659,6 +659,7 @@ class FooterComponent {
       const listItem = document.createElement('li');
       const anchor = document.createElement('a');
       anchor.textContent = text;
+      anchor.href = '#';
 
       listItem.appendChild(anchor);
       policyList.appendChild(listItem);
@@ -674,6 +675,7 @@ class FooterComponent {
     this.#socialLinks.forEach(link => {
       const listItem = document.createElement('li');
       const anchor = document.createElement('a');
+      anchor.href = '#';
 
       const icon = document.createElement('img');
       icon.src = link.iconSrc;
