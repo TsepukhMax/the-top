@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const footer = new FooterComponent();
   document.body.appendChild(footer.render());
 
+  // find <main>
+  const mainElement = document.querySelector('main');
+
+  // instance and render NewsletterComponent---OOP---
+  const newsletterComponent = new NewsletterComponent();
+  mainElement.appendChild(newsletterComponent.render());
+
   //BURGER MENU
   const burger = document.querySelector('.burger');
   const burgerContent = document.querySelector('.js-burger-content');
@@ -686,5 +693,56 @@ class FooterComponent {
       socialList.appendChild(listItem);
     });
     return socialList;
+  }
+}
+
+//-----OOP for NewsletterComponent-----
+class NewsletterComponent {
+
+  render() {
+    const newsletterSection = document.createElement('section');
+    newsletterSection.classList.add('newsletter-section');
+
+    const container = document.createElement('div');
+    container.classList.add('container');
+    newsletterSection.appendChild(container);
+
+    const description = document.createElement('div');
+    description.classList.add('newsletter-description');
+    container.appendChild(description);
+
+    description.appendChild(this.#createСolumnsData());
+
+    return newsletterSection;
+  }
+
+  #createСolumnsData() {
+    const columns = document.createElement('div');
+    columns.classList.add('newsletter-colums');
+
+    const title = document.createElement('h2');
+    title.textContent = 'Sign up to receive the latest updates and news';
+
+    const form = document.createElement('form');
+    form.action = '#';
+
+    const input = document.createElement('input');
+    input.placeholder = 'Enter your email';
+    input.type = 'email';
+    input.name = 'email';
+
+    const button = document.createElement('button');
+    button.classList.add('button');
+    button.textContent = 'Submit';
+
+    // Building form structure
+    form.appendChild(input);
+    form.appendChild(button);
+
+    // Building columns structure
+    columns.appendChild(title);
+    columns.appendChild(form);
+
+    return columns;
   }
 }
