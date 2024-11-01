@@ -5,9 +5,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "styles": "sass style/index.scss style/index.css --watch",
-    "styles:build": "sass style/index.scss style/index.css"
+    "styles:build": "sass style/index.scss style/index.css --no-source-map --style compressed",
+    "scripts": "tsc -w --outFile ./script/index.js --sourceMap",
+    "scripts:build": "tsc --outFile ./scripts/index.js",
+    "build": "cp node_modules/requirejs/require.js ./script"
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "sass": "^1.80.5",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "requirejs": "^2.3.7"
+  }
 }

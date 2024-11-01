@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+      "module": "amd",
+      "target": "ESNext",
+      "moduleResolution": "Node"
+  },
+  "files": [
+      "script/index.ts"
+  ],
+  "include": ["*/**/*.ts"],
+  "exclude": ["node_modules"]
+}
