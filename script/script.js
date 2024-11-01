@@ -621,34 +621,21 @@ class PopupComponent {
 
 //-----OOP for FooterComponent-----
 class FooterComponent {
-  #footerElement;
-  #policyLinks;
-  #socialLinks;
-
-  constructor() {
-    
-    // policyLinks with content
-    this.#policyLinks = [
-      { text: 'Privacy policy', href: '#' },
-      { text: 'Cookie policy', href: '#' }
-    ];
-
-    // socialLinks with icons
-    this.#socialLinks = [
-      { iconSrc: 'img/twitter.svg', alt: 'twitter', href: '#' },
-      { iconSrc: 'img/instagram.svg', alt: 'instagram', href: '#' },
-      { iconSrc: 'img/facebook.svg', alt: 'facebook', href: '#' }
-    ];
-  }
+  #policyLinks = ['Privacy policy', 'Cookie policy'];
+  #socialLinks = [
+    { iconSrc: 'img/twitter.svg', alt: 'twitter' },
+    { iconSrc: 'img/instagram.svg', alt: 'instagram' },
+    { iconSrc: 'img/facebook.svg', alt: 'facebook' }
+  ];
 
   render() {
     // footer
-    this.#footerElement = document.createElement('footer');
-    this.#footerElement.classList.add('footer');
+    const footerElement = document.createElement('footer');
+    footerElement.classList.add('footer');
 
     const container = document.createElement('div');
     container.classList.add('container');
-    this.#footerElement.appendChild(container);
+    footerElement.appendChild(container);
 
     // footerLinks container
     const footerLinks = document.createElement('div');
@@ -660,7 +647,7 @@ class FooterComponent {
 
     container.appendChild(footerLinks);
 
-    return this.#footerElement;
+    return footerElement;
   }
 
   // Method for PolicyLinks
@@ -668,11 +655,10 @@ class FooterComponent {
     const policyList = document.createElement('ul');
     policyList.classList.add('policy');
 
-    this.#policyLinks.forEach(link => {
+    this.#policyLinks.forEach(text => {
       const listItem = document.createElement('li');
       const anchor = document.createElement('a');
-      anchor.href = link.href;
-      anchor.textContent = link.text;
+      anchor.textContent = text;
 
       listItem.appendChild(anchor);
       policyList.appendChild(listItem);
@@ -688,7 +674,6 @@ class FooterComponent {
     this.#socialLinks.forEach(link => {
       const listItem = document.createElement('li');
       const anchor = document.createElement('a');
-      anchor.href = link.href;
 
       const icon = document.createElement('img');
       icon.src = link.iconSrc;
