@@ -1,9 +1,9 @@
-import { IComponent } from '../Interfaces/i-component';
+import { IComponent } from '../interfaces/i-component';
 
 // PlayButtonComponent
 export class PlayButtonComponent implements IComponent {
   private playing: boolean = false;
-  private button: HTMLButtonElement | null = null; // Вказано тип HTMLButtonElement або null
+  private button: HTMLElement;
   private onClick: (playing: boolean) => void;
 
   constructor(cbOnClick: (playing: boolean) => void) {
@@ -11,7 +11,7 @@ export class PlayButtonComponent implements IComponent {
   }
 
   // method for render PlayButtonComponent
-  public render(): HTMLButtonElement {
+  public render(): HTMLElement {
     this.button = document.createElement('button');
     this.button.classList.add('button-play');
 
