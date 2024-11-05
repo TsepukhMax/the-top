@@ -8,7 +8,7 @@ export class DisplayTimeComponent implements IComponent {
 
   constructor(mediaElement: HTMLMediaElement) {
     this.mediaElement = mediaElement;
-  };
+  }
   
   public render(): HTMLElement {
       
@@ -30,17 +30,17 @@ export class DisplayTimeComponent implements IComponent {
 
     // return container
     return container;
-  };
+  }
   
   public updateDisplayTime(): void {
     this.currentTimeEl.textContent = this.formatTime(this.mediaElement.currentTime);
     this.totalTimeEl.textContent = this.formatTime(this.mediaElement.duration || 0);
-  };
+  }
 
   // private method for updateDisplayTime
   private formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
     return `${minutes}:${sec < 10 ? '0' : ''}${sec}`;
-  };
-};
+  }
+}

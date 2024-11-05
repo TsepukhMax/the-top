@@ -8,7 +8,7 @@ export class VolumeBarComponent implements IComponent {
 
   constructor(mediaElement: HTMLMediaElement) {
     this.mediaElement = mediaElement;
-  };
+  }
 
   // rendering method for DOM
   public render(): HTMLElement {
@@ -42,7 +42,7 @@ export class VolumeBarComponent implements IComponent {
     });
 
     return this.volumeBarContainer;
-  };
+  }
 
   // main method for control volume
   private setVolume(e: MouseEvent): void {
@@ -54,10 +54,10 @@ export class VolumeBarComponent implements IComponent {
 
     this.mediaElement.volume = newVolume; // Update volume
     this.updateVolumeSlider(); // Update slider position
-  };
+  }
 
   // method for updating slider position
   public updateVolumeSlider(): void {
     this.volumeSliderEl.style.width = `${this.mediaElement.volume * 100}%`; // Set the width based on volume
-  };
-};
+  }
+}
