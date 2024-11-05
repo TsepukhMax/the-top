@@ -127,6 +127,7 @@ export class PopupComponent implements IComponent {
       }
     });
   }
+  
   // Method for updating progress with animation frame
   private updateProgressWithAnimationFrame(): void {
     this.progressBar.updateProgressBar();
@@ -141,5 +142,5 @@ export class PopupComponent implements IComponent {
   private close(): void {
       document.body.removeChild(this.popupElement);
       document.body.classList.remove('body-wrapper');
-  };
-};
+  }
+}
