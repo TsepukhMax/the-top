@@ -33,8 +33,8 @@ export class DisplayTimeComponent implements IComponent {
   };
   
   public updateDisplayTime(): void {
-  this.currentTimeEl.textContent = this.formatTime(this.mediaElement.currentTime);
-  this.totalTimeEl.textContent = this.formatTime(this.mediaElement.duration || 0);
+    this.currentTimeEl.textContent = this.formatTime(this.mediaElement.currentTime);
+    this.totalTimeEl.textContent = this.formatTime(this.mediaElement.duration || 0);
   };
 
   // private method for updateDisplayTime
