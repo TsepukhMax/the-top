@@ -1,17 +1,17 @@
-import { IComponent } from './i-component';
+import { IComponent } from '../Interfaces/i-component';
 
 // PlayButtonComponent
-class PlayButtonComponent implements IComponent {
+export class PlayButtonComponent implements IComponent {
   private playing: boolean = false;
-  private button;
-  private onClick;
+  private button: HTMLButtonElement | null = null; // Вказано тип HTMLButtonElement або null
+  private onClick: (playing: boolean) => void;
 
-  constructor(cbOnClick) {
+  constructor(cbOnClick: (playing: boolean) => void) {
     this.onClick = cbOnClick;
   }
 
   // method for render PlayButtonComponent
-  render(): HTMLButtonElement {
+  public render(): HTMLButtonElement {
     this.button = document.createElement('button');
     this.button.classList.add('button-play');
 
@@ -19,9 +19,9 @@ class PlayButtonComponent implements IComponent {
       this.playing = !this.playing;
 
       if (this.playing) {
-        this.button!.classList.add('button-stop');
+        this.button.classList.add('button-stop');
       } else {
-        this.button!.classList.remove('button-stop');
+        this.button.classList.remove('button-stop');
       }
 
       this.onClick(this.playing);
@@ -31,8 +31,8 @@ class PlayButtonComponent implements IComponent {
   }
 
   // method for reset PlayButtonComponent
-  reset(): void {
+  public reset(): void {
     this.playing = false; // reset for false(no play)
-    this.button?.classList.remove('button-stop'); // remove "button-stop"
+    this.button.classList.remove('button-stop'); // remove "button-stop"
   }
 }
