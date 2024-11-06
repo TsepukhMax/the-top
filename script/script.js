@@ -711,14 +711,14 @@ class NewsletterComponent {
     description.classList.add('newsletter-description');
     container.appendChild(description);
 
-    description.appendChild(this.#createСolumnsData());
+    description.appendChild(this.#createColumnsData());
 
     return newsletterSection;
   }
 
-  #createСolumnsData() {
+  #createColumnsData() {
     const columns = document.createElement('div');
-    columns.classList.add('newsletter-colums');
+    columns.classList.add('newsletter-columns');
 
     const title = document.createElement('h2');
     title.textContent = 'Sign up to receive the latest updates and news';

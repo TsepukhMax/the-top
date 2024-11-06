@@ -1,9 +1,10 @@
 import { IComponent } from '../interfaces/i-component';
+import { ISocialLink } from '../interfaces/i-social-link';
 
 //FooterComponent
 export class FooterComponent implements IComponent {
   private policyLinks: string[] = ['Privacy policy', 'Cookie policy'];
-  private socialLinks: { iconSrc: string; alt: string }[] = [
+  private socialLinks: ISocialLink[] = [
     { iconSrc: 'img/twitter.svg', alt: 'twitter' },
     { iconSrc: 'img/instagram.svg', alt: 'instagram' },
     { iconSrc: 'img/facebook.svg', alt: 'facebook' }
