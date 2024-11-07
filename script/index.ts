@@ -28,7 +28,9 @@ burger.addEventListener('click', () => {
 
 // close burger menu if click no burger
 document.addEventListener('click', (e) => {
-  if (!menu.contains(e.target) && !burger.contains(e.target)) {
+  const target = e.target as HTMLElement; //Cast type to HTMLElement
+
+  if (!menu.contains(target) && !burger.contains(target)) {
     burgerContent.classList.remove('burger-content-open');
     navigationalList.classList.remove('navigational-list-visible');
   }
@@ -43,8 +45,8 @@ jsMovieLink.forEach((link) => {
     event.preventDefault();
 
     // get href
-    const href = event.currentTarget.getAttribute('href');
-    const targetElement = document.querySelector(href);
+    const href = (event.currentTarget as HTMLElement).getAttribute('href'); //Get href cast to HTMLElement
+    const targetElement = document.querySelector<HTMLElement>(href); // use generic for querySelector, that get HTMLElement
 
     // get position element
     const targetPosition = targetElement.offsetTop;
