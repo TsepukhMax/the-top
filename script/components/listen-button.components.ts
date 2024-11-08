@@ -1,17 +1,16 @@
 import { IComponent } from '../interfaces/i-component';
-import { IClickProps } from '../interfaces/i-click-props';
 
 //ListenButtonComponent
 export class ListenButtonComponent implements IComponent {
   private button: HTMLButtonElement;
   private onClick: () => void;
 
-  constructor(props: IClickProps) {
-    this.onClick = props.onClick;
+  constructor(onClick: () => void) {
+    this.onClick = onClick;
   }
 
   // render
-  public render(): HTMLButtonElement {
+  public render(): HTMLElement {
     this.button = document.createElement('button');
     this.button.classList.add('button');
     this.button.textContent = 'listen';
