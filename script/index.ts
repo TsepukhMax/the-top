@@ -66,14 +66,14 @@ document.querySelectorAll('.js-button').forEach((button) => {
   button.addEventListener('click', () => {
 
     // stop video in slider
-    (document.querySelectorAll('.slid-video')as NodeListOf<HTMLMediaElement>).forEach((video) => {
+    document.querySelectorAll('.slid-video').forEach((video: HTMLVideoElement) => {
       video.pause();
-      const closestSlide = video.closest('.slid') as HTMLElement;
+      const closestSlide = video.closest('.slid');
       closestSlide.classList.remove('playing'); // remove class playing
       closestSlide.querySelector('.button-play').classList.remove('button-stop'); // reset button play
     });
 
-    const section = button.closest('section') as HTMLElement;
+    const section = button.closest('section');
     const titleText = section.dataset.title;
     const topText = section.dataset.top;
     const audioSource = section.dataset.audio;
@@ -87,9 +87,9 @@ document.querySelectorAll('.js-button').forEach((button) => {
 
 // SLIDER
 document.querySelectorAll('.slider-section').forEach((slider) => {
-  const arrowRight = slider.querySelector('.arrow-right') as HTMLElement;
-  const arrowLeft = slider.querySelector('.arrow-left') as HTMLElement;
-  const slidsWrapper = slider.querySelector('.slids-wrapper') as HTMLElement;
+  const arrowRight = slider.querySelector('.arrow-right');
+  const arrowLeft = slider.querySelector('.arrow-left');
+  const slidsWrapper = slider.querySelector<HTMLElement>('.slids-wrapper');
   const maxSlideIndex = slider.querySelectorAll('.slid').length - 1;
   let currentSlid = 0;
 
@@ -115,21 +115,21 @@ document.querySelectorAll('.slider-section').forEach((slider) => {
 // add video for slid
 const slides = document.querySelectorAll('.slid');
 slides.forEach((slide) => {
-  const video = slide.querySelector('.slid-video') as HTMLMediaElement;
-  const playButton = slide.querySelector('.button-play') as HTMLElement;
-  const volumeBarContainer = slide.querySelector('.volume-bar-container') as HTMLElement;
+  const video = slide.querySelector<HTMLVideoElement>('.slid-video');
+  const playButton = slide.querySelector('.button-play');
+  const volumeBarContainer = slide.querySelector('.volume-bar-container');
 
   // click for button Play/Stop
   playButton.addEventListener('click', () => {
 
     // stop other Video
     slides.forEach((otherSlide) => {
-      const otherVideo = otherSlide.querySelector('.slid-video') as HTMLMediaElement;
+      const otherVideo = otherSlide.querySelector<HTMLVideoElement>('.slid-video');
 
       if (otherVideo !== video) { //check for no stop this video
         otherVideo.pause(); 
         otherSlide.classList.remove('playing');
-        (otherSlide.querySelector('.button-play') as HTMLElement).classList.remove('button-stop'); //change for button-play
+        otherSlide.querySelector('.button-play').classList.remove('button-stop'); //change for button-play
       }
     });
 
@@ -290,6 +290,5 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
       requestAnimationFrame(animationScroll); // continue animation if have time
     }
   }
-
   requestAnimationFrame(animationScroll); // start animation
 }
