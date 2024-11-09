@@ -87,7 +87,8 @@ document.querySelectorAll('.js-button').forEach((button) => {
 });
 
 // const for Section01
-const targetSection01 = document.querySelector('#movie-01 .wrapper-text'); 
+const movieSection01 = document.getElementById('movie-01');
+const targetWrapperText01 = movieSection01.querySelector('.wrapper-text'); 
 
 // Render ListenButtonComponent only for a specific section ( movie-01)
 const listenButton = new ListenButtonComponent(() => {
@@ -95,18 +96,18 @@ const listenButton = new ListenButtonComponent(() => {
   // stop video in slider
   document.querySelectorAll('.slid-video').forEach((video: HTMLVideoElement) => {
     video.pause();
-    video.closest('.slid')?.classList.remove('playing');
-    video.closest('.slid')?.querySelector('.button-play')?.classList.remove('button-stop');
+    video.closest('.slid').classList.remove('playing');
+    video.closest('.slid').querySelector('.button-play').classList.remove('button-stop');
   });
   
   // POPUP
-  const section = targetSection01.closest('section');
+  const section = movieSection01.closest('section');
   const popup = new PopupComponent(section.dataset.title, section.dataset.top, section.dataset.audio);
   document.body.appendChild(popup.render());
   document.body.classList.add('body-wrapper');
 });
 
-targetSection01.appendChild(listenButton.render());
+targetWrapperText01.appendChild(listenButton.render());
 
 // SLIDER
 document.querySelectorAll('.slider-section').forEach((slider) => {
