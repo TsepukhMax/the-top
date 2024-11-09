@@ -2,6 +2,7 @@ import { PopupComponent } from "./components/popup.component";
 import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
 import { ListenButtonComponent } from "./components/listen-button.components";
+import { WrapperDescriptionComponent } from "./components/wrapper-description.component";
 
 // instance and render FooterComponent---OOP---
 const footer = new FooterComponent();
@@ -86,28 +87,45 @@ document.querySelectorAll('.js-button').forEach((button) => {
   });
 });
 
-// const for Section01
-const movieSection01 = document.getElementById('movie-01');
-const targetWrapperText01 = movieSection01.querySelector('.wrapper-text'); 
+// -----create function initializeMovieSection01 for movieSection01-----
+function initializeMovieSection01() {
+  const movieSection01 = document.getElementById('movie-01');
 
-// Render ListenButtonComponent only for a specific section ( movie-01)
-const listenButton = new ListenButtonComponent(() => {
+  // get information from data-atribute
+  const title = movieSection01.getAttribute('data-title');
+  const number = movieSection01.getAttribute('data-top');
+  const description = "Everything about the soundtrack in The Lord of the Rings is excellent, which is one of the many reasons that the trilogy remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music all his own.";
 
-  // stop video in slider
-  document.querySelectorAll('.slid-video').forEach((video: HTMLVideoElement) => {
-    video.pause();
-    video.closest('.slid').classList.remove('playing');
-    video.closest('.slid').querySelector('.button-play').classList.remove('button-stop');
+  // instance and render for WrapperDescriptionComponent
+  const wrapperDescriptionComponent = new WrapperDescriptionComponent({ title, number, description });
+  const wrapperContainer = movieSection01.querySelector('.wrapper');
+  wrapperContainer.appendChild(wrapperDescriptionComponent.render());
+
+  // get parent for ListenButtonComponent
+  const wrapperText01 = movieSection01.querySelector('.wrapper-text');
+
+  // instance ListenButtonComponent for movie-01
+  const listenButton = new ListenButtonComponent(() => {
+    
+    // stop video in slider
+    document.querySelectorAll('.slid-video').forEach((video: HTMLVideoElement) => {
+      video.pause();
+      video.closest('.slid').classList.remove('playing');
+      video.closest('.slid').querySelector('.button-play').classList.remove('button-stop');
+    });
+
+    // create POPUP
+    const popup = new PopupComponent(title, number, movieSection01.getAttribute('data-audio'));
+    document.body.appendChild(popup.render());
+    document.body.classList.add('body-wrapper');
   });
-  
-  // POPUP
-  const section = movieSection01.closest('section');
-  const popup = new PopupComponent(section.dataset.title, section.dataset.top, section.dataset.audio);
-  document.body.appendChild(popup.render());
-  document.body.classList.add('body-wrapper');
-});
 
-targetWrapperText01.appendChild(listenButton.render());
+  // render ListenButtonComponent
+  wrapperText01.appendChild(listenButton.render());
+}
+
+// call the function to initialize the section
+initializeMovieSection01();
 
 // SLIDER
 document.querySelectorAll('.slider-section').forEach((slider) => {
