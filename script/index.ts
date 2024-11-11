@@ -3,7 +3,7 @@ import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
 import { ListenButtonComponent } from "./components/listen-button.components";
 import { WrapperDescriptionComponent } from "./components/wrapper-description.component";
-import { movieData01 } from "./date/movie-data-01";
+import { movieData01 } from "./movie-data";
 
 // instance and render FooterComponent---OOP---
 const footer = new FooterComponent();
@@ -94,7 +94,7 @@ function initializeMovieSection01() {
 
   // function for formating rating
   function formatRating(rating: number): string {
-    return rating.toFixed(2).substring(1); // delete 0
+    return (rating / 100).toFixed(2).replace(/^0/, '');
   }
 
   // instance and render for WrapperDescriptionComponent

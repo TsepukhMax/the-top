@@ -2,12 +2,12 @@ import { IComponent } from '../interfaces/i-component';
 
 export class WrapperDescriptionComponent implements IComponent {
   private title: string;
-  private number: string;
+  private rating: string;
   private description: string;
 
-  constructor(title: string, number: string, description: string) {
+  constructor(title: string, rating: string, description: string) {
     this.title = title;
-    this.number = number;
+    this.rating = rating;
     this.description = description;
   }
 
@@ -20,7 +20,7 @@ export class WrapperDescriptionComponent implements IComponent {
     // title
     const h2 = document.createElement('h2');
     const span = document.createElement('span');
-    span.textContent = this.number;
+    span.textContent = this.rating;
     h2.appendChild(span);
     h2.appendChild(document.createTextNode(this.title));
 
