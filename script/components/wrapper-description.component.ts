@@ -1,11 +1,14 @@
 import { IComponent } from '../interfaces/i-component';
-import { IWrapperDescription } from '../interfaces/i-wrapper-description ';
 
 export class WrapperDescriptionComponent implements IComponent {
-  private props: IWrapperDescription;
+  private title: string;
+  private number: string;
+  private description: string;
 
-  constructor(props: IWrapperDescription) {
-    this.props = props; 
+  constructor(title: string, number: string, description: string) {
+    this.title = title;
+    this.number = number;
+    this.description = description;
   }
 
   //HTML 
@@ -17,9 +20,9 @@ export class WrapperDescriptionComponent implements IComponent {
     // title
     const h2 = document.createElement('h2');
     const span = document.createElement('span');
-    span.textContent = this.props.number;
+    span.textContent = this.number;
     h2.appendChild(span);
-    h2.appendChild(document.createTextNode(this.props.title));
+    h2.appendChild(document.createTextNode(this.title));
 
     // container wrapper-coloms
     const wrapperColoms = document.createElement('div');
@@ -29,7 +32,7 @@ export class WrapperDescriptionComponent implements IComponent {
     wrapperText.classList.add('wrapper-text');
     // describe
     const paragraph = document.createElement('p');
-    paragraph.textContent = this.props.description;
+    paragraph.textContent = this.description;
     // add describe elements
     wrapperText.appendChild(paragraph);
     wrapperColoms.appendChild(wrapperText);

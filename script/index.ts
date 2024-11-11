@@ -3,6 +3,7 @@ import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
 import { ListenButtonComponent } from "./components/listen-button.components";
 import { WrapperDescriptionComponent } from "./components/wrapper-description.component";
+import { movieData01 } from "./date/movie-data-01";
 
 // instance and render FooterComponent---OOP---
 const footer = new FooterComponent();
@@ -92,12 +93,11 @@ function initializeMovieSection01() {
   const movieSection01 = document.getElementById('movie-01');
 
   // get information from data-atribute
-  const title = movieSection01.getAttribute('data-title');
   const number = movieSection01.getAttribute('data-top');
-  const description = "Everything about the soundtrack in The Lord of the Rings is excellent, which is one of the many reasons that the trilogy remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music all his own.";
 
   // instance and render for WrapperDescriptionComponent
-  const wrapperDescriptionComponent = new WrapperDescriptionComponent({ title, number, description });
+  const wrapperDescriptionComponent = new WrapperDescriptionComponent(movieData01.title, number, movieData01.description);
+
   const wrapperContainer = movieSection01.querySelector('.wrapper');
   wrapperContainer.appendChild(wrapperDescriptionComponent.render());
 
@@ -115,7 +115,7 @@ function initializeMovieSection01() {
     });
 
     // create POPUP
-    const popup = new PopupComponent(title, number, movieSection01.getAttribute('data-audio'));
+    const popup = new PopupComponent(movieData01.title, number, movieSection01.getAttribute('data-audio'));
     document.body.appendChild(popup.render());
     document.body.classList.add('body-wrapper');
   });
