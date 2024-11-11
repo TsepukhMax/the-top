@@ -92,11 +92,13 @@ document.querySelectorAll('.js-button').forEach((button) => {
 function initializeMovieSection01() {
   const movieSection01 = document.getElementById('movie-01');
 
-  // get information from data-atribute
-  const number = movieSection01.getAttribute('data-top');
+  // function for formating rating
+  function formatRating(rating: number): string {
+    return rating.toFixed(2).substring(1); // delete 0
+  }
 
   // instance and render for WrapperDescriptionComponent
-  const wrapperDescriptionComponent = new WrapperDescriptionComponent(movieData01.title, number, movieData01.description);
+  const wrapperDescriptionComponent = new WrapperDescriptionComponent(movieData01.title, formatRating(movieData01.rating), movieData01.description);
 
   const wrapperContainer = movieSection01.querySelector('.wrapper');
   wrapperContainer.appendChild(wrapperDescriptionComponent.render());
@@ -115,7 +117,7 @@ function initializeMovieSection01() {
     });
 
     // create POPUP
-    const popup = new PopupComponent(movieData01.title, number, movieSection01.getAttribute('data-audio'));
+    const popup = new PopupComponent(movieData01.title, formatRating(movieData01.rating), movieData01.audioUrl);
     document.body.appendChild(popup.render());
     document.body.classList.add('body-wrapper');
   });
