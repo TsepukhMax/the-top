@@ -1,9 +1,8 @@
 import { PopupComponent } from "./components/popup.component";
 import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
-import { ListenButtonComponent } from "./components/listen-button.components";
-import { WrapperDescriptionComponent } from "./components/wrapper-description.component";
 import { movieData01 } from "./movie-data";
+import { MovieSectionComponent } from "./components/movie-section.component";
 
 // instance and render FooterComponent---OOP---
 const footer = new FooterComponent();
@@ -12,10 +11,13 @@ document.body.appendChild(footer.render());
 // find <main>
 const mainElement = document.querySelector('main');
 
+// instance and render MovieSectionComponent---OOP---
+const movieSectionComponent = new MovieSectionComponent(movieData01);
+mainElement.appendChild(movieSectionComponent.render());
+
 // instance and render NewsletterComponent---OOP---
 const newsletterComponent = new NewsletterComponent();
 mainElement.appendChild(newsletterComponent.render());
-
 
 //BURGER MENU
 const burger = document.querySelector('.burger');
@@ -87,47 +89,6 @@ document.querySelectorAll('.js-button').forEach((button) => {
     document.body.classList.add('body-wrapper');
   });
 });
-
-// -----create function initializeMovieSection01 for movieSection01-----
-function initializeMovieSection01() {
-  const movieSection01 = document.getElementById('movie-01');
-
-  // function for formating rating
-  function formatRating(rating) {
-    return `.${rating.toString().padStart(2, '0')}`;
-  }
-
-  // instance and render for WrapperDescriptionComponent
-  const wrapperDescriptionComponent = new WrapperDescriptionComponent(movieData01.title, formatRating(movieData01.rating), movieData01.description);
-
-  const wrapperContainer = movieSection01.querySelector('.wrapper');
-  wrapperContainer.appendChild(wrapperDescriptionComponent.render());
-
-  // get parent for ListenButtonComponent
-  const wrapperText01 = movieSection01.querySelector('.wrapper-text');
-
-  // instance ListenButtonComponent for movie-01
-  const listenButton = new ListenButtonComponent(() => {
-    
-    // stop video in slider
-    document.querySelectorAll('.slid-video').forEach((video: HTMLVideoElement) => {
-      video.pause();
-      video.closest('.slid').classList.remove('playing');
-      video.closest('.slid').querySelector('.button-play').classList.remove('button-stop');
-    });
-
-    // create POPUP
-    const popup = new PopupComponent(movieData01.title, formatRating(movieData01.rating), movieData01.audioUrl);
-    document.body.appendChild(popup.render());
-    document.body.classList.add('body-wrapper');
-  });
-
-  // render ListenButtonComponent
-  wrapperText01.appendChild(listenButton.render());
-}
-
-// call the function to initialize the section
-initializeMovieSection01();
 
 // SLIDER
 document.querySelectorAll('.slider-section').forEach((slider) => {
