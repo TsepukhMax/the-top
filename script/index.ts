@@ -93,8 +93,8 @@ function initializeMovieSection01() {
   const movieSection01 = document.getElementById('movie-01');
 
   // function for formating rating
-  function formatRating(rating: number): string {
-    return (rating / 100).toFixed(2).replace(/^0/, '');
+  function formatRating(rating) {
+    return `.${rating.toString().padStart(2, '0')}`;
   }
 
   // instance and render for WrapperDescriptionComponent
