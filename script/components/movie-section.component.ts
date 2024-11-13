@@ -5,11 +5,7 @@ import { IComponent } from "../interfaces/i-component";
 import { IMovieData } from "../interfaces/i-movie-data";
 
 export class MovieSectionComponent implements IComponent {
-  private movieData: IMovieData;
-
-  constructor(movieData: IMovieData) {
-    this.movieData = movieData;
-  }
+  constructor(private movieData: IMovieData) {}
 
   public render(): HTMLElement {
     // main section
@@ -78,7 +74,7 @@ export class MovieSectionComponent implements IComponent {
   }
 
   // Method for format rating
-  private formatRating(rating) {
+  private formatRating(rating: number): string {
     return `.${rating.toString().padStart(2, '0')}`;
   }
 }
