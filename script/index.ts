@@ -3,6 +3,8 @@ import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
 import { movieData01 } from "./movie-data";
 import { MovieSectionComponent } from "./components/movie-section.component";
+import { slideMovieData01 } from "./slide-movie-data-godfather";
+import { SlideMovieComponent } from "./components/slide-movie-godfather";
 
 // instance and render FooterComponent---OOP---
 const footer = new FooterComponent();
@@ -95,12 +97,17 @@ document.querySelectorAll('.slider-section').forEach((slider) => {
   const arrowRight = slider.querySelector('.arrow-right');
   const arrowLeft = slider.querySelector('.arrow-left');
   const slidsWrapper = slider.querySelector<HTMLElement>('.slids-wrapper');
-  const maxSlideIndex = slider.querySelectorAll('.slid').length - 1;
   let currentSlid = 0;
+
+  // function for counting the number of slides
+  function updateMaxSlideIndex() {
+    return slider.querySelectorAll('.slid').length - 1;
+  }
 
   // event for arrow-right
   arrowRight.addEventListener('click', (e) => {
     e.preventDefault();
+    const maxSlideIndex = updateMaxSlideIndex();
     if (currentSlid < maxSlideIndex) {
       currentSlid++;
       slidsWrapper.style.marginLeft = `${currentSlid * -100}%`;
@@ -275,6 +282,12 @@ const updateProgressOnClick = (e, parentElement, mediaElement) => {
 
   updateDisplayTime(parentElement, mediaElement); // update with updateDisplayTime function
 }
+
+// instance and render slider-section-03---OOP---
+const sliderSection03 = document.querySelector('.slider-section-03');
+const slidsWrapper = sliderSection03.querySelector('.slids-wrapper');
+const slideMovieGodfather = new SlideMovieComponent(slideMovieData01);
+slidsWrapper.appendChild(slideMovieGodfather.render());
 
 //-----SCROLL function--------
 const DURATION_SCROLL = 800;

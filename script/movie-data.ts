@@ -1,4 +1,3 @@
-// data/data.ts
 import { IMovieData } from "./interfaces/i-movie-data";
 
 export const movieData01: IMovieData = {
