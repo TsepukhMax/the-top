@@ -10,8 +10,8 @@ export class SlideMovieComponent implements IComponent {
   private slide: HTMLElement;
   private playButton: PlayButtonComponent;
   private displayTime: DisplayTimeComponent;
-  private volumeBar: VolumeBarComponent;
   private progressBar: ProgressBarComponent;
+  private video: HTMLVideoElement;
 
   constructor(private movieData: IMovieData) {}
 
@@ -21,36 +21,42 @@ export class SlideMovieComponent implements IComponent {
 
     // Create and append image
     const img = document.createElement("img");
-    img.src = this.movieData.imageUrls[0];
-    img.alt = this.movieData.title;
+    img.src = this.movieData.coverImageUrl;
+    img.alt = this.movieData.title[1];
     this.slide.appendChild(img);
 
-    // Create and append video
-    const video = this.createVideo();
-    this.slide.appendChild(video);
+    // Set up the video element
+    this.video = this.createVideo();
+    this.slide.appendChild(this.video);
 
     // Create and append play button
     this.playButton = new PlayButtonComponent((playing: boolean) => {
-      this.handlePlayButtonClick(playing, video);
+      this.handlePlayButtonClick(playing);
     });
     this.slide.appendChild(this.playButton.render());
 
-    // Create and append others components
-    this.progressBar = new ProgressBarComponent(video, () => {
+    // Create and append other components
+    this.progressBar = new ProgressBarComponent(this.video, () => {
       this.displayTime.updateDisplayTime();
     });
     this.slide.appendChild(this.progressBar.render());
 
-    this.volumeBar = new VolumeBarComponent(video);
-    this.slide.appendChild(this.volumeBar.render());
+    const volumeBar = new VolumeBarComponent(this.video);
+    this.slide.appendChild(volumeBar.render());
 
-    this.displayTime = new DisplayTimeComponent(video);
+    this.displayTime = new DisplayTimeComponent(this.video);
     this.slide.appendChild(this.displayTime.render());
 
     // Setup video events
-    this.setupVideoEvents(video);
+    this.setupVideoEvents();
 
     return this.slide;
+  }
+
+  public reset(): void {
+    this.video.pause();
+    this.slide.classList.remove("playing");
+    this.playButton.reset();
   }
 
   private createVideo(): HTMLVideoElement {
@@ -63,13 +69,13 @@ export class SlideMovieComponent implements IComponent {
     return video;
   }
 
-  private handlePlayButtonClick(playing: boolean, video: HTMLVideoElement): void {
+  private handlePlayButtonClick(playing: boolean): void {
     // Stop other videos before playing this one
     document.querySelectorAll(".slid").forEach((otherSlide) => {
       const otherVideo = otherSlide.querySelector<HTMLVideoElement>(".slid-video");
-      const otherPlayButton = otherSlide.querySelector<HTMLElement>(".button-play");
+      const otherPlayButton = otherSlide.querySelector(".button-play");
 
-      if (otherVideo && otherVideo !== video) {
+      if (otherVideo && otherVideo !== this.video) {
         otherVideo.pause();
         otherSlide.classList.remove("playing");
         otherPlayButton?.classList.remove("button-stop");
@@ -78,47 +84,44 @@ export class SlideMovieComponent implements IComponent {
 
     // Play or pause the current video
     if (playing) {
-      video.play();
+      this.video.play();
       this.slide.classList.add("playing");
-      this.updateProgressWithAnimationFrame(video);
     } else {
-      video.pause();
+      this.video.pause();
       this.slide.classList.remove("playing");
-      if (this.progressAnimationFrame) {
-        cancelAnimationFrame(this.progressAnimationFrame);
-      }
     }
   }
 
-  private setupVideoEvents(video: HTMLVideoElement): void {
-    video.addEventListener("loadedmetadata", () => {
+  private setupVideoEvents(): void {
+    this.video.addEventListener("loadedmetadata", () => {
       this.displayTime.updateDisplayTime();
       this.progressBar.updateProgressBar();
     });
 
-    video.addEventListener("play", () => {
-      this.updateProgressWithAnimationFrame(video);
+    this.video.addEventListener("play", () => {
+      this.updateProgressWithAnimationFrame();
     });
 
-    video.addEventListener("pause", () => {
+    this.video.addEventListener("pause", () => {
       cancelAnimationFrame(this.progressAnimationFrame);
     });
 
-    video.addEventListener("ended", () => {
-      video.currentTime = 0;
+    this.video.addEventListener("ended", () => {
+      this.video.currentTime = 0;
       this.displayTime.updateDisplayTime();
       this.progressBar.updateProgressBar();
       this.playButton.reset();
       this.slide.classList.remove('playing');
+      cancelAnimationFrame(this.progressAnimationFrame);
     });
   }
 
-  private updateProgressWithAnimationFrame(video: HTMLVideoElement): void {
+  private updateProgressWithAnimationFrame(): void {
     this.progressBar.updateProgressBar();
     this.displayTime.updateDisplayTime();
 
     this.progressAnimationFrame = requestAnimationFrame(() => {
-      this.updateProgressWithAnimationFrame(video);
+      this.updateProgressWithAnimationFrame();
     });
   }
 }

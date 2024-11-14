@@ -24,7 +24,7 @@ export class MovieSectionComponent implements IComponent {
     // HTML for img
     const image = document.createElement("img");
     image.src = this.movieData.imageUrls[0];
-    image.alt = this.movieData.title;
+    image.alt = this.movieData.title[0];
     wrapper.appendChild(image);
 
     // Added description and button to wrapper
@@ -40,9 +40,9 @@ export class MovieSectionComponent implements IComponent {
   // Method for WrapperDescriptionComponent
   private createWrapperDescription(): HTMLElement {
     const wrapperDescription = new WrapperDescriptionComponent(
-      this.movieData.title,
-      this.formatRating(this.movieData.rating),
-      this.movieData.description
+      this.movieData.title[0],
+      this.formatRating(this.movieData.rating[0]),
+      this.movieData.description[0]
     ).render();
     wrapperDescription.classList.add("wrapper-description");
     return wrapperDescription;
@@ -60,8 +60,8 @@ export class MovieSectionComponent implements IComponent {
 
       // create POPUP
       const popup = new PopupComponent(
-        this.movieData.title,
-        this.formatRating(this.movieData.rating),
+        this.movieData.title[0],
+        this.formatRating(this.movieData.rating[0]),
         this.movieData.audioUrl
       );
 
