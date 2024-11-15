@@ -13,7 +13,7 @@ export class SlideMovieComponent implements IComponent {
   private progressBar: ProgressBarComponent;
   private video: HTMLVideoElement;
 
-  constructor(private movieData: IMovieData) {}
+  constructor(private movieData02: IMovieData) {}
 
   public render(): HTMLElement {
     this.slide = document.createElement("div");
@@ -21,8 +21,8 @@ export class SlideMovieComponent implements IComponent {
 
     // Create and append image
     const img = document.createElement("img");
-    img.src = this.movieData.coverImageUrl;
-    img.alt = this.movieData.title[1];
+    img.src = this.movieData02.coverImageUrl;
+    img.alt = this.movieData02.title;
     this.slide.appendChild(img);
 
     // Set up the video element
@@ -63,7 +63,7 @@ export class SlideMovieComponent implements IComponent {
     const video = document.createElement("video");
     video.classList.add("slid-video");
     const source = document.createElement("source");
-    source.src = this.movieData.videoUrl;
+    source.src = this.movieData02.videoUrl;
     source.type = "video/mp4";
     video.appendChild(source);
     return video;
@@ -75,7 +75,7 @@ export class SlideMovieComponent implements IComponent {
       const otherVideo = otherSlide.querySelector<HTMLVideoElement>(".slid-video");
       const otherPlayButton = otherSlide.querySelector(".button-play");
 
-      if (otherVideo && otherVideo !== this.video) {
+      if (otherVideo !== this.video) {
         otherVideo.pause();
         otherSlide.classList.remove("playing");
         otherPlayButton?.classList.remove("button-stop");
@@ -112,7 +112,6 @@ export class SlideMovieComponent implements IComponent {
       this.progressBar.updateProgressBar();
       this.playButton.reset();
       this.slide.classList.remove('playing');
-      cancelAnimationFrame(this.progressAnimationFrame);
     });
   }
 
