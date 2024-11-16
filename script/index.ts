@@ -285,6 +285,13 @@ const updateProgressOnClick = (e, parentElement, mediaElement) => {
 // instance and render slider-section-03---OOP---
 const sliderSection03 = document.querySelector('.slider-section-03');
 const slidsWrapper = sliderSection03.querySelector('.slids-wrapper');
+
+const slideMovieBrother = new SlideMovieComponent(movieDataList[3]);
+slidsWrapper.appendChild(slideMovieBrother.render());
+
+const slideMovieSpaceOdyssey = new SlideMovieComponent(movieDataList[2]);
+slidsWrapper.appendChild(slideMovieSpaceOdyssey.render());
+
 const slideMovieGodfather = new SlideMovieComponent(movieDataList[1]);
 slidsWrapper.appendChild(slideMovieGodfather.render());
 
