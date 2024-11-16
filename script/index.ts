@@ -1,8 +1,7 @@
 import { PopupComponent } from "./components/popup.component";
 import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
-import { movieData01 } from "./movie-data";
-import { movieData02 } from "./movie-data";
+import { movieDataList } from "./movie-data";
 import { MovieSectionComponent } from "./components/movie-section.component";
 import { SlideMovieComponent } from "./components/slide-movie.component";
 
@@ -14,7 +13,7 @@ document.body.appendChild(footer.render());
 const mainElement = document.querySelector('main');
 
 // instance and render MovieSectionComponent---OOP---
-const movieSectionComponent = new MovieSectionComponent(movieData01);
+const movieSectionComponent = new MovieSectionComponent(movieDataList[0]);
 mainElement.appendChild(movieSectionComponent.render());
 
 // instance and render NewsletterComponent---OOP---
@@ -286,7 +285,7 @@ const updateProgressOnClick = (e, parentElement, mediaElement) => {
 // instance and render slider-section-03---OOP---
 const sliderSection03 = document.querySelector('.slider-section-03');
 const slidsWrapper = sliderSection03.querySelector('.slids-wrapper');
-const slideMovieGodfather = new SlideMovieComponent(movieData02);
+const slideMovieGodfather = new SlideMovieComponent(movieDataList[1]);
 slidsWrapper.appendChild(slideMovieGodfather.render());
 
 //-----SCROLL function--------

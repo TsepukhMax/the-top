@@ -5,7 +5,7 @@ import { IComponent } from "../interfaces/i-component";
 import { IMovieData } from "../interfaces/i-movie-data";
 
 export class MovieSectionComponent implements IComponent {
-  constructor(private movieData01: IMovieData) {}
+  constructor(private movieData: IMovieData) {}
 
   public render(): HTMLElement {
     // main section
@@ -23,8 +23,8 @@ export class MovieSectionComponent implements IComponent {
 
     // HTML for img
     const image = document.createElement("img");
-    image.src = this.movieData01.imageUrls[0];
-    image.alt = this.movieData01.title;
+    image.src = this.movieData.imageUrls[0];
+    image.alt = this.movieData.title;
     wrapper.appendChild(image);
 
     // Added description and button to wrapper
@@ -40,9 +40,9 @@ export class MovieSectionComponent implements IComponent {
   // Method for WrapperDescriptionComponent
   private createWrapperDescription(): HTMLElement {
     const wrapperDescription = new WrapperDescriptionComponent(
-      this.movieData01.title,
-      this.formatRating(this.movieData01.rating),
-      this.movieData01.description
+      this.movieData.title,
+      this.formatRating(this.movieData.rating),
+      this.movieData.description
     ).render();
     wrapperDescription.classList.add("wrapper-description");
     return wrapperDescription;
@@ -60,9 +60,9 @@ export class MovieSectionComponent implements IComponent {
 
       // create POPUP
       const popup = new PopupComponent(
-        this.movieData01.title,
-        this.formatRating(this.movieData01.rating),
-        this.movieData01.audioUrl
+        this.movieData.title,
+        this.formatRating(this.movieData.rating),
+        this.movieData.audioUrl
       );
 
       document.body.appendChild(popup.render());

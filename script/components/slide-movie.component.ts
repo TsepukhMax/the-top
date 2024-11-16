@@ -13,7 +13,7 @@ export class SlideMovieComponent implements IComponent {
   private progressBar: ProgressBarComponent;
   private video: HTMLVideoElement;
 
-  constructor(private movieData02: IMovieData) {}
+  constructor(private movieData: IMovieData) {}
 
   public render(): HTMLElement {
     this.slide = document.createElement("div");
@@ -21,8 +21,8 @@ export class SlideMovieComponent implements IComponent {
 
     // Create and append image
     const img = document.createElement("img");
-    img.src = this.movieData02.coverImageUrl;
-    img.alt = this.movieData02.title;
+    img.src = this.movieData.coverImageUrl;
+    img.alt = this.movieData.title;
     this.slide.appendChild(img);
 
     // Set up the video element
@@ -63,7 +63,7 @@ export class SlideMovieComponent implements IComponent {
     const video = document.createElement("video");
     video.classList.add("slid-video");
     const source = document.createElement("source");
-    source.src = this.movieData02.videoUrl;
+    source.src = this.movieData.videoUrl;
     source.type = "video/mp4";
     video.appendChild(source);
     return video;
