@@ -3,22 +3,7 @@ import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
 import { movieDataList } from "./movie-data";
 import { MovieSectionComponent } from "./components/movie-section.component";
-import { SlideMovieComponent } from "./components/slide-movie.component";
-
-// instance and render FooterComponent---OOP---
-const footer = new FooterComponent();
-document.body.appendChild(footer.render());
-
-// find <main>
-const mainElement = document.querySelector('main');
-
-// instance and render MovieSectionComponent---OOP---
-const movieSectionComponent = new MovieSectionComponent(movieDataList[0]);
-mainElement.appendChild(movieSectionComponent.render());
-
-// instance and render NewsletterComponent---OOP---
-const newsletterComponent = new NewsletterComponent();
-mainElement.appendChild(newsletterComponent.render());
+import { SliderSectionComponent } from "./components/slider-section.component";
 
 //BURGER MENU
 const burger = document.querySelector('.burger');
@@ -96,17 +81,12 @@ document.querySelectorAll('.slider-section').forEach((slider) => {
   const arrowRight = slider.querySelector('.arrow-right');
   const arrowLeft = slider.querySelector('.arrow-left');
   const slidsWrapper = slider.querySelector<HTMLElement>('.slids-wrapper');
+  const maxSlideIndex = slider.querySelectorAll('.slid').length - 1;
   let currentSlid = 0;
-
-  // function for counting the number of slides------------temporary------
-  function updateMaxSlideIndex() {
-    return slider.querySelectorAll('.slid').length - 1;
-  }
 
   // event for arrow-right
   arrowRight.addEventListener('click', (e) => {
     e.preventDefault();
-    const maxSlideIndex = updateMaxSlideIndex();
     if (currentSlid < maxSlideIndex) {
       currentSlid++;
       slidsWrapper.style.marginLeft = `${currentSlid * -100}%`;
@@ -282,19 +262,6 @@ const updateProgressOnClick = (e, parentElement, mediaElement) => {
   updateDisplayTime(parentElement, mediaElement); // update with updateDisplayTime function
 }
 
-// instance and render slider-section-03---OOP---
-const sliderSection03 = document.querySelector('.slider-section-03');
-const slidsWrapper = sliderSection03.querySelector('.slids-wrapper');
-
-const slideMovieBrother = new SlideMovieComponent(movieDataList[3]);
-slidsWrapper.appendChild(slideMovieBrother.render());
-
-const slideMovieSpaceOdyssey = new SlideMovieComponent(movieDataList[2]);
-slidsWrapper.appendChild(slideMovieSpaceOdyssey.render());
-
-const slideMovieGodfather = new SlideMovieComponent(movieDataList[1]);
-slidsWrapper.appendChild(slideMovieGodfather.render());
-
 //-----SCROLL function--------
 const DURATION_SCROLL = 800;
 const smoothScrollTo = (targetPosition, durationScroll) => {
@@ -316,3 +283,23 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
   }
   requestAnimationFrame(animationScroll); // start animation
 }
+
+// instance and render FooterComponent---OOP---
+const footer = new FooterComponent();
+document.body.appendChild(footer.render());
+
+// find <main>
+const mainElement = document.querySelector('main');
+
+// instance and render slider-section-03---OOP---
+const fixedDataForSlider03 = movieDataList.slice(1, 4).reverse();
+const sliderSection = new SliderSectionComponent(fixedDataForSlider03);
+mainElement.appendChild(sliderSection.render());
+
+// instance and render MovieSectionComponent---OOP---
+const movieSectionComponent = new MovieSectionComponent(movieDataList[0]);
+mainElement.appendChild(movieSectionComponent.render());
+
+// instance and render NewsletterComponent---OOP---
+const newsletterComponent = new NewsletterComponent();
+mainElement.appendChild(newsletterComponent.render());
