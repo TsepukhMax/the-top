@@ -3,7 +3,13 @@ import { IMovieData } from "../interfaces/i-movie-data";
 import { SlideMovieComponent } from "./slide-movie.component";
 
 export class SliderSectionComponent implements IComponent {
-  constructor(private movieDataList: IMovieData[]) {}
+  private slidsWrapper: HTMLElement;
+  private maxSlideIndex: number;
+  private currentSlide = 0;
+
+  constructor(private movieDataList: IMovieData[]) {
+    this.maxSlideIndex = Math.max(movieDataList.length - 1, 0); // Initialization of the maximum
+  }
 
   public render(): HTMLElement {
     // Create section
@@ -13,16 +19,16 @@ export class SliderSectionComponent implements IComponent {
     const slider = document.createElement("div");
     slider.classList.add("slider");
   
-    const slidsWrapper = document.createElement("div");
-    slidsWrapper.classList.add("slids-wrapper");
+    this.slidsWrapper = document.createElement("div"); // Initialization slidsWrapper
+    this.slidsWrapper.classList.add("slids-wrapper");
   
     // Create slide using movieDataList
     this.movieDataList.forEach((movieData) => {
       const slideMovieComponent = new SlideMovieComponent(movieData);
-      slidsWrapper.appendChild(slideMovieComponent.render());
+      this.slidsWrapper.appendChild(slideMovieComponent.render());
     });
   
-    slider.appendChild(slidsWrapper);
+    slider.appendChild(this.slidsWrapper);
   
     // Calculate the number of slides
     const maxSlideIndex = this.movieDataList.length - 1;
@@ -31,8 +37,8 @@ export class SliderSectionComponent implements IComponent {
     const currentSlide = { value: 0 };
   
     // Append arrows with functionality
-    slider.appendChild(this.createArrowLeft(slidsWrapper, currentSlide));
-    slider.appendChild(this.createArrowRight(slidsWrapper, maxSlideIndex, currentSlide));
+    slider.appendChild(this.createArrowLeft());
+    slider.appendChild(this.createArrowRight());
   
     // Add slider to section
     section.appendChild(slider);
@@ -42,7 +48,7 @@ export class SliderSectionComponent implements IComponent {
 
 
   // Method for arrow left
-  private createArrowLeft(slidsWrapper: HTMLElement, currentSlide: { value: number }): HTMLElement {
+  private createArrowLeft(): HTMLElement {
     const arrowLeft = document.createElement("a");
     arrowLeft.classList.add("arrow-left");
     arrowLeft.href = "#";
@@ -52,13 +58,14 @@ export class SliderSectionComponent implements IComponent {
     arrowLeftImg.alt = "arrow-left";
 
     arrowLeft.appendChild(arrowLeftImg);
+    arrowLeft.setAttribute("aria-label", "Move left");
 
     // Add event listener for the left arrow
     arrowLeft.addEventListener("click", (e) => {
       e.preventDefault();
-      if (currentSlide.value > 0) {
-        currentSlide.value--;
-        slidsWrapper.style.marginLeft = `${currentSlide.value * -100}%`;
+      if (this.currentSlide > 0) {
+        this.currentSlide--;
+        this.slidsWrapper.style.marginLeft = `${this.currentSlide * -100}%`;
       }
     });
 
@@ -66,7 +73,7 @@ export class SliderSectionComponent implements IComponent {
   }
 
   // Method for arrow right
-  private createArrowRight(slidsWrapper: HTMLElement, maxSlideIndex: number, currentSlide: { value: number }): HTMLElement {
+  private createArrowRight(): HTMLElement {
     const arrowRight = document.createElement("a");
     arrowRight.classList.add("arrow-right");
     arrowRight.href = "#";
@@ -76,13 +83,14 @@ export class SliderSectionComponent implements IComponent {
     arrowRightImg.alt = "arrow-right";
 
     arrowRight.appendChild(arrowRightImg);
+    arrowRight.setAttribute("aria-label", "Move right");
 
     // Add event listener for the right arrow
     arrowRight.addEventListener("click", (e) => {
       e.preventDefault();
-      if (currentSlide.value < maxSlideIndex) {
-        currentSlide.value++;
-        slidsWrapper.style.marginLeft = `${currentSlide.value * -100}%`;
+      if (this.currentSlide < this.maxSlideIndex) {
+        this.currentSlide++;
+        this.slidsWrapper.style.marginLeft = `${this.currentSlide * -100}%`;
       }
     });
 
