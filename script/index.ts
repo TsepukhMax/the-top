@@ -293,7 +293,7 @@ const mainElement = document.querySelector('main');
 
 // instance and render slider-section-03---OOP---
 const fixedDataForSlider03 = movieDataList.slice(1, 4).reverse();
-const sliderSection = new SliderSectionComponent(fixedDataForSlider03);
+const sliderSection = new SliderSectionComponent(fixedDataForSlider03, 1);
 mainElement.appendChild(sliderSection.render());
 
 // instance and render MovieSectionComponent---OOP---

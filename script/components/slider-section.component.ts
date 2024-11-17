@@ -5,49 +5,45 @@ import { SlideMovieComponent } from "./slide-movie.component";
 export class SliderSectionComponent implements IComponent {
   private slidsWrapper: HTMLElement;
   private maxSlideIndex: number;
-  private currentSlide = 0;
+  private currentSlide: number;
 
-  constructor(private movieDataList: IMovieData[]) {
-    this.maxSlideIndex = Math.max(movieDataList.length - 1, 0); // Initialization of the maximum
+  constructor(private movieDataList: IMovieData[], initialSlideIndex: number = 0) {
+    this.maxSlideIndex = this.movieDataList.length - 1;
+    this.currentSlide = initialSlideIndex;
   }
 
   public render(): HTMLElement {
     // Create section
     const section = document.createElement("section");
     section.classList.add("slider-section");
-  
+
     const slider = document.createElement("div");
     slider.classList.add("slider");
-  
-    this.slidsWrapper = document.createElement("div"); // Initialization slidsWrapper
+
+    this.slidsWrapper = document.createElement("div");
     this.slidsWrapper.classList.add("slids-wrapper");
-  
-    // Create slide using movieDataList
+
+    // Create slides using movieDataList
     this.movieDataList.forEach((movieData) => {
       const slideMovieComponent = new SlideMovieComponent(movieData);
       this.slidsWrapper.appendChild(slideMovieComponent.render());
     });
-  
+
     slider.appendChild(this.slidsWrapper);
-  
-    // Calculate the number of slides
-    const maxSlideIndex = this.movieDataList.length - 1;
-  
-    // Current slide state (mutable object)
-    const currentSlide = { value: 0 };
-  
+
     // Append arrows with functionality
     slider.appendChild(this.createArrowLeft());
     slider.appendChild(this.createArrowRight());
-  
+
+    // Set the initial margin to show the correct slide
+    this.setSlideMargin();
+
     // Add slider to section
     section.appendChild(slider);
-  
+
     return section;
   }
 
-
-  // Method for arrow left
   private createArrowLeft(): HTMLElement {
     const arrowLeft = document.createElement("a");
     arrowLeft.classList.add("arrow-left");
@@ -58,21 +54,18 @@ export class SliderSectionComponent implements IComponent {
     arrowLeftImg.alt = "arrow-left";
 
     arrowLeft.appendChild(arrowLeftImg);
-    arrowLeft.setAttribute("aria-label", "Move left");
 
-    // Add event listener for the left arrow
     arrowLeft.addEventListener("click", (e) => {
       e.preventDefault();
       if (this.currentSlide > 0) {
         this.currentSlide--;
-        this.slidsWrapper.style.marginLeft = `${this.currentSlide * -100}%`;
+        this.setSlideMargin();
       }
     });
 
     return arrowLeft;
   }
 
-  // Method for arrow right
   private createArrowRight(): HTMLElement {
     const arrowRight = document.createElement("a");
     arrowRight.classList.add("arrow-right");
@@ -83,17 +76,20 @@ export class SliderSectionComponent implements IComponent {
     arrowRightImg.alt = "arrow-right";
 
     arrowRight.appendChild(arrowRightImg);
-    arrowRight.setAttribute("aria-label", "Move right");
 
-    // Add event listener for the right arrow
     arrowRight.addEventListener("click", (e) => {
       e.preventDefault();
       if (this.currentSlide < this.maxSlideIndex) {
         this.currentSlide++;
-        this.slidsWrapper.style.marginLeft = `${this.currentSlide * -100}%`;
+        this.setSlideMargin();
       }
     });
 
     return arrowRight;
+  }
+
+  // initial margin for the slides wrapper
+  private setSlideMargin(): void {
+    this.slidsWrapper.style.marginLeft = `${this.currentSlide * -100}%`;
   }
 }
