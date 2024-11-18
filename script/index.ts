@@ -4,6 +4,7 @@ import { NewsletterComponent } from "./components/newsletter.component";
 import { movieDataList } from "./movie-data";
 import { MovieSectionComponent } from "./components/movie-section.component";
 import { SliderSectionComponent } from "./components/slider-section.component";
+import { DoubleMovieSectionComponent } from "./components/double-movie-section.component";
 
 //BURGER MENU
 const burger = document.querySelector('.burger');
@@ -284,22 +285,26 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
   requestAnimationFrame(animationScroll); // start animation
 }
 
-// instance and render FooterComponent---OOP---
-const footer = new FooterComponent();
-document.body.appendChild(footer.render());
-
 // find <main>
 const mainElement = document.querySelector('main');
+
+// instance and render MovieSectionComponent---OOP---
+const doubleMovieSectionComponent02 = new DoubleMovieSectionComponent(movieDataList[1]);
+mainElement.appendChild(doubleMovieSectionComponent02.render());
 
 // instance and render slider-section-03---OOP---
 const fixedDataForSlider03 = movieDataList.slice(1, 4).reverse();
 const sliderSection = new SliderSectionComponent(fixedDataForSlider03, 1);
 mainElement.appendChild(sliderSection.render());
 
-// instance and render MovieSectionComponent---OOP---
+// instance and render MovieSectionComponent01---OOP---
 const movieSectionComponent = new MovieSectionComponent(movieDataList[0]);
 mainElement.appendChild(movieSectionComponent.render());
 
 // instance and render NewsletterComponent---OOP---
 const newsletterComponent = new NewsletterComponent();
 mainElement.appendChild(newsletterComponent.render());
+
+// instance and render FooterComponent---OOP---
+const footer = new FooterComponent();
+document.body.appendChild(footer.render());
