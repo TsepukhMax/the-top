@@ -2,7 +2,7 @@ import { IMovieData } from "./interfaces/i-movie-data";
 
 export const movieDataList: IMovieData[] = [
   {
-    id: 17,
+    id: 1,
     title: "The Lord of the Rings",
     rating: 1,
     description: "Everything about the soundtrack in The Lord of the Rings is excellent, which is one of the many reasons that the trilogy remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music all his own.",
@@ -12,7 +12,7 @@ export const movieDataList: IMovieData[] = [
     audioUrl: "audios/the-lord-of-the-rings.ogg",
   },
   {
-    id: 16,
+    id: 2,
     title: "The Godfather",
     rating: 2,
     description: "The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is part of it. Because the movie deals with crime, gangs, and the works, the music is designed to reflect that.",
@@ -22,7 +22,7 @@ export const movieDataList: IMovieData[] = [
     audioUrl: "audios/the-godfather.ogg",
   },
   {
-    id: 15,
+    id: 3,
     title: "2001: A SPACE ODYSSEY",
     rating: 3,
     description: "The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes and motifs to narrow down a tone that makes the movie feel all its own.",
@@ -32,7 +32,7 @@ export const movieDataList: IMovieData[] = [
     audioUrl: "audios/2001-a-space-odyssey.ogg",
   },
   {
-    id: 14,
+    id: 4,
     title: "O BROTHER, WHERE ART THOU?",
     rating: 4,
     description: "O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a group of convicts who go on a wild journey to find a treasure of sorts. With this film based in a stylistic period in history, the soundtrack was designed to match it.",

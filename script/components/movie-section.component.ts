@@ -3,6 +3,7 @@ import { ListenButtonComponent } from "./listen-button.components";
 import { PopupComponent } from "./popup.component";
 import { IComponent } from "../interfaces/i-component";
 import { IMovieData } from "../interfaces/i-movie-data";
+import { generateSectionId } from "../utils";
 
 export class MovieSectionComponent implements IComponent {
   constructor(private movieData: IMovieData) {}
@@ -10,7 +11,8 @@ export class MovieSectionComponent implements IComponent {
   public render(): HTMLElement {
     // main section
     const section = document.createElement("section");
-    section.id = "movie-01";
+    // generating unique id for movie
+    section.id = generateSectionId(this.movieData.id);
     section.classList.add("movie-section");
 
     // HTML for container
