@@ -1,10 +1,7 @@
 import { PopupComponent } from "./components/popup.component";
 import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
-import { movieDataList } from "./movie-data";
-import { MovieSectionComponent } from "./components/movie-section.component";
-import { SliderSectionComponent } from "./components/slider-section.component";
-import { DoubleMovieSectionComponent } from "./components/double-movie-section.component";
+import { RootComponent } from "./components/root.component";
 
 //BURGER MENU
 const burger = document.querySelector('.burger');
@@ -288,22 +285,9 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
 // find <main>
 const mainElement = document.querySelector('main');
 
-// instance and render MovieSectionComponent03---OOP---
-const movieSectionComponent03 = new MovieSectionComponent(movieDataList[2], true);
-mainElement.appendChild(movieSectionComponent03.render());
-
-// instance and render MovieSectionComponent02---OOP---
-const doubleMovieSectionComponent02 = new DoubleMovieSectionComponent(movieDataList[1]);
-mainElement.appendChild(doubleMovieSectionComponent02.render());
-
-// instance and render slider-section-03---OOP---
-const fixedDataForSlider03 = movieDataList.slice(1, 4).reverse();
-const sliderSection = new SliderSectionComponent(fixedDataForSlider03, 1);
-mainElement.appendChild(sliderSection.render());
-
-// instance and render MovieSectionComponent01---OOP---
-const movieSectionComponent01 = new MovieSectionComponent(movieDataList[0]);
-mainElement.appendChild(movieSectionComponent01.render());
+// Instance and render RootComponent (all section with movie)---OOP---
+const rootComponent = new RootComponent();
+mainElement.appendChild(rootComponent.render());
 
 // instance and render NewsletterComponent---OOP---
 const newsletterComponent = new NewsletterComponent();

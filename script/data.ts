@@ -1,6 +1,6 @@
 import { IMovieAudioData, IMovieData } from "./interfaces";
 
-export const movieDataList: IMovieData[] = [
+const unsortedMovieDataList: IMovieData[] = [
   {
     id: 29,
     title: "JURASSIC PARK",
@@ -145,3 +145,6 @@ export const movieAudioDataList: IMovieAudioData[] = [
     audioUrl: "audios/baby-driver.ogg",
   },
 ];
+
+// We sort the data by rating in order
+export const movieDataList: IMovieData[] = unsortedMovieDataList.sort((a, b) => b.rating - a.rating);

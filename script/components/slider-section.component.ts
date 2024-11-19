@@ -6,7 +6,7 @@ export class SliderSectionComponent implements IComponent {
   private maxSlideIndex: number;
   private currentSlide: number;
 
-  constructor(private movieDataList: IMovieData[], initialSlideIndex: number = 0) {
+  constructor(private movieDataList: IMovieData[], initialSlideIndex: number = 1) {
     this.maxSlideIndex = this.movieDataList.length - 1;
     this.currentSlide = initialSlideIndex;
   }
