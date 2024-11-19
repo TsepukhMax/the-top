@@ -3,7 +3,7 @@ import { generateSectionId } from "../utils";
 import { MovieSectionBaseComponent } from "./movie-section-base.component";
 
 export class MovieSectionComponent extends MovieSectionBaseComponent  {
-  constructor(movieData: IMovieData) {
+  constructor(movieData: IMovieData, private isReversed: boolean = false) {
     super(movieData);
   }
 
@@ -13,6 +13,11 @@ export class MovieSectionComponent extends MovieSectionBaseComponent  {
     // generating unique id for movie
     section.id = generateSectionId(this.movieData.id);
     section.classList.add("movie-section");
+
+    // Add reverse class if - true
+    if (this.isReversed) {
+      section.classList.add("movie-section-reverse");
+    }
 
     // HTML for container
     const container = document.createElement("div");

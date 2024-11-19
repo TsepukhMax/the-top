@@ -288,7 +288,11 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
 // find <main>
 const mainElement = document.querySelector('main');
 
-// instance and render MovieSectionComponent---OOP---
+// instance and render MovieSectionComponent03---OOP---
+const movieSectionComponent03 = new MovieSectionComponent(movieDataList[2], true);
+mainElement.appendChild(movieSectionComponent03.render());
+
+// instance and render MovieSectionComponent02---OOP---
 const doubleMovieSectionComponent02 = new DoubleMovieSectionComponent(movieDataList[1]);
 mainElement.appendChild(doubleMovieSectionComponent02.render());
 
@@ -298,8 +302,8 @@ const sliderSection = new SliderSectionComponent(fixedDataForSlider03, 1);
 mainElement.appendChild(sliderSection.render());
 
 // instance and render MovieSectionComponent01---OOP---
-const movieSectionComponent = new MovieSectionComponent(movieDataList[0]);
-mainElement.appendChild(movieSectionComponent.render());
+const movieSectionComponent01 = new MovieSectionComponent(movieDataList[0]);
+mainElement.appendChild(movieSectionComponent01.render());
 
 // instance and render NewsletterComponent---OOP---
 const newsletterComponent = new NewsletterComponent();
