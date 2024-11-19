@@ -1,5 +1,4 @@
-import { IComponent } from "../interfaces/i-component";
-import { IMovieData } from "../interfaces/i-movie-data";
+import { IComponent, IMovieData } from '../interfaces';
 import { PlayButtonComponent } from './play-button.component';
 import { DisplayTimeComponent } from './display-time.component';
 import { VolumeBarComponent } from './volume-bar.component';

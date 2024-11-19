@@ -1,4 +1,4 @@
-import { IComponent } from '../interfaces/i-component';
+import { IComponent } from '../interfaces';
 import { PlayButtonComponent } from './play-button.component';
 import { DisplayTimeComponent } from './display-time.component';
 import { VolumeBarComponent } from './volume-bar.component';
@@ -127,7 +127,7 @@ export class PopupComponent implements IComponent {
       }
     });
   }
-  
+
   // Method for updating progress with animation frame
   private updateProgressWithAnimationFrame(): void {
     this.progressBar.updateProgressBar();

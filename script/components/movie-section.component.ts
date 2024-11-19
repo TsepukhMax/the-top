@@ -1,4 +1,4 @@
-import { IMovieData } from "../interfaces/i-movie-data";
+import { IMovieData } from "../interfaces";
 import { generateSectionId } from "../utils";
 import { MovieSectionBaseComponent } from "./movie-section-base.component";
 
@@ -36,7 +36,7 @@ export class MovieSectionComponent extends MovieSectionBaseComponent  {
     // Added description and button to wrapper
     wrapper.appendChild(this.createWrapperDescription());
     wrapper.querySelector('.wrapper-text').appendChild(this.createListenButton());
-    
+
     container.appendChild(wrapper);
     section.appendChild(container);
 

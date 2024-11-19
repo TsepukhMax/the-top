@@ -1,4 +1,4 @@
-import { IComponent } from '../interfaces/i-component';
+import { IComponent } from '../interfaces';
 
 //DisplayTimeComponent
 export class DisplayTimeComponent implements IComponent {
@@ -9,9 +9,9 @@ export class DisplayTimeComponent implements IComponent {
   constructor(mediaElement: HTMLMediaElement) {
     this.mediaElement = mediaElement;
   }
-  
+
   public render(): HTMLElement {
-      
+
     // create HTML-elements for DisplayTimeComponent
     this.currentTimeEl = document.createElement('span');
     this.currentTimeEl.classList.add('current-time');
@@ -31,7 +31,7 @@ export class DisplayTimeComponent implements IComponent {
     // return container
     return container;
   }
-  
+
   public updateDisplayTime(): void {
     this.currentTimeEl.textContent = this.formatTime(this.mediaElement.currentTime);
     this.totalTimeEl.textContent = this.formatTime(this.mediaElement.duration || 0);

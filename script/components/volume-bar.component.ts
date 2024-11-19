@@ -1,4 +1,4 @@
-import { IComponent } from '../interfaces/i-component';
+import { IComponent } from '../interfaces';
 
 // VolumeBarComponent
 export class VolumeBarComponent implements IComponent {
@@ -12,7 +12,7 @@ export class VolumeBarComponent implements IComponent {
 
   // rendering method for DOM
   public render(): HTMLElement {
-    
+
     // create HTML-elements
     this.volumeSliderEl = document.createElement('div');
     this.volumeSliderEl.classList.add('volume-slider');
@@ -23,7 +23,7 @@ export class VolumeBarComponent implements IComponent {
 
     // add mousedown using an anonymous function // method for install volume
     this.volumeBarContainer.addEventListener('mousedown',(e) => {
-      
+
       // update for click
       this.setVolume(e);
 

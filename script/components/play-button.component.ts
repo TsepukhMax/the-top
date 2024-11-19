@@ -1,4 +1,4 @@
-import { IComponent } from '../interfaces/i-component';
+import { IComponent } from '../interfaces';
 
 // PlayButtonComponent
 export class PlayButtonComponent implements IComponent {

@@ -1,4 +1,4 @@
-import { IComponent } from '../interfaces/i-component';
+import { IComponent } from '../interfaces';
 
 //ProgressBarComponent
 export class ProgressBarComponent implements IComponent {
@@ -15,7 +15,7 @@ export class ProgressBarComponent implements IComponent {
 
   // rendering method for DOM
   public render(): HTMLElement {
-    
+
     // create HTML-elements
     this.progressBarEl = document.createElement('div');
     this.progressBarEl.classList.add('progress-bar');
@@ -31,7 +31,7 @@ export class ProgressBarComponent implements IComponent {
 
     return this.progressBarContainer;
   }
-  
+
   // method for update ProgressBarComponent
   public updateProgressBar(): void {
     const progress = (this.mediaElement.currentTime / this.mediaElement.duration) * 100;

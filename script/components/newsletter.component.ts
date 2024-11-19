@@ -1,4 +1,4 @@
-import { IComponent } from '../interfaces/i-component';
+import { IComponent } from '../interfaces';
 
 //NewsletterComponent
 export class NewsletterComponent implements IComponent{

@@ -1,5 +1,4 @@
-import { IComponent } from '../interfaces/i-component';
-import { ISocialLink } from '../interfaces/i-social-link';
+import { IComponent, ISocialLink } from '../interfaces';
 
 //FooterComponent
 export class FooterComponent implements IComponent {

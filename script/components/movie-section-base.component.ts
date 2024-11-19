@@ -1,8 +1,7 @@
 import { WrapperDescriptionComponent } from "./wrapper-description.component";
 import { ListenButtonComponent } from "./listen-button.components";
 import { PopupComponent } from "./popup.component";
-import { IComponent } from "../interfaces/i-component";
-import { IMovieData } from "../interfaces/i-movie-data";
+import { IComponent, IMovieData } from "../interfaces";
 
 export abstract class MovieSectionBaseComponent implements IComponent {
   constructor(protected movieData: IMovieData) {}
@@ -20,7 +19,7 @@ export abstract class MovieSectionBaseComponent implements IComponent {
     return wrapperDescription;
   }
 
-  // Method for ListenButtonComponent 
+  // Method for ListenButtonComponent
   protected createListenButton(): HTMLElement {
     const listenButton = new ListenButtonComponent(() => {
       // stop video in slider

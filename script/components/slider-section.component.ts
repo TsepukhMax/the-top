@@ -1,5 +1,4 @@
-import { IComponent } from "../interfaces/i-component";
-import { IMovieData } from "../interfaces/i-movie-data";
+import { IComponent, IMovieData } from "../interfaces";
 import { SlideMovieComponent } from "./slide-movie.component";
 
 export class SliderSectionComponent implements IComponent {

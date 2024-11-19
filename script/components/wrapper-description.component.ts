@@ -1,4 +1,4 @@
-import { IComponent } from '../interfaces/i-component';
+import { IComponent } from '../interfaces';
 
 export class WrapperDescriptionComponent implements IComponent {
   private title: string;
@@ -11,7 +11,7 @@ export class WrapperDescriptionComponent implements IComponent {
     this.description = description;
   }
 
-  //HTML 
+  //HTML
   public render(): HTMLElement {
     // main container
     const wrapperDescription = document.createElement('div');

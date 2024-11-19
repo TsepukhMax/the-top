@@ -1,4 +1,4 @@
-import { IMovieData } from "./interfaces/i-movie-data";
+import { IMovieData } from "./interfaces";
 
 export const movieDataList: IMovieData[] = [
   {
