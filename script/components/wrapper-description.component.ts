@@ -1,14 +1,17 @@
 import { IComponent } from '../interfaces';
+import { ListenButtonComponent } from './listen-button.components';
 
 export class WrapperDescriptionComponent implements IComponent {
   private title: string;
   private rating: string;
   private description: string;
+  private listenButtonComponent: ListenButtonComponent;
 
-  constructor(title: string, rating: string, description: string) {
+  constructor(title: string, rating: string, description: string, listenButtonComponent: ListenButtonComponent) {
     this.title = title;
     this.rating = rating;
     this.description = description;
+    this.listenButtonComponent = listenButtonComponent;
   }
 
   //HTML
@@ -35,6 +38,11 @@ export class WrapperDescriptionComponent implements IComponent {
     paragraph.textContent = this.description;
     // add describe elements
     wrapperText.appendChild(paragraph);
+
+    // render and append the listen button
+    const listenButtonElement = this.listenButtonComponent.render();
+    wrapperText.appendChild(listenButtonElement);
+    
     wrapperColoms.appendChild(wrapperText);
 
     // add elements

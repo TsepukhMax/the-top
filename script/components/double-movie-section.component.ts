@@ -27,7 +27,6 @@ export class DoubleMovieSectionComponent extends MovieSectionBaseComponent {
 
     // Added description and button to wrapper
     wrapper.appendChild(this.createWrapperDescription());
-    wrapper.querySelector('.wrapper-text').appendChild(this.createListenButton());
 
     container.appendChild(wrapper);
     section.appendChild(container);

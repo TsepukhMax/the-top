@@ -14,15 +14,17 @@ export abstract class MovieSectionBaseComponent implements IComponent {
     const wrapperDescription = new WrapperDescriptionComponent(
       this.movieData.title,
       this.formatRating(this.movieData.rating),
-      this.movieData.description
+      this.movieData.description,
+      this.createListenButton() // Передаємо сам компонент
     ).render();
+
     wrapperDescription.classList.add("wrapper-description");
     return wrapperDescription;
   }
 
   // Method for ListenButtonComponent
-  protected createListenButton(): HTMLElement {
-    const listenButton = new ListenButtonComponent(() => {
+  protected createListenButton(): ListenButtonComponent {
+    return new ListenButtonComponent(() => {
       // stop video in slider
       document.querySelectorAll(".slid-video").forEach((video: HTMLVideoElement) => {
         video.pause();
@@ -42,12 +44,9 @@ export abstract class MovieSectionBaseComponent implements IComponent {
 
       document.body.appendChild(popup.render());
       document.body.classList.add("body-wrapper");
-    }).render();
-
-    listenButton.classList.add("button");
-    return listenButton;
+    });
   }
-
+    
   // Method for format rating
   private formatRating(rating: number): string {
     return `.${rating.toString().padStart(2, '0')}`;
