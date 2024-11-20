@@ -1,7 +1,11 @@
 import { PopupComponent } from "./components/popup.component";
 import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
-import { RootComponent } from "./components/root.component";
+import { MovieSectionComponent } from "./components/movie-section.component";
+import { DoubleMovieSectionComponent } from "./components/double-movie-section.component";
+import { SliderSectionComponent } from "./components/slider-section.component";
+import { movieDataList } from "./data";
+import { IMovieData } from "./interfaces";
 
 //BURGER MENU
 const burger = document.querySelector('.burger');
@@ -285,9 +289,31 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
 // find <main>
 const mainElement = document.querySelector('main');
 
-// Instance and render RootComponent (all section with movie)---OOP---
-const rootComponent = new RootComponent();
-mainElement.appendChild(rootComponent.render());
+// Instance and render all section with movie---OOP---
+const sortedMovieDataList = [...movieDataList].sort((a, b) => b.rating - a.rating);
+
+// Temporary buffer
+let sectionsBuffer: IMovieData[] = [];
+
+for (let i = 0; i < sortedMovieDataList.length; i++) {
+  const movieData = sortedMovieDataList[i];
+
+  // section construction pattern
+  if (i % 3 === 0) {
+    mainElement.appendChild(new MovieSectionComponent(movieData).render());
+  } else if (i % 3 === 1) {
+    mainElement.appendChild(new MovieSectionComponent(movieData, true).render());
+  } else {
+    mainElement.appendChild(new DoubleMovieSectionComponent(movieData).render());
+
+    mainElement.appendChild(new SliderSectionComponent([...sectionsBuffer, movieData], 1).render());
+    sectionsBuffer = []; // clean buffer
+    continue;
+  }
+
+  // Add data for the slider
+  sectionsBuffer.push(movieData);
+}
 
 // instance and render NewsletterComponent---OOP---
 const newsletterComponent = new NewsletterComponent();
