@@ -9,7 +9,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/jurassic-park.jpg"],
     coverImageUrl: "img/slider-jurassic-park.png",
     videoUrl: "videos/jurassic-park.mp4",
-    audioUrl: "audios/jurassic-park.ogg",
   },
   {
     id: 72,
@@ -19,7 +18,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/space-odyssey.jpg"],
     coverImageUrl: "img/slider-space-odyssey.png",
     videoUrl: "videos/2001-a-space-odyssey.mp4",
-    audioUrl: "audios/2001-a-space-odyssey.ogg",
   },
   {
     id: 70,
@@ -29,7 +27,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/o-brother.jpg"],
     coverImageUrl: "img/slider-o-brother.png",
     videoUrl: "videos/o-brother-where-art-thou.mp4",
-    audioUrl: "audios/o-brother-where-art-thou.ogg",
   },
   {
     id: 74,
@@ -39,7 +36,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/the-godfather1.png", "img/the-godfather2.png"],
     coverImageUrl: "img/slider-the-godfather.jpg",
     videoUrl: "videos/the-godfather.mp4",
-    audioUrl: "audios/the-godfather.ogg",
   },
   {
     id: 76,
@@ -49,7 +45,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/the-lord-of-the-rings.jpg"],
     coverImageUrl: "",
     videoUrl: "",
-    audioUrl: "audios/the-lord-of-the-rings.ogg",
   },
   {
     id: 98,
@@ -59,7 +54,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/goodfellas.jpg"],
     coverImageUrl: "img/slider-goodfellas.png",
     videoUrl: "videos/goodfellas.mp4",
-    audioUrl: "audios/goodfellas.ogg",
   },
   {
     id: 47,
@@ -69,7 +63,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/starwars.png", "img/starwars_skywalker.png"],
     coverImageUrl: "img/slider-starwars.png",
     videoUrl: "videos/star-wars-a-new-hope.mp4",
-    audioUrl: "audios/star-wars-a-new-hope.ogg",
   },
   {
     id: 23,
@@ -79,7 +72,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/blade-runner-1.png", "img/blade-runner-2.png"],
     coverImageUrl: "img/slider-blade-runner.png",
     videoUrl: "videos/blade-runner.mp4",
-    audioUrl: "audios/blade-runner.ogg",
   },
   {
     id: 85,
@@ -89,7 +81,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/guardians-of-the-galaxy.jpg"],
     coverImageUrl: "img/slider-guardians-of-the-galaxy.png",
     videoUrl: "videos/guardinas-of-the-galaxy-vol-2.mp4",
-    audioUrl: "audios/guardinas-of-the-galaxy-vol-2.ogg",
   },
   {
     id: 65,
@@ -99,7 +90,6 @@ export const movieDataList: IMovieData[] = [
     imageUrls: ["img/baby-driver.jpg"],
     coverImageUrl: "img/slider-baby-driver.png",
     videoUrl: "videos/baby-driver.mp4",
-    audioUrl: "audios/baby-driver.ogg",
   },
 ];
 

@@ -10,7 +10,6 @@ export interface IMovieData {
   imageUrls: string[];
   coverImageUrl: string;
   videoUrl: string;
-  audioUrl?: string; // TODO: remove when listen button fixed
 }
 
 export interface IMovieAudioData {

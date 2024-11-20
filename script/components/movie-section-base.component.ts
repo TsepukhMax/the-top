@@ -1,7 +1,8 @@
 import { WrapperDescriptionComponent } from "./wrapper-description.component";
 import { ListenButtonComponent } from "./listen-button.components";
 import { PopupComponent } from "./popup.component";
-import { IComponent, IMovieData } from "../interfaces";
+import { IComponent, IMovieData, IMovieAudioData} from "../interfaces";
+import { movieAudioDataList } from "../data";
 
 export abstract class MovieSectionBaseComponent implements IComponent {
   constructor(protected movieData: IMovieData) {}
@@ -30,11 +31,13 @@ export abstract class MovieSectionBaseComponent implements IComponent {
         closestSlide.querySelector(".button-play").classList.remove("button-stop");
       });
 
+      const movieAudioData = this.findMovieAudioDataById(this.movieData.id);
+
       // create POPUP
       const popup = new PopupComponent(
         this.movieData.title,
         this.formatRating(this.movieData.rating),
-        this.movieData.audioUrl
+        movieAudioData.audioUrl
       );
 
       document.body.appendChild(popup.render());
@@ -48,5 +51,10 @@ export abstract class MovieSectionBaseComponent implements IComponent {
   // Method for format rating
   private formatRating(rating: number): string {
     return `.${rating.toString().padStart(2, '0')}`;
+  }
+
+  // Helper method to find audio data by ID
+  private findMovieAudioDataById(movieId: number): IMovieAudioData {
+    return movieAudioDataList.find((audioData) => audioData.id === movieId);
   }
 }
