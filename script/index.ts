@@ -290,13 +290,16 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
 const mainElement = document.querySelector('main');
 
 // Instance and render all section with movie---OOP---
-const sortedMovieDataList = [...movieDataList].sort((a, b) => b.rating - a.rating);
+movieDataList.sort((a, b) => b.rating - a.rating);
 
 // Temporary buffer
 let sectionsBuffer: IMovieData[] = [];
 
-for (let i = 0; i < sortedMovieDataList.length; i++) {
-  const movieData = sortedMovieDataList[i];
+for (let i = 0; i < movieDataList.length; i++) {
+  const movieData =movieDataList[i];
+
+  // Add data for the slider
+  sectionsBuffer.push(movieData);
 
   // section construction pattern
   if (i % 3 === 0) {
@@ -306,13 +309,9 @@ for (let i = 0; i < sortedMovieDataList.length; i++) {
   } else {
     mainElement.appendChild(new DoubleMovieSectionComponent(movieData).render());
 
-    mainElement.appendChild(new SliderSectionComponent([...sectionsBuffer, movieData], 1).render());
+    mainElement.appendChild(new SliderSectionComponent(sectionsBuffer, 1).render());
     sectionsBuffer = []; // clean buffer
-    continue;
   }
-
-  // Add data for the slider
-  sectionsBuffer.push(movieData);
 }
 
 // instance and render NewsletterComponent---OOP---
