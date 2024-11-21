@@ -21,3 +21,7 @@ export interface ISocialLink {
   iconSrc: string;
   alt: string;
 }
+
+export enum Services {
+  DataService = "dataService",
+}

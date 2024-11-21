@@ -4,8 +4,12 @@ import { NewsletterComponent } from "./components/newsletter.component";
 import { MovieSectionComponent } from "./components/movie-section.component";
 import { DoubleMovieSectionComponent } from "./components/double-movie-section.component";
 import { SliderSectionComponent } from "./components/slider-section.component";
-import { movieDataList } from "./data";
-import { IMovieData } from "./interfaces";
+import { IMovieData, Services } from "./interfaces";
+import { ServiceContainer } from "./services/service-container";
+import { DataService } from "./services/data.service";
+
+const dataService = new DataService() // TODO: remove after all components ready
+ServiceContainer.register(Services.DataService, dataService);
 
 //BURGER MENU
 const burger = document.querySelector('.burger');
@@ -53,217 +57,6 @@ jsMovieLink.forEach((link) => {
   });
 });
 
-//POPUP
-// Open-popup
-document.querySelectorAll('.js-button').forEach((button) => {
-  button.addEventListener('click', () => {
-
-    // stop video in slider
-    document.querySelectorAll('.slid-video').forEach((video: HTMLVideoElement) => {
-      video.pause();
-      const closestSlide = video.closest('.slid');
-      closestSlide.classList.remove('playing'); // remove class playing
-      closestSlide.querySelector('.button-play').classList.remove('button-stop'); // reset button play
-    });
-
-    const section = button.closest('section');
-    const titleText = section.dataset.title;
-    const topText = section.dataset.top;
-    const audioSource = section.dataset.audio;
-
-    const popup = new PopupComponent(titleText, topText, audioSource);
-    document.body.appendChild(popup.render());
-
-    document.body.classList.add('body-wrapper');
-  });
-});
-
-// SLIDER
-document.querySelectorAll('.slider-section').forEach((slider) => {
-  const arrowRight = slider.querySelector('.arrow-right');
-  const arrowLeft = slider.querySelector('.arrow-left');
-  const slidsWrapper = slider.querySelector<HTMLElement>('.slids-wrapper');
-  const maxSlideIndex = slider.querySelectorAll('.slid').length - 1;
-  let currentSlid = 0;
-
-  // event for arrow-right
-  arrowRight.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (currentSlid < maxSlideIndex) {
-      currentSlid++;
-      slidsWrapper.style.marginLeft = `${currentSlid * -100}%`;
-    }
-  });
-
-  // event for arrow-left
-  arrowLeft.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (currentSlid > 0) {
-      currentSlid--;
-      slidsWrapper.style.marginLeft =`${currentSlid * -100}%`;
-    }
-  });
-})
-
-// add video for slid
-const slides = document.querySelectorAll('.slid');
-slides.forEach((slide) => {
-  const video = slide.querySelector<HTMLVideoElement>('.slid-video');
-  const playButton = slide.querySelector('.button-play');
-  const volumeBarContainer = slide.querySelector('.volume-bar-container');
-
-  // click for button Play/Stop
-  playButton.addEventListener('click', () => {
-
-    // stop other Video
-    slides.forEach((otherSlide) => {
-      const otherVideo = otherSlide.querySelector<HTMLVideoElement>('.slid-video');
-
-      if (otherVideo !== video) { //check for no stop this video
-        otherVideo.pause(); 
-        otherSlide.classList.remove('playing');
-        otherSlide.querySelector('.button-play').classList.remove('button-stop'); //change for button-play
-      }
-    });
-
-    //stop or play this video
-    if (video.paused) {
-      video.play();
-      playButton.classList.add('button-stop'); // change for button-stop
-      slide.classList.add('playing'); 
-    } else {
-      video.pause();
-      playButton.classList.remove('button-stop'); // change for button-play
-      slide.classList.remove('playing');
-    }
-  });
-
-  // tracking progress-bar for click
-  slide.querySelector('.js-progress-bar-container').addEventListener('click', (e) => {
-
-    // update function
-    updateProgressOnClick(e, slide, video);
-  });
-
-  // update total time
-  video.addEventListener('loadedmetadata', () => {
-
-    updateDisplayTime(slide, video);
-    updateProgressBar(slide, video);
-  });
-
-  // action play and pause
-  video.addEventListener('play', () => {
-    
-    updateProgressWithAnimationFrame(slide, video);
-  });
-
-  video.addEventListener('pause', () => {
-    cancelAnimationFrame(progressAnimationFrame);
-  });
-
-  // reset time in progress-bar
-  video.addEventListener('ended', () => {
-
-    video.currentTime = 0;
-
-    updateDisplayTime(slide, video);
-    updateProgressBar(slide, video);
-
-    playButton.classList.remove('button-stop'); // change for button-play
-    slide.classList.remove('playing');
-  });
-
-  // Changing the volume "mousedown"
-  volumeBarContainer.addEventListener('mousedown', (e) => {
-    setVolume(e, slide, video); // updata volume
-
-    // var for mousemove function
-    const mouseMoveHandler = (e) => {
-      setVolume(e, slide, video);
-    };
-
-    // Changing the volume "mouseup"
-    const mouseUpHandler = () => {
-      window.removeEventListener('mousemove', mouseMoveHandler);
-    }
-
-    window.addEventListener('mousemove', mouseMoveHandler);
-
-    window.addEventListener('mouseup', mouseUpHandler, { once: true });
-  });
-});
-
-// display-time in media
-const formatTime = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
-  const secondsFormatted = Math.floor(seconds % 60);
-  return `${minutes}:${secondsFormatted < 10 ? '0' : ''}${secondsFormatted}`;
-}
-
-let progressAnimationFrame;
-
-const updateProgressWithAnimationFrame = (parentElement, mediaElement) => {
-  
-  updateProgressBar(parentElement, mediaElement);
-  updateDisplayTime(parentElement, mediaElement);
-
-  // call the animation again for the next frame
-  progressAnimationFrame = requestAnimationFrame(() => {
-    updateProgressWithAnimationFrame(parentElement, mediaElement);
-  });
-}
-
-const updateDisplayTime = (parentElement, mediaElement) => {
-  const currentTime = formatTime(mediaElement.currentTime);
-  const duration = mediaElement.duration ? formatTime(mediaElement.duration) : "00:00";
-
-  parentElement.querySelector('.current-time').textContent = currentTime;
-  parentElement.querySelector('.total-time').textContent = duration;
-}
-
-// progress-bar in audio
-const updateProgressBar = (parentElement, mediaElement) => {
-
-  const progress = (mediaElement.currentTime / mediaElement.duration) * 100;
-  parentElement.querySelector('.progress-bar').style.width = `${progress}%`;
-}
-
-// controls volume 
-const updateVolumeSlider = (mediaElement, parentElement) => {
-  const volume = mediaElement.volume * 100;
-  const volumeSlider = parentElement.querySelector('.volume-slider');
-  volumeSlider.style.width = `${volume}%`;
-}
-
-// for updata volume
-const setVolume = (e, parentElement, mediaElement) => {
-  const volumeBar = parentElement.querySelector('.volume-bar-container');
-  
-  const offsetX = e.pageX - volumeBar.getBoundingClientRect().left;
-  const totalWidth = volumeBar.offsetWidth;
-  const newVolume = Math.min(Math.max(offsetX / totalWidth, 0), 1);
-
-  mediaElement.volume = newVolume; // updata volume
-  updateVolumeSlider(mediaElement, parentElement); // updata slider
-}
-
-// update progress-bar in media
-const updateProgressOnClick = (e, parentElement, mediaElement) => {
-  // calculate % progress-bar
-  const offsetX = e.offsetX;
-  const totalWidth = e.currentTarget.offsetWidth;;
-  const clickPosition = (offsetX / totalWidth) * mediaElement.duration;
-
-  // update time
-  mediaElement.currentTime = clickPosition;
-
-  // update progress-bar and show time
-  updateProgressBar(parentElement, mediaElement);
-
-  updateDisplayTime(parentElement, mediaElement); // update with updateDisplayTime function
-}
-
 //-----SCROLL function--------
 const DURATION_SCROLL = 800;
 const smoothScrollTo = (targetPosition, durationScroll) => {
@@ -289,14 +82,12 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
 // find <main>
 const mainElement = document.querySelector('main');
 
-// Instance and render all section with movie---OOP---
-movieDataList.sort((a, b) => b.rating - a.rating);
-
 // Temporary buffer
 let sectionsBuffer: IMovieData[] = [];
+const dataList = dataService.getMovieData();
 
-for (let i = 0; i < movieDataList.length; i++) {
-  const movieData =movieDataList[i];
+for (let i = 0; i < dataList.length; i++) {
+  const movieData = dataList[i];
 
   // Add data for the slider
   sectionsBuffer.push(movieData);
