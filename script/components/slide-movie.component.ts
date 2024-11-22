@@ -1,8 +1,10 @@
-import { IComponent, IMovieData } from '../interfaces';
+import { IComponent, IMovieData, Services } from '../interfaces';
 import { PlayButtonComponent } from './play-button.component';
 import { DisplayTimeComponent } from './display-time.component';
 import { VolumeBarComponent } from './volume-bar.component';
 import { ProgressBarComponent } from './progress-bar.component';
+import { ServiceContainer } from "../services/service-container";
+import { SlidesService } from "../services/slides.service";
 
 export class SlideMovieComponent implements IComponent {
   private progressAnimationFrame: number;
@@ -11,8 +13,12 @@ export class SlideMovieComponent implements IComponent {
   private displayTime: DisplayTimeComponent;
   private progressBar: ProgressBarComponent;
   private video: HTMLVideoElement;
+  private slidesService: SlidesService;
 
-  constructor(private movieData: IMovieData) {}
+  constructor(private movieData: IMovieData) {
+    // Інжектимо SlidesService через enum
+    this.slidesService = ServiceContainer.inject<SlidesService>(Services.SlidesService);
+  }
 
   public render(): HTMLElement {
     this.slide = document.createElement("div");
@@ -49,6 +55,9 @@ export class SlideMovieComponent implements IComponent {
     // Setup video events
     this.setupVideoEvents();
 
+    // add slide in slidesService
+    this.slidesService.add(this.movieData.id, this);
+
     return this.slide;
   }
 
@@ -69,17 +78,8 @@ export class SlideMovieComponent implements IComponent {
   }
 
   private handlePlayButtonClick(playing: boolean): void {
-    // Stop other videos before playing this one
-    document.querySelectorAll(".slid").forEach((otherSlide) => {
-      const otherVideo = otherSlide.querySelector<HTMLVideoElement>(".slid-video");
-      const otherPlayButton = otherSlide.querySelector(".button-play");
-
-      if (otherVideo !== this.video) {
-        otherVideo.pause();
-        otherSlide.classList.remove("playing");
-        otherPlayButton?.classList.remove("button-stop");
-      }
-    });
+    // Зупиняємо всі слайди, крім поточного
+    this.slidesService.stop(this.movieData.id);
 
     // Play or pause the current video
     if (playing) {
@@ -106,11 +106,7 @@ export class SlideMovieComponent implements IComponent {
     });
 
     this.video.addEventListener("ended", () => {
-      this.video.currentTime = 0;
-      this.displayTime.updateDisplayTime();
-      this.progressBar.updateProgressBar();
-      this.playButton.reset();
-      this.slide.classList.remove('playing');
+      this.reset();
     });
   }
 

@@ -4,13 +4,19 @@ import { PopupComponent } from "./popup.component";
 import { IComponent, IMovieData, Services} from "../interfaces";
 import { DataService } from "../services/data.service";
 import { ServiceContainer } from "../services/service-container";
+import { SlidesService } from "../services/slides.service";
 
 export abstract class MovieSectionBaseComponent implements IComponent {
   private dataService: DataService = ServiceContainer.inject<DataService>(Services.DataService)
+  private slidesService: SlidesService = ServiceContainer.inject<SlidesService>(Services.SlidesService);
 
   constructor(protected movieData: IMovieData) {}
 
   public abstract render(): HTMLElement;
+
+  protected stopAllVideos(excludeMovieId?: number): void {
+    this.slidesService.stop(excludeMovieId);
+  }
 
   // Method for WrapperDescriptionComponent
   protected createWrapperDescription(): HTMLElement {
@@ -29,12 +35,7 @@ export abstract class MovieSectionBaseComponent implements IComponent {
   private createListenButton(): ListenButtonComponent {
     return new ListenButtonComponent(() => {
       // stop video in slider
-      document.querySelectorAll(".slid-video").forEach((video: HTMLVideoElement) => {
-        video.pause();
-        const closestSlide = video.closest(".slid");
-        closestSlide.classList.remove("playing");
-        closestSlide.querySelector(".button-play").classList.remove("button-stop");
-      });
+      this.stopAllVideos();
 
       const movieAudioData = this.dataService.getMovieAudioData(this.movieData.id);
 
