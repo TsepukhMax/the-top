@@ -14,8 +14,9 @@ export abstract class MovieSectionBaseComponent implements IComponent {
 
   public abstract render(): HTMLElement;
 
-  protected stopAllVideos(excludeMovieId?: number): void {
-    this.slidesService.stop(excludeMovieId);
+  // stop video
+  private stopAllVideos(): void {
+    this.slidesService.stop();
   }
 
   // Method for WrapperDescriptionComponent

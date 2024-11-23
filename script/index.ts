@@ -1,4 +1,3 @@
-import { PopupComponent } from "./components/popup.component";
 import { FooterComponent } from "./components/footer.component";
 import { NewsletterComponent } from "./components/newsletter.component";
 import { MovieSectionComponent } from "./components/movie-section.component";
@@ -7,9 +6,13 @@ import { SliderSectionComponent } from "./components/slider-section.component";
 import { IMovieData, Services } from "./interfaces";
 import { ServiceContainer } from "./services/service-container";
 import { DataService } from "./services/data.service";
+import { SlidesService } from "./services/slides.service";
 
 const dataService = new DataService() // TODO: remove after all components ready
+const slidesService = new SlidesService() // TODO: remove after all components ready
 ServiceContainer.register(Services.DataService, dataService);
+ServiceContainer.register(Services.SlidesService, slidesService);
+
 
 //BURGER MENU
 const burger = document.querySelector('.burger');

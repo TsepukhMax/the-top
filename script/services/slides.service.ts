@@ -18,7 +18,7 @@ export class SlidesService {
    */
   public stop(excludeMovieId?: number): void {
     Object.entries(this.slidesContainer).forEach(([id, slideComponent]) => {
-      if (excludeMovieId === undefined || Number(id) !== excludeMovieId) {
+      if (id !== excludeMovieId?.toString()) {
         slideComponent.reset();
       }
     });

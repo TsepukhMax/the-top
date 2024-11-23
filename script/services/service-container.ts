@@ -1,5 +1,4 @@
 import { Services } from "../interfaces";
-import { SlidesService } from "./slides.service";
 
 export class ServiceContainer {
   private static container: Partial<Record<Services, unknown>> = {};
@@ -12,6 +11,3 @@ export class ServiceContainer {
     return this.container[key] as T;
   }
 }
-
-// Реєструємо SlidesService
-ServiceContainer.register(Services.SlidesService, new SlidesService());

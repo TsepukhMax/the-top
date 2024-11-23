@@ -106,7 +106,11 @@ export class SlideMovieComponent implements IComponent {
     });
 
     this.video.addEventListener("ended", () => {
-      this.reset();
+      this.video.currentTime = 0;
+      this.displayTime.updateDisplayTime();
+      this.progressBar.updateProgressBar();
+      this.playButton.reset();
+      this.slide.classList.remove('playing');
     });
   }
 
