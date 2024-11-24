@@ -1,5 +1,5 @@
 import { WrapperDescriptionComponent } from "./wrapper-description.component";
-import { ListenButtonComponent } from "./listen-button.components";
+import { ListenButtonComponent } from "./listen-button.component";
 import { PopupComponent } from "./popup.component";
 import { IComponent, IMovieData, Services} from "../interfaces";
 import { DataService } from "../services/data.service";

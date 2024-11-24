@@ -7,6 +7,7 @@ import { IMovieData, Services } from "./interfaces";
 import { ServiceContainer } from "./services/service-container";
 import { DataService } from "./services/data.service";
 import { SlidesService } from "./services/slides.service";
+import { MainTitleComponent } from "./components/main-title.component";
 
 const dataService = new DataService() // TODO: remove after all components ready
 const slidesService = new SlidesService() // TODO: remove after all components ready
@@ -84,6 +85,10 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
 
 // find <main>
 const mainElement = document.querySelector('main');
+
+// instance and render MainTitleComponent---OOP---
+const mainTitleComponent = new MainTitleComponent();
+mainElement.appendChild(mainTitleComponent.render());
 
 // Temporary buffer
 let sectionsBuffer: IMovieData[] = [];

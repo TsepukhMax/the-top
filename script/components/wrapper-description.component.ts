@@ -1,5 +1,5 @@
 import { IComponent } from '../interfaces';
-import { ListenButtonComponent } from './listen-button.components';
+import { ListenButtonComponent } from './listen-button.component';
 
 export class WrapperDescriptionComponent implements IComponent {
   private title: string;
