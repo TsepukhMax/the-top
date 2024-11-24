@@ -1,18 +1,11 @@
 import { IComponent } from "../interfaces";
-import { DataService } from "../services/data.service";
-import { ServiceContainer } from "../services/service-container";
-import { Services } from "../interfaces";
 import { generateSectionId } from "../utils";
 
 export class MainTitleComponent implements IComponent {
-  private dataService: DataService;
   private anchorId: string;
 
-  constructor() {
-    //  injecting DataService from ServiceContainer
-    this.dataService = ServiceContainer.inject<DataService>(Services.DataService);
-    const movieData = this.dataService.getMovieData();
-    this.anchorId = generateSectionId(movieData[0].id); // generate an ID for the first movie
+  constructor(movieId: number) {
+    this.anchorId = generateSectionId(movieId); // generate an ID for the first movie
   }
 
   public render(): HTMLElement {

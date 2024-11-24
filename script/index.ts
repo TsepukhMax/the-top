@@ -14,6 +14,10 @@ const slidesService = new SlidesService() // TODO: remove after all components r
 ServiceContainer.register(Services.DataService, dataService);
 ServiceContainer.register(Services.SlidesService, slidesService);
 
+// Find the first movie based on sorted data
+const firstMovie = dataService.getMovieData()[0]; // get 1-st movie
+const firstMovieId = firstMovie.id; // get `id` for 1-st movie
+
 
 //BURGER MENU
 const burger = document.querySelector('.burger');
@@ -87,7 +91,7 @@ const smoothScrollTo = (targetPosition, durationScroll) => {
 const mainElement = document.querySelector('main');
 
 // instance and render MainTitleComponent---OOP---
-const mainTitleComponent = new MainTitleComponent();
+const mainTitleComponent = new MainTitleComponent(firstMovieId);
 mainElement.appendChild(mainTitleComponent.render());
 
 // Temporary buffer
