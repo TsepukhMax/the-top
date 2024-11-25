@@ -5,6 +5,7 @@ import { IComponent, IMovieData, Services} from "../interfaces";
 import { DataService } from "../services/data.service";
 import { ServiceContainer } from "../services/service-container";
 import { SlidesService } from "../services/slides.service";
+import { formatRating } from "../utils";
 
 export abstract class MovieSectionBaseComponent implements IComponent {
   private dataService: DataService = ServiceContainer.inject<DataService>(Services.DataService)
@@ -23,7 +24,7 @@ export abstract class MovieSectionBaseComponent implements IComponent {
   protected createWrapperDescription(): HTMLElement {
     const wrapperDescription = new WrapperDescriptionComponent(
       this.movieData.title,
-      this.formatRating(this.movieData.rating),
+      formatRating(this.movieData.rating),
       this.movieData.description,
       this.createListenButton() // Передаємо сам компонент
     ).render();
@@ -43,17 +44,12 @@ export abstract class MovieSectionBaseComponent implements IComponent {
       // create POPUP
       const popup = new PopupComponent(
         this.movieData.title,
-        this.formatRating(this.movieData.rating),
+        formatRating(this.movieData.rating),
         movieAudioData.audioUrl
       );
 
       document.body.appendChild(popup.render());
       document.body.classList.add("body-wrapper");
     });
-  }
-
-  // Method for format rating
-  private formatRating(rating: number): string {
-    return `.${rating.toString().padStart(2, '0')}`;
   }
 }

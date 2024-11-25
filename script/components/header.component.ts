@@ -1,5 +1,5 @@
 import { IComponent } from "../interfaces";
-import { generateSectionId } from "../utils";
+import { generateSectionId, formatRating } from "../utils";
 import { DataService } from "../services/data.service";
 import { ServiceContainer } from "../services/service-container";
 import { Services } from "../interfaces";
@@ -119,11 +119,10 @@ export class HeaderComponent implements IComponent {
 
       const totalMovies = movies.length;
       const rating = totalMovies - index;
-      const paddedRating = String(rating).padStart(2, "0");
 
       const link = document.createElement("a");
       link.href = `#${generateSectionId(movie.id)}`;
-      link.textContent = `.${paddedRating}`; // Dynamic text based on rating
+      link.textContent = formatRating(rating); // Dynamic text based on rating
 
       // Attach smooth scroll
       link.addEventListener("click", (event) => {
