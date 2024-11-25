@@ -54,10 +54,8 @@ export class MainTitleComponent implements IComponent {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const targetElement = document.getElementById(this.anchorId);
-      if (targetElement) {
-        const targetPosition = targetElement.offsetTop;
-        this.smoothScrollTo(targetPosition, 800);
-      }
+      const targetPosition = targetElement.offsetTop;
+      this.smoothScrollTo(targetPosition, 800);
     });
 
     return link;

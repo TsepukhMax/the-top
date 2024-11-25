@@ -117,21 +117,23 @@ export class HeaderComponent implements IComponent {
     movies.forEach((movie, index) => {
       const li = document.createElement("li");
 
+      const totalMovies = movies.length;
+      const rating = totalMovies - index;
+      const paddedRating = String(rating).padStart(2, "0");
+
       const link = document.createElement("a");
       link.href = `#${generateSectionId(movie.id)}`;
-      link.textContent = `.${String(10 - index).padStart(2, "0")}`;
+      link.textContent = `.${paddedRating}`; // Dynamic text based on rating
 
       // Attach smooth scroll
       link.addEventListener("click", (event) => {
         event.preventDefault();
         const targetElement = document.getElementById(generateSectionId(movie.id));
-        if (targetElement) {
-          const targetPosition = targetElement.offsetTop;
-          this.smoothScrollTo(targetPosition, 800);
-          // close burger menu and navigationalList
-          this.burgerContent.classList.remove("burger-content-open");
-          this.navigationalList.classList.remove("navigational-list-visible");
-        }
+        const targetPosition = targetElement.offsetTop;
+        this.smoothScrollTo(targetPosition, 800);
+        // close burger menu and navigationalList
+        this.burgerContent.classList.remove("burger-content-open");
+        this.navigationalList.classList.remove("navigational-list-visible");
       });
 
       li.appendChild(link);
