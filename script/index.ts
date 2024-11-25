@@ -9,11 +9,14 @@ import { DataService } from "./services/data.service";
 import { SlidesService } from "./services/slides.service";
 import { MainTitleComponent } from "./components/main-title.component";
 import { HeaderComponent } from "./components/header.component";
+import { ScrollService } from "./services/scroll.service";
 
 const dataService = new DataService() // TODO: remove after all components ready
 const slidesService = new SlidesService() // TODO: remove after all components ready
+const scrollService = new ScrollService() // TODO: remove after all components ready
 ServiceContainer.register(Services.DataService, dataService);
 ServiceContainer.register(Services.SlidesService, slidesService);
+ServiceContainer.register(Services.ScrollService, scrollService);
 
 // Find the first movie based on sorted data
 const firstMovie = dataService.getMovieData()[0]; // get 1-st movie

@@ -31,6 +31,9 @@ export class DoubleMovieSectionComponent extends MovieSectionBaseComponent {
     container.appendChild(wrapper);
     section.appendChild(container);
 
+    // Section registration
+    this.registerSection(section);
+
     return section;
   }
 

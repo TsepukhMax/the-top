@@ -3,15 +3,18 @@ import { generateSectionId, formatRating } from "../utils";
 import { DataService } from "../services/data.service";
 import { ServiceContainer } from "../services/service-container";
 import { Services } from "../interfaces";
+import { ScrollService } from "../services/scroll.service";
 
 export class HeaderComponent implements IComponent {
   private dataService: DataService;
   private burgerContent: HTMLElement;
   private navigationalList: HTMLElement;
+  private scrollService: ScrollService; // add ScrollService
 
   constructor() {
     // Inject DataService from ServiceContainer
     this.dataService = ServiceContainer.inject<DataService>(Services.DataService);
+    this.scrollService = ServiceContainer.inject<ScrollService>(Services.ScrollService); // add ScrollService
   }
 
   public render(): HTMLElement {
@@ -124,9 +127,7 @@ export class HeaderComponent implements IComponent {
       // Attach smooth scroll
       link.addEventListener("click", (event) => {
         event.preventDefault();
-        const targetElement = document.getElementById(generateSectionId(movie.id));
-        const targetPosition = targetElement.offsetTop;
-        this.smoothScrollTo(targetPosition, 800);
+        this.scrollService.scrollToMovieSection(movie.id, 800); // use ScrollService
         // close burger menu and navigationalList
         this.burgerContent.classList.remove("burger-content-open");
         this.navigationalList.classList.remove("navigational-list-visible");
@@ -137,26 +138,5 @@ export class HeaderComponent implements IComponent {
     });
 
     return submenu;
-  }
-
-  // Smooth scroll method
-  private smoothScrollTo(targetPosition: number, durationScroll: number): void {
-    const startPosition = document.documentElement.scrollTop;
-    const distance = targetPosition - startPosition;
-    const startTime = performance.now();
-
-    const animationScroll = (currentTime: number) => {
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / durationScroll, 1);
-
-      document.documentElement.scrollTop = startPosition + distance * progress;
-      document.body.scrollTop = startPosition + distance * progress;
-
-      if (timeElapsed < durationScroll) {
-        requestAnimationFrame(animationScroll);
-      }
-    };
-
-    requestAnimationFrame(animationScroll);
   }
 }

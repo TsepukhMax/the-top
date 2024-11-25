@@ -1,11 +1,16 @@
 import { IComponent } from "../interfaces";
 import { generateSectionId } from "../utils";
+import { ScrollService } from "../services/scroll.service";
+import { ServiceContainer } from "../services/service-container";
+import { Services } from "../interfaces";
 
 export class MainTitleComponent implements IComponent {
   private anchorId: string;
+  private scrollService: ScrollService; // ScrollService injected
 
-  constructor(movieId: number) {
+  constructor(private movieId: number) {
     this.anchorId = generateSectionId(movieId); // generate an ID for the first movie
+    this.scrollService = ServiceContainer.inject<ScrollService>(Services.ScrollService); // Inject ScrollService
   }
 
   public render(): HTMLElement {
@@ -21,7 +26,7 @@ export class MainTitleComponent implements IComponent {
     container.appendChild(this.createArrowLink());
 
     section.appendChild(container);
-    
+
     return section;
   }
 
@@ -36,14 +41,15 @@ export class MainTitleComponent implements IComponent {
 
   private createSubtitle(): HTMLElement {
     const p = document.createElement("p");
-    p.textContent = "Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.";
+    p.textContent =
+      "Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.";
     return p;
   }
 
   private createArrowLink(): HTMLElement {
     const link = document.createElement("a");
     link.classList.add("arrow");
-    link.href = `#${this.anchorId}`; // dynamic link for 1-st section
+    link.href = `#${this.anchorId}`; // dynamic link for the first section
 
     const img = document.createElement("img");
     img.src = "img/arrow.svg";
@@ -53,32 +59,9 @@ export class MainTitleComponent implements IComponent {
     // Attach click event for smooth scrolling
     link.addEventListener("click", (event) => {
       event.preventDefault();
-      const targetElement = document.getElementById(this.anchorId);
-      const targetPosition = targetElement.offsetTop;
-      this.smoothScrollTo(targetPosition, 800);
+      this.scrollService.scrollToMovieSection(this.movieId, 800); // Pass correct movieId
     });
 
     return link;
-  }
-
-  // Smooth scroll method
-  private smoothScrollTo(targetPosition: number, durationScroll: number): void {
-    const startPosition = document.documentElement.scrollTop;
-    const distance = targetPosition - startPosition;
-    const startTime = performance.now();
-
-    const animationScroll = (currentTime: number) => {
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / durationScroll, 1);
-
-      document.documentElement.scrollTop = startPosition + distance * progress;
-      document.body.scrollTop = startPosition + distance * progress;
-
-      if (timeElapsed < durationScroll) {
-        requestAnimationFrame(animationScroll);
-      }
-    };
-
-    requestAnimationFrame(animationScroll);
   }
 }

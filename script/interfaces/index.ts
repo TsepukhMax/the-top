@@ -25,4 +25,5 @@ export interface ISocialLink {
 export enum Services {
   DataService = "dataService",
   SlidesService = "slidesService",
+  ScrollService = "scrollService",
 }

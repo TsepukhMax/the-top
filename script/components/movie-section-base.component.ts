@@ -5,15 +5,25 @@ import { IComponent, IMovieData, Services} from "../interfaces";
 import { DataService } from "../services/data.service";
 import { ServiceContainer } from "../services/service-container";
 import { SlidesService } from "../services/slides.service";
+import { ScrollService } from "../services/scroll.service";
 import { formatRating } from "../utils";
 
 export abstract class MovieSectionBaseComponent implements IComponent {
   private dataService: DataService = ServiceContainer.inject<DataService>(Services.DataService)
   private slidesService: SlidesService = ServiceContainer.inject<SlidesService>(Services.SlidesService);
+  private scrollService: ScrollService = ServiceContainer.inject<ScrollService>(Services.ScrollService);
+
+  protected _section: HTMLElement;
 
   constructor(protected movieData: IMovieData) {}
 
   public abstract render(): HTMLElement;
+
+  // Registers a section with ScrollService
+  protected registerSection(section: HTMLElement): void {
+    this._section = section; // Зберігаємо посилання
+    this.scrollService.registerSection(this.movieData.id, section);
+  }
 
   // stop video
   private stopAllVideos(): void {
