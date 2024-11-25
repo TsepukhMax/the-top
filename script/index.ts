@@ -8,6 +8,7 @@ import { ServiceContainer } from "./services/service-container";
 import { DataService } from "./services/data.service";
 import { SlidesService } from "./services/slides.service";
 import { MainTitleComponent } from "./components/main-title.component";
+import { HeaderComponent } from "./components/header.component";
 
 const dataService = new DataService() // TODO: remove after all components ready
 const slidesService = new SlidesService() // TODO: remove after all components ready
@@ -18,74 +19,9 @@ ServiceContainer.register(Services.SlidesService, slidesService);
 const firstMovie = dataService.getMovieData()[0]; // get 1-st movie
 const firstMovieId = firstMovie.id; // get `id` for 1-st movie
 
-
-//BURGER MENU
-const burger = document.querySelector('.burger');
-const burgerContent = document.querySelector('.js-burger-content');
-const navigationalList = document.querySelector('.navigational-list');
-const menu = document.querySelector('.navigational-menu');
-
-// click for burger
-burger.addEventListener('click', () => {
-  burgerContent.classList.toggle('burger-content-open');
-  navigationalList.classList.toggle('navigational-list-visible');
-});
-
-// close burger menu if click no burger
-document.addEventListener('click', (e) => {
-  const target = e.target as HTMLElement; //Cast type to HTMLElement
-
-  if (!menu.contains(target) && !burger.contains(target)) {
-    burgerContent.classList.remove('burger-content-open');
-    navigationalList.classList.remove('navigational-list-visible');
-  }
-});
-
-// SUBMENU
-const jsMovieLink = document.querySelectorAll('.js-movie-link');
-
-jsMovieLink.forEach((link) => {
-  link.addEventListener('click', (event) => {
-    // cancel standart behavior for link
-    event.preventDefault();
-
-    // get href
-    const href = (event.currentTarget as HTMLElement).getAttribute('href'); //Get href cast to HTMLElement
-    const targetElement = document.querySelector<HTMLElement>(href); // use generic for querySelector, that get HTMLElement
-
-    // get position element
-    const targetPosition = targetElement.offsetTop;
-
-    // scroll to element
-    smoothScrollTo(targetPosition, DURATION_SCROLL);
-
-    // close burger menu
-    document.querySelector('.js-burger-content').classList.remove('burger-content-open');
-    document.querySelector('.navigational-list').classList.remove('navigational-list-visible');
-  });
-});
-
-//-----SCROLL function--------
-const DURATION_SCROLL = 800;
-const smoothScrollTo = (targetPosition, durationScroll) => {
-  const startPosition = document.documentElement.scrollTop;
-  const distance = targetPosition - startPosition;
-  const startTime = performance.now(); // fix start time
-
-  const animationScroll = (currentTime) => {
-    const timeElapsed = currentTime - startTime; // how long
-    const progress = Math.min(timeElapsed / durationScroll, 1); // 0-100%
-
-    // new position with use EASY function
-    document.documentElement.scrollTop = startPosition + distance * progress; // animation scroll
-
-    // check that time (how long) < for duration for this - recursion that creates a scroll
-    if (timeElapsed < durationScroll) {
-      requestAnimationFrame(animationScroll); // continue animation if have time
-    }
-  }
-  requestAnimationFrame(animationScroll); // start animation
-}
+// instance and render HeaderComponent---OOP---
+const headerComponent = new HeaderComponent();
+document.body.prepend(headerComponent.render());
 
 // find <main>
 const mainElement = document.querySelector('main');
