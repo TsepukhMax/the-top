@@ -114,15 +114,12 @@ export class HeaderComponent implements IComponent {
     submenu.classList.add("submenu");
 
     const movies = this.dataService.getMovieData();
-    movies.forEach((movie, index) => {
+    movies.forEach((movie) => {
       const li = document.createElement("li");
-
-      const totalMovies = movies.length;
-      const rating = totalMovies - index;
 
       const link = document.createElement("a");
       link.href = `#${generateSectionId(movie.id)}`;
-      link.textContent = formatRating(rating); // Dynamic text based on rating
+      link.textContent = formatRating(movie.rating); // Dynamic text based on rating
 
       // Attach smooth scroll
       link.addEventListener("click", (event) => {
