@@ -15,14 +15,19 @@ export abstract class MovieSectionBaseComponent implements IComponent {
 
   protected _section: HTMLElement;
 
-  constructor(protected movieData: IMovieData) {}
+  constructor(protected movieData: IMovieData) {
+    this.scrollService.registerSection(this.movieData.id, this);
+  }
 
   public abstract render(): HTMLElement;
 
-  // Registers a section with ScrollService
+  // get for offsetTop
+  public get offsetTop(): number {
+    return this._section.offsetTop; // Returns the position of the section
+  } 
+
   protected registerSection(section: HTMLElement): void {
-    this._section = section; // Зберігаємо посилання
-    this.scrollService.registerSection(this.movieData.id, section);
+    this._section = section;
   }
 
   // stop video
@@ -36,7 +41,7 @@ export abstract class MovieSectionBaseComponent implements IComponent {
       this.movieData.title,
       formatRating(this.movieData.rating),
       this.movieData.description,
-      this.createListenButton() // Передаємо сам компонент
+      this.createListenButton()
     ).render();
 
     wrapperDescription.classList.add("wrapper-description");

@@ -1,34 +1,26 @@
+import { MovieSectionBaseComponent } from "../components/movie-section-base.component";
+
 export class ScrollService {
-  
-  private movieSections: Map<number, HTMLElement> = new Map();
+  private movieSections: Map<number, MovieSectionBaseComponent> = new Map();
+
+  private static readonly DURATION_SCROLL = 800; // Static constant for duration
 
   /**
    * Registers an HTML section for a movie
    * @param movieId - ID movie.
-   * @param section - HTML-section.
-   * @param durationScroll - Scroll animation duration (in ms).
+   * @param sectionComponent - section component
    * @param targetPosition - Final position.
    */
 
-  public registerSection(movieId: number, section: HTMLElement): void {
-    this.movieSections.set(movieId, section);
-  }
-
-  // Returns the section by its ID
-  public getSection(movieId: number): HTMLElement {
-    return this.movieSections.get(movieId);
-  }
-
-  // Deletes a registered section
-  public removeSection(movieId: number): void {
-    this.movieSections.delete(movieId);
+  public registerSection(movieId: number, sectionComponent: MovieSectionBaseComponent): void {
+    this.movieSections.set(movieId, sectionComponent);
   }
 
   // Smoothly scrolls to the section related to the movie ID
-  public scrollToMovieSection(movieId: number, durationScroll: number): void {
-    const section = this.getSection(movieId);
+  public scrollToMovieSection(movieId: number, durationScroll: number = ScrollService.DURATION_SCROLL): void {
+    const component = this.movieSections.get(movieId);
 
-    const targetPosition = section.offsetTop;
+    const targetPosition = component.offsetTop;
     this.smoothScrollTo(targetPosition, durationScroll);
   }
 

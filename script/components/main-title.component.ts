@@ -5,11 +5,9 @@ import { ServiceContainer } from "../services/service-container";
 import { Services } from "../interfaces";
 
 export class MainTitleComponent implements IComponent {
-  private anchorId: string;
   private scrollService: ScrollService; // ScrollService injected
 
   constructor(private movieId: number) {
-    this.anchorId = generateSectionId(movieId); // generate an ID for the first movie
     this.scrollService = ServiceContainer.inject<ScrollService>(Services.ScrollService); // Inject ScrollService
   }
 
@@ -49,7 +47,7 @@ export class MainTitleComponent implements IComponent {
   private createArrowLink(): HTMLElement {
     const link = document.createElement("a");
     link.classList.add("arrow");
-    link.href = `#${this.anchorId}`; // dynamic link for the first section
+    link.href = `#${generateSectionId(this.movieId)}`; // dynamic link for the first section
 
     const img = document.createElement("img");
     img.src = "img/arrow.svg";
@@ -59,7 +57,7 @@ export class MainTitleComponent implements IComponent {
     // Attach click event for smooth scrolling
     link.addEventListener("click", (event) => {
       event.preventDefault();
-      this.scrollService.scrollToMovieSection(this.movieId, 800); // Pass correct movieId
+      this.scrollService.scrollToMovieSection(this.movieId); // Pass correct movieId
     });
 
     return link;

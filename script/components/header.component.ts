@@ -127,7 +127,7 @@ export class HeaderComponent implements IComponent {
       // Attach smooth scroll
       link.addEventListener("click", (event) => {
         event.preventDefault();
-        this.scrollService.scrollToMovieSection(movie.id, 800); // use ScrollService
+        this.scrollService.scrollToMovieSection(movie.id); // use ScrollService
         // close burger menu and navigationalList
         this.burgerContent.classList.remove("burger-content-open");
         this.navigationalList.classList.remove("navigational-list-visible");
