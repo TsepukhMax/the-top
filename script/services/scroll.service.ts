@@ -17,26 +17,25 @@ export class ScrollService {
   }
 
   // Smoothly scrolls to the section related to the movie ID
-  public scrollToMovieSection(movieId: number, durationScroll: number = ScrollService.DURATION_SCROLL): void {
+  public scrollToMovieSection(movieId: number): void {
     const component = this.movieSections.get(movieId);
 
-    const targetPosition = component.offsetTop;
-    this.smoothScrollTo(targetPosition, durationScroll);
+    this.smoothScrollTo(component.section.offsetTop);
   }
 
   // Smoothly scrolls to a certain position
-  private smoothScrollTo(targetPosition: number, durationScroll: number): void {
+  private smoothScrollTo(targetPosition: number): void {
     const startPosition = document.documentElement.scrollTop;
     const distance = targetPosition - startPosition;
     const startTime = performance.now();
 
     const animationScroll = (currentTime: number) => {
       const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / durationScroll, 1);
+      const progress = Math.min(timeElapsed / ScrollService.DURATION_SCROLL, 1);
 
       document.documentElement.scrollTop = startPosition + distance * progress;
 
-      if (timeElapsed < durationScroll) {
+      if (timeElapsed < ScrollService.DURATION_SCROLL) {
         requestAnimationFrame(animationScroll);
       }
     };

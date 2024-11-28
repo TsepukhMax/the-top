@@ -32,7 +32,7 @@ export class DoubleMovieSectionComponent extends MovieSectionBaseComponent {
     section.appendChild(container);
 
     // Section registration
-    this.registerSection(section);
+    this.scrollService.registerSection(this.movieData.id, this);
 
     return section;
   }
