@@ -40,8 +40,8 @@ export class MovieSectionComponent extends MovieSectionBaseComponent  {
     section.appendChild(container);
 
     // Section registration
-    this.scrollService.registerSection(this.movieData.id, this);
-    
+    this.setSection(section);
+
     return section;
   }
 }

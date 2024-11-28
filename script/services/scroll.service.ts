@@ -19,8 +19,7 @@ export class ScrollService {
   // Smoothly scrolls to the section related to the movie ID
   public scrollToMovieSection(movieId: number): void {
     const component = this.movieSections.get(movieId);
-
-    this.smoothScrollTo(component.section.offsetTop);
+    this.smoothScrollTo(component.offsetTop);
   }
 
   // Smoothly scrolls to a certain position

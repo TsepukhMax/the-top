@@ -11,9 +11,9 @@ import { formatRating } from "../utils";
 export abstract class MovieSectionBaseComponent implements IComponent {
   private dataService: DataService = ServiceContainer.inject<DataService>(Services.DataService)
   private slidesService: SlidesService = ServiceContainer.inject<SlidesService>(Services.SlidesService);
-  protected scrollService: ScrollService = ServiceContainer.inject<ScrollService>(Services.ScrollService);
+  private scrollService: ScrollService = ServiceContainer.inject<ScrollService>(Services.ScrollService);
 
-  public section: HTMLElement;
+  private section: HTMLElement;
 
   constructor(protected movieData: IMovieData) {
     this.scrollService.registerSection(this.movieData.id, this);
@@ -21,9 +21,18 @@ export abstract class MovieSectionBaseComponent implements IComponent {
 
   public abstract render(): HTMLElement;
 
+  public getSectionOffsetTop(): number {
+    return this.section.offsetTop;
+  }
+
   // get for offsetTop
   public get offsetTop(): number {
     return this.section.offsetTop; // Returns the position of the section
+  }
+
+  // Захищений метод для збереження секції
+  protected setSection(element: HTMLElement): void {
+    this.section = element;
   }
 
   // stop video
