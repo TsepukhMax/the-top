@@ -13,7 +13,7 @@ export abstract class MovieSectionBaseComponent implements IComponent {
   private slidesService: SlidesService = ServiceContainer.inject<SlidesService>(Services.SlidesService);
   private scrollService: ScrollService = ServiceContainer.inject<ScrollService>(Services.ScrollService);
 
-  private section: HTMLElement;
+  protected section: HTMLElement;
 
   constructor(protected movieData: IMovieData) {
     this.scrollService.registerSection(this.movieData.id, this);
@@ -21,18 +21,9 @@ export abstract class MovieSectionBaseComponent implements IComponent {
 
   public abstract render(): HTMLElement;
 
-  public getSectionOffsetTop(): number {
-    return this.section.offsetTop;
-  }
-
   // get for offsetTop
   public get offsetTop(): number {
-    return this.section.offsetTop; // Returns the position of the section
-  }
-
-  // Захищений метод для збереження секції
-  protected setSection(element: HTMLElement): void {
-    this.section = element;
+    return this.section.offsetTop; // Повертає позицію секції
   }
 
   // stop video

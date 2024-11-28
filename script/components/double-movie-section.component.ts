@@ -9,13 +9,13 @@ export class DoubleMovieSectionComponent extends MovieSectionBaseComponent {
 
   public render(): HTMLElement {
     // main section
-    const section = document.createElement("section");
+    this.section = document.createElement("section");
     // generating unique id for movie
-    section.id = generateSectionId(this.movieData.id);
-    section.classList.add("movie-section", "double-section");
+    this.section.id = generateSectionId(this.movieData.id);
+    this.section.classList.add("movie-section", "double-section");
 
     // Set dynamic background images
-    this.setBackgroundImages(section);
+    this.setBackgroundImages(this.section);
 
     // HTML for container
     const container = document.createElement("div");
@@ -29,12 +29,9 @@ export class DoubleMovieSectionComponent extends MovieSectionBaseComponent {
     wrapper.appendChild(this.createWrapperDescription());
 
     container.appendChild(wrapper);
-    section.appendChild(container);
+    this.section.appendChild(container);
 
-    // Section registration
-    this.setSection(section);
-
-    return section;
+    return this.section;
   }
 
   //dynamic background images

@@ -9,14 +9,14 @@ export class MovieSectionComponent extends MovieSectionBaseComponent  {
 
   public render(): HTMLElement {
     // main section
-    const section = document.createElement("section");
+    this.section = document.createElement("section");
     // generating unique id for movie
-    section.id = generateSectionId(this.movieData.id);
-    section.classList.add("movie-section");
+    this.section.id = generateSectionId(this.movieData.id);
+    this.section.classList.add("movie-section");
 
     // Add reverse class if - true
     if (this.isReversed) {
-      section.classList.add("movie-section-reverse");
+      this.section.classList.add("movie-section-reverse");
     }
 
     // HTML for container
@@ -37,11 +37,8 @@ export class MovieSectionComponent extends MovieSectionBaseComponent  {
     wrapper.appendChild(this.createWrapperDescription());
 
     container.appendChild(wrapper);
-    section.appendChild(container);
+    this.section.appendChild(container);
 
-    // Section registration
-    this.setSection(section);
-
-    return section;
+    return this.section;
   }
 }
