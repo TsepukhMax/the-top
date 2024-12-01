@@ -49,18 +49,19 @@ export abstract class MovieSectionBaseComponent implements IComponent {
     return new ListenButtonComponent(() => {
       // stop video in slider
       this.stopAllVideos();
+  
+      // get audio data from a callback
+      this.dataService.getMovieAudioData(this.movieData.id, (movieAudioData) => {
+        // create POPUP
+        const popup = new PopupComponent(
+          this.movieData.title,
+          formatRating(this.movieData.rating),
+          movieAudioData.audioUrl
+        );
 
-      const movieAudioData = this.dataService.getMovieAudioData(this.movieData.id);
-
-      // create POPUP
-      const popup = new PopupComponent(
-        this.movieData.title,
-        formatRating(this.movieData.rating),
-        movieAudioData.audioUrl
-      );
-
-      document.body.appendChild(popup.render());
-      document.body.classList.add("body-wrapper");
+        document.body.appendChild(popup.render());
+        document.body.classList.add("body-wrapper");
+      });
     });
   }
 }

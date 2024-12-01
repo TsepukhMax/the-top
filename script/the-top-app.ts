@@ -42,30 +42,31 @@ export class TheTopApp {
   }
 
   private renderContent(mainElement: HTMLElement): void {
-    const dataList = this.dataService.getMovieData();
-    const firstMovieId = dataList[0].id;
-    const mainTitleComponent = new MainTitleComponent(firstMovieId);
-    mainElement.appendChild(mainTitleComponent.render());
+    this.dataService.getMovieData((dataList) => {
 
-    let sectionsBuffer: IMovieData[] = [];
+      const firstMovieId = dataList[0].id;
+      const mainTitleComponent = new MainTitleComponent(firstMovieId);
+      mainElement.appendChild(mainTitleComponent.render());
 
-    for (let i = 0; i < dataList.length; i++) {
-      const movieData = dataList[i];
-      sectionsBuffer.push(movieData);
+      let sectionsBuffer: IMovieData[] = [];
 
-      if (i % 3 === 0) {
-        mainElement.appendChild(new MovieSectionComponent(movieData).render());
-      } else if (i % 3 === 1) {
-        mainElement.appendChild(new MovieSectionComponent(movieData, true).render());
-      } else {
-        mainElement.appendChild(new DoubleMovieSectionComponent(movieData).render());
-        mainElement.appendChild(new SliderSectionComponent(sectionsBuffer, 1).render());
-        sectionsBuffer = [];
+      for (let i = 0; i < dataList.length; i++) {
+        const movieData = dataList[i];
+        sectionsBuffer.push(movieData);
+
+        if (i % 3 === 0) {
+          mainElement.appendChild(new MovieSectionComponent(movieData).render());
+        } else if (i % 3 === 1) {
+          mainElement.appendChild(new MovieSectionComponent(movieData, true).render());
+        } else {
+          mainElement.appendChild(new DoubleMovieSectionComponent(movieData).render());
+          mainElement.appendChild(new SliderSectionComponent(sectionsBuffer, 1).render());
+          sectionsBuffer = [];
+        }
       }
-    }
-
-    const newsletterComponent = new NewsletterComponent();
-    mainElement.appendChild(newsletterComponent.render());
+      const newsletterComponent = new NewsletterComponent();
+      mainElement.appendChild(newsletterComponent.render());
+    })
   }
 
   private renderFooter(): void {

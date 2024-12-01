@@ -115,28 +115,28 @@ export class HeaderComponent implements IComponent {
   private createSubmenu(): HTMLElement {
     const submenu = document.createElement("ul");
     submenu.classList.add("submenu");
-
-    const movies = this.dataService.getMovieData();
-    movies.forEach((movie) => {
-      const li = document.createElement("li");
-
-      const link = document.createElement("a");
-      link.href = `#${generateSectionId(movie.id)}`;
-      link.textContent = formatRating(movie.rating); // Dynamic text based on rating
-
-      // Attach smooth scroll
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        this.scrollService.scrollToMovieSection(movie.id); // use ScrollService
-        // close burger menu and navigationalList
-        this.burgerContent.classList.remove("burger-content-open");
-        this.navigationalList.classList.remove("navigational-list-visible");
+  
+    this.dataService.getMovieData((movies) => {
+      movies.forEach((movie) => {
+        const li = document.createElement("li");
+  
+        const link = document.createElement("a");
+        link.href = `#${generateSectionId(movie.id)}`;
+        link.textContent = formatRating(movie.rating);
+  
+        // Attach smooth scroll
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          this.scrollService.scrollToMovieSection(movie.id);
+          this.burgerContent.classList.remove("burger-content-open");
+          this.navigationalList.classList.remove("navigational-list-visible");
+        });
+  
+        li.appendChild(link);
+        submenu.appendChild(li);
       });
-
-      li.appendChild(link);
-      submenu.appendChild(li);
     });
-
+  
     return submenu;
   }
 }
