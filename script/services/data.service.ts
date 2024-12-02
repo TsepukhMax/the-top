@@ -2,7 +2,7 @@ import { IMovieAudioData, IMovieData } from "../interfaces";
 
 export class DataService {
   private movieData: IMovieData[];
-  private movieDataCallBacks: ((movieData: IMovieData[]) => void)[]
+  private movieDataCallBacks: ((movieData: IMovieData[]) => void)[];
 
   public getMovieData(cb: (movieData: IMovieData[]) => void): void {
     if (this.movieData) {
@@ -24,9 +24,7 @@ export class DataService {
         this.movieData = movieData.sort((a, b) => b.rating - a.rating);
       
         // Call all callbacks from the queue
-        if (this.movieDataCallBacks) {
-          this.movieDataCallBacks.forEach(callback => callback(this.movieData!));
-        }
+        this.movieDataCallBacks.forEach(callback => callback(this.movieData!));
 
         this.movieDataCallBacks = null; // clear the queue
       });
