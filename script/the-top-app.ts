@@ -42,7 +42,7 @@ export class TheTopApp {
   }
 
   private renderContent(mainElement: HTMLElement): void {
-    this.dataService.getMovieData((dataList) => {
+    this.dataService.getMovieData().then((dataList) => {
 
       const firstMovieId = dataList[0].id;
       const mainTitleComponent = new MainTitleComponent(firstMovieId);

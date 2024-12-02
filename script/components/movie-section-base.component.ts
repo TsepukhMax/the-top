@@ -51,7 +51,7 @@ export abstract class MovieSectionBaseComponent implements IComponent {
       this.stopAllVideos();
   
       // get audio data from a callback
-      this.dataService.getMovieAudioData(this.movieData.id, (movieAudioData) => {
+      this.dataService.getMovieAudioData(this.movieData.id).then((movieAudioData) => {
         // create POPUP
         const popup = new PopupComponent(
           this.movieData.title,

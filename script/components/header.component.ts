@@ -116,7 +116,7 @@ export class HeaderComponent implements IComponent {
     const submenu = document.createElement("ul");
     submenu.classList.add("submenu");
   
-    this.dataService.getMovieData((movies) => {
+    this.dataService.getMovieData().then((movies) => {
       movies.forEach((movie) => {
         const li = document.createElement("li");
   

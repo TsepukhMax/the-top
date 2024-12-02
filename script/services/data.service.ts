@@ -1,45 +1,37 @@
 import { IMovieAudioData, IMovieData } from "../interfaces";
 
 export class DataService {
-  private movieData: IMovieData[];
-  private movieDataCallBacks: ((movieData: IMovieData[]) => void)[];
+  private movieData: Promise<IMovieData[]>;
 
-  public getMovieData(cb: (movieData: IMovieData[]) => void): void {
-    if (this.movieData) {
-      // 1. The data is already loaded
-      cb(this.movieData);
-    } else if (this.movieDataCallBacks) {
-      // 2. The data is still being loaded, add a callback to the queue
-      this.movieDataCallBacks.push(cb);
-    } else {
-      // 3. The request didn't sent, we create and send the request
-      this.movieDataCallBacks = [cb];
+  public getMovieData(): Promise<IMovieData[]> {
+    if (!this.movieData) {
 
-      const xhr = new XMLHttpRequest();
-      xhr.open ('GET', 'movies-top');
-      xhr.send();
+      this.movieData = new Promise<IMovieData[]>((res) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open ('GET', 'movies-top');
+        xhr.send();
 
-      xhr.addEventListener('load' , () => {
-        const movieData: IMovieData[] = JSON.parse(xhr.response);
-        this.movieData = movieData.sort((a, b) => b.rating - a.rating);
-      
-        // Call all callbacks from the queue
-        this.movieDataCallBacks.forEach(callback => callback(this.movieData!));
+        xhr.addEventListener('load' , () => {
+          const movieData: IMovieData[] = JSON.parse(xhr.response);
+          movieData.sort((a, b) => b.rating - a.rating);
 
-        this.movieDataCallBacks = null; // clear the queue
+          res(movieData);
+        });
       });
     }
+    return this.movieData;
   }
 
-  public getMovieAudioData(movieId: number, cb: (audioData: IMovieAudioData) => void): void {
-    const xhr = new XMLHttpRequest();
+  public getMovieAudioData(movieId: number): Promise<IMovieAudioData> {
+    return new Promise<IMovieAudioData>((res) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', `movies-top/${movieId}/audio`);
+      xhr.send();
   
-    xhr.open('GET', `movies-top/${movieId}/audio`);
-    xhr.send();
-  
-    xhr.addEventListener('load', () => {
-      const audioData: IMovieAudioData = JSON.parse(xhr.response);
-      cb(audioData);
+      xhr.addEventListener('load', () => {
+        const audioData: IMovieAudioData = JSON.parse(xhr.response);
+        res(audioData); // Return a single object
+      });
     });
-  }
+  }  
 };
