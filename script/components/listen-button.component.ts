@@ -3,9 +3,9 @@ import { IComponent } from '../interfaces';
 //ListenButtonComponent
 export class ListenButtonComponent implements IComponent {
   private button: HTMLButtonElement;
-  private onClick: () => void;
+  private onClick: () => void | Promise<void>;
 
-  constructor(onClick: () => void) {
+  constructor(onClick: () => void | Promise<void>) {
     this.onClick = onClick;
   }
 

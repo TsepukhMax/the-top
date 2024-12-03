@@ -103,16 +103,15 @@ export class HeaderComponent implements IComponent {
     goToLink.href = "#";
     goToLink.textContent = "go to";
 
-    const submenu = this.createSubmenu();
     goToLi.appendChild(goToLink);
-    goToLi.appendChild(submenu);
+    this.createSubmenu(goToLi);
 
     list.appendChild(goToLi);
 
     return list;
   }
 
-  private createSubmenu(): HTMLElement {
+  private createSubmenu(parentElement: HTMLElement): void {
     const submenu = document.createElement("ul");
     submenu.classList.add("submenu");
   
@@ -135,8 +134,7 @@ export class HeaderComponent implements IComponent {
         li.appendChild(link);
         submenu.appendChild(li);
       });
+      parentElement.appendChild(submenu);
     });
-  
-    return submenu;
   }
 }
