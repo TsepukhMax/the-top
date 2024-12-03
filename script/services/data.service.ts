@@ -5,33 +5,18 @@ export class DataService {
 
   public getMovieData(): Promise<IMovieData[]> {
     if (!this.movieData) {
-
-      this.movieData = new Promise<IMovieData[]>((res) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open ('GET', 'movies-top');
-        xhr.send();
-
-        xhr.addEventListener('load' , () => {
-          const movieData: IMovieData[] = JSON.parse(xhr.response);
-          movieData.sort((a, b) => b.rating - a.rating);
-
-          res(movieData);
+      this.movieData = fetch('movies-top')
+        .then((response) => response.json() as Promise<IMovieData[]>) // parse the JSON response
+        .then((movieData) => {
+          movieData.sort((a, b) => b.rating - a.rating); // Sort by rating
+          return movieData; // return sort data
         });
-      });
     }
     return this.movieData;
   }
 
   public getMovieAudioData(movieId: number): Promise<IMovieAudioData> {
-    return new Promise<IMovieAudioData>((res) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', `movies-top/${movieId}/audio`);
-      xhr.send();
-  
-      xhr.addEventListener('load', () => {
-        const audioData: IMovieAudioData = JSON.parse(xhr.response);
-        res(audioData); // Return a single object
-      });
-    });
-  }  
-};
+    return fetch(`movies-top/${movieId}/audio`)
+      .then((response) => response.json() as Promise<IMovieAudioData>); // parse the JSON response and return the data
+  }
+}
