@@ -13,8 +13,7 @@ export class DataService {
 
   public async getMovieAudioData(movieId: number): Promise<IMovieAudioData> {
     const response = await fetch(`movies-top/${movieId}/audio`);
-    const audioData = await response.json() as IMovieAudioData; // parse the JSON
-    return audioData; // return the data
+    return response.json() as Promise<IMovieAudioData>; // parse the JSON and return the data
   }
 
   private async getMovieDataInternal(): Promise<IMovieData[]> {
