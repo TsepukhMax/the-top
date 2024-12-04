@@ -3,15 +3,6 @@ import { IMovieAudioData, IMovieData } from "../interfaces";
 export class DataService {
   private movieData: Promise<IMovieData[]>;
 
-  public getMovieDataInternal(): Promise<IMovieData[]> {
-    return fetch('movies-top')
-      .then((response) => response.json() as Promise<IMovieData[]>) // parse the JSON response
-      .then((movieData) => {
-        movieData.sort((a, b) => b.rating - a.rating); // Sort by rating
-        return movieData; // return sort data
-      });
-    }
-
   // public method for accessing data
   public getMovieData(): Promise<IMovieData[]> {
     if (!this.movieData) {
@@ -20,8 +11,16 @@ export class DataService {
     return this.movieData;
   }
 
-  public getMovieAudioData(movieId: number): Promise<IMovieAudioData> {
-    return fetch(`movies-top/${movieId}/audio`)
-      .then((response) => response.json() as Promise<IMovieAudioData>); // parse the JSON response and return the data
+  public async getMovieAudioData(movieId: number): Promise<IMovieAudioData> {
+    const response = await fetch(`movies-top/${movieId}/audio`);
+    const audioData = await response.json() as IMovieAudioData; // parse the JSON
+    return audioData; // return the data
   }
+
+  private async getMovieDataInternal(): Promise<IMovieData[]> {
+    const response = await fetch('movies-top'); // get an answer
+    const movieData = await response.json() as IMovieData[]; //parse the JSON
+    movieData.sort((a, b) => b.rating - a.rating); // Sort by rating
+    return movieData; // return sort data
+  };
 }

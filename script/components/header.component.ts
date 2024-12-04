@@ -111,30 +111,29 @@ export class HeaderComponent implements IComponent {
     return list;
   }
 
-  private createSubmenu(parentElement: HTMLElement): void {
+  private async createSubmenu(parentElement: HTMLElement): Promise<void> {
     const submenu = document.createElement("ul");
     submenu.classList.add("submenu");
   
-    this.dataService.getMovieData().then((movies) => {
-      movies.forEach((movie) => {
-        const li = document.createElement("li");
-  
-        const link = document.createElement("a");
-        link.href = `#${generateSectionId(movie.id)}`;
-        link.textContent = formatRating(movie.rating);
-  
-        // Attach smooth scroll
-        link.addEventListener("click", (event) => {
-          event.preventDefault();
-          this.scrollService.scrollToMovieSection(movie.id);
-          this.burgerContent.classList.remove("burger-content-open");
-          this.navigationalList.classList.remove("navigational-list-visible");
-        });
-  
-        li.appendChild(link);
-        submenu.appendChild(li);
+    const movies = await this.dataService.getMovieData(); //waiting for the data
+    movies.forEach((movie) => {
+      const li = document.createElement("li");
+
+      const link = document.createElement("a");
+      link.href = `#${generateSectionId(movie.id)}`;
+      link.textContent = formatRating(movie.rating);
+
+      // Attach smooth scroll
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        this.scrollService.scrollToMovieSection(movie.id);
+        this.burgerContent.classList.remove("burger-content-open");
+        this.navigationalList.classList.remove("navigational-list-visible");
       });
-      parentElement.appendChild(submenu);
+
+      li.appendChild(link);
+      submenu.appendChild(li);
     });
+    parentElement.appendChild(submenu);
   }
 }

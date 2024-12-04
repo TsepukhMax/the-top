@@ -46,22 +46,21 @@ export abstract class MovieSectionBaseComponent implements IComponent {
 
   // Method for ListenButtonComponent
   private createListenButton(): ListenButtonComponent {
-    return new ListenButtonComponent(() => {
+    return new ListenButtonComponent(async() => { // declare the anonymous callback
       // stop video in slider
       this.stopAllVideos();
   
       // get audio data from a callback
-      this.dataService.getMovieAudioData(this.movieData.id).then((movieAudioData) => {
-        // create POPUP
-        const popup = new PopupComponent(
-          this.movieData.title,
-          formatRating(this.movieData.rating),
-          movieAudioData.audioUrl
-        );
+      const movieAudioData = await this.dataService.getMovieAudioData(this.movieData.id); // Використовуємо await
+      // create POPUP
+      const popup = new PopupComponent(
+        this.movieData.title,
+        formatRating(this.movieData.rating),
+        movieAudioData.audioUrl
+      );
 
-        document.body.appendChild(popup.render());
-        document.body.classList.add("body-wrapper");
-      });
+      document.body.appendChild(popup.render());
+      document.body.classList.add("body-wrapper");
     });
   }
 }

@@ -41,32 +41,31 @@ export class TheTopApp {
     return mainElement;
   }
 
-  private renderContent(mainElement: HTMLElement): void {
-    this.dataService.getMovieData().then((dataList) => {
+  private async renderContent(mainElement: HTMLElement): Promise<void> {
+    const dataList = await this.dataService.getMovieData(); // Очікуємо отримання даних
 
-      const firstMovieId = dataList[0].id;
-      const mainTitleComponent = new MainTitleComponent(firstMovieId);
-      mainElement.appendChild(mainTitleComponent.render());
+    const firstMovieId = dataList[0].id;
+    const mainTitleComponent = new MainTitleComponent(firstMovieId);
+    mainElement.appendChild(mainTitleComponent.render());
 
-      let sectionsBuffer: IMovieData[] = [];
+    let sectionsBuffer: IMovieData[] = [];
 
-      for (let i = 0; i < dataList.length; i++) {
-        const movieData = dataList[i];
-        sectionsBuffer.push(movieData);
+    for (let i = 0; i < dataList.length; i++) {
+      const movieData = dataList[i];
+      sectionsBuffer.push(movieData);
 
-        if (i % 3 === 0) {
-          mainElement.appendChild(new MovieSectionComponent(movieData).render());
-        } else if (i % 3 === 1) {
-          mainElement.appendChild(new MovieSectionComponent(movieData, true).render());
-        } else {
-          mainElement.appendChild(new DoubleMovieSectionComponent(movieData).render());
-          mainElement.appendChild(new SliderSectionComponent(sectionsBuffer, 1).render());
-          sectionsBuffer = [];
-        }
+      if (i % 3 === 0) {
+        mainElement.appendChild(new MovieSectionComponent(movieData).render());
+      } else if (i % 3 === 1) {
+        mainElement.appendChild(new MovieSectionComponent(movieData, true).render());
+      } else {
+        mainElement.appendChild(new DoubleMovieSectionComponent(movieData).render());
+        mainElement.appendChild(new SliderSectionComponent(sectionsBuffer, 1).render());
+        sectionsBuffer = [];
       }
-      const newsletterComponent = new NewsletterComponent();
-      mainElement.appendChild(newsletterComponent.render());
-    })
+    }
+    const newsletterComponent = new NewsletterComponent();
+    mainElement.appendChild(newsletterComponent.render());
   }
 
   private renderFooter(): void {
